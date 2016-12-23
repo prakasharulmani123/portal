@@ -82,14 +82,14 @@
                 <table cellpadding="0" cellspacing="0" width="100%" class="table" id="entryreport-index">
                     <thead>
                         <tr>
-                            <th width="5%">No</th>
+                            <th width="2%">No</th>
                             <th width="10%">User</th>
-                            <th width="8%">Date</th>
-                            <th width="8%">From</th>
-                            <th width="8%">To</th>
-                            <th width="8%">Total In</th>
-                            <th width="8%">Total Out</th>
-                            <th width="8%">Total Hours</th>
+                            <th width="6%">Date</th>
+                            <th width="6%">From</th>
+                            <th width="6%">To</th>
+                            <th width="7%">Total In</th>
+                            <th width="7%">Total Out</th>
+                            <th width="7%">Total Hours</th>
                             <th width="55%">Attendance Logs</th>
                         </tr>
                     </thead>
