@@ -135,6 +135,9 @@ class UserAttendancesController extends AppController {
 
                 $fileName = 'attendance_import_csv';
                 $uploadPath = 'uploads/';
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0777, true);
+                }
                 $uploadFile = $uploadPath . $fileName;
                 if (move_uploaded_file($this->request->data['User']['upload']['tmp_name'], $uploadFile)) {
                     $file = Router::url("/$uploadFile", true);
@@ -167,6 +170,9 @@ class UserAttendancesController extends AppController {
 
             $fileName = 'attendance_import_csv';
             $uploadPath = 'uploads/';
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
             $uploadFile = $uploadPath . $fileName;
             if (move_uploaded_file($this->request->data['User']['upload']['tmp_name'], $uploadFile)) {
                 $file = Router::url("/$uploadFile", true);
@@ -187,12 +193,12 @@ class UserAttendancesController extends AppController {
         $handle = fopen($filename, "r");
         // read the 1st row as headings
         $header = fgetcsv($handle);
-        
+
         if (trim($header[0]) != 'Employee Code' || trim($header[1]) != 'Employee Name' || trim($header[2]) != 'InTime' || trim($header[3]) != 'OutTime' || trim($header[4]) != 'PunchRecords') {
             $this->Session->setFlash('File Headers Mismatch !!!', 'flash_error');
-            if($this->Session->read('User.role') == 'user')
+            if ($this->Session->read('User.role') == 'user')
                 return $this->redirect('/user_attendances/import_attendance');
-            else if($this->Session->read('User.role') == 'admin')
+            else if ($this->Session->read('User.role') == 'admin')
                 return $this->redirect('/admin/user_attendances/import_attendance');
         }
         // read each data row in the file

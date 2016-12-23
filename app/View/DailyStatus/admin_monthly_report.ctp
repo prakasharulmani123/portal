@@ -13,6 +13,14 @@ $(document).ready(function() {
 		width: 500
 	});
 	
+        $("#b_popup_2").dialog({
+            width: 700
+        });
+
+        $("#b_popup_3").dialog({
+            width: 900
+        });
+
 	$("#dailyreport-index").dataTable({
 		"iDisplayLength": 10, 
 		"sPaginationType": "full_numbers",
@@ -99,6 +107,77 @@ $(document).ready(function() {
   </div>                                        
 <?php endif ?>
 
+<?php $user_complaints = $this->requestAction('user_complaints/get_user_their_complaint_by_user_id/' . $all['user_id']); ?>
+<?php $fine = 0; ?>
+
+<?php if (!empty($user_complaints)): ?>
+    <div class="dialog" id="b_popup_2" style="display: none;" title="Complaints">                                
+        <div class="block">
+            <table border="1" width="100%">
+                <thead>
+                <!--<th width="20%">Person Name</th>-->
+                <th width="10%">Date</th>
+                <th width="50%">Complaint</th>
+                <th width="10%">Fine Amount</th>
+                </thead>
+                <tbody>
+                    <?php foreach ($user_complaints as $user_complaint) { ?>
+                        <tr>
+                        <!--<td><?php echo h($user_complaint['Sender']['employee_name']); ?></td>-->
+                            <td><?php echo date('Y-m-d', strtotime($user_complaint['UserComplaint']['created'])) ?></td>
+                            <td><?php
+                                echo h($user_complaint['UserComplaint']['reason']);
+                                if ($user_complaint['UserComplaint']['file']) {
+                                    echo '<br />';
+                                    echo $this->Html->link('(file attached)', Router::url('/' . $user_complaint['UserComplaint']['file'], true), array('title' => 'View File', 'escape' => false, 'target' => '_blank')) . ' &nbsp;';
+                                }
+                                ?>
+                            </td>
+                            <td><?php echo h($user_complaint['UserComplaint']['fine_amount']); ?></td>
+                        </tr>
+                        <?php $fine += $user_complaint['UserComplaint']['fine_amount'];
+                    } ?>
+                </tbody>
+            </table>
+        </div>
+    </div>                                        
+<?php endif ?>
+
+<?php $my_complaints = $this->requestAction('user_complaints/get_user_my_complaint_by_user_id/' . $all['user_id']); ?>
+<?php $earnings = 0; ?>
+<?php if (!empty($my_complaints)): ?>
+    <div class="dialog" id="b_popup_3" style="display: none;" title="Complaints">                                
+        <div class="block">
+            <table border="1" width="100%">
+                <thead>
+                <th width="20%">Person Name</th>
+                <th width="10%">Date</th>
+                <th width="50%">Complaint</th>
+                <th width="10%">Earned Amount</th>
+                </thead>
+                <tbody>
+                    <?php foreach ($my_complaints as $my_complaint) { ?>
+                        <tr>
+                        <td><?php echo h($my_complaint['Receiver']['employee_name']); ?></td>
+                            <td><?php echo date('Y-m-d', strtotime($my_complaint['UserComplaint']['created'])) ?></td>
+                            <td><?php
+                                echo h($my_complaint['UserComplaint']['reason']);
+                                if ($my_complaint['UserComplaint']['file']) {
+                                    echo '<br />';
+                                    echo $this->Html->link('(file attached)', Router::url('/' . $my_complaint['UserComplaint']['file'], true), array('title' => 'View File', 'escape' => false, 'target' => '_blank')) . ' &nbsp;';
+                                }
+                                ?>
+                            </td>
+                            <td><?php echo h($my_complaint['UserComplaint']['fine_amount']); ?></td>
+                        </tr>
+                        <?php $earnings += $my_complaint['UserComplaint']['fine_amount'];
+                    } ?>
+                </tbody>
+            </table>
+        </div>
+    </div>                                        
+<?php endif ?>
+
 <div style="margin:10px 50px 10px 50px;">
 <?php echo $this->Form->create('DailyStatus'); ?>
     <?php 
@@ -145,19 +224,12 @@ $(document).ready(function() {
 	?>
 <div class="workplace">
 
-<?php if($late_fee != 0){ ?>
-  <div class="row-fluid">
-	<div align="right" class="span12">
-		<button class="badge badge-important" id="popup_1">Late Fee : Rs.<?php echo $late_fee?></button>
-	</div>
-<?php } ?>
-
   <div class="row-fluid">
     <div align="left" class="span2">
         <input type="button" name="export" id="export" value="Export" class="btn btn-primary" onclick="location.href='<?php echo $this->base; ?>/admin/dailystatus/export_to_csv'" />
     </div>
 
-    <div align="left" class="span10" style="margin-bottom:10px;">
+    <div align="left" class="span8" style="margin-bottom:10px;">
     <table>
         <tr>
             <td width="30" style="background-color:#B4FF80; border:1px solid black;" id="td_sunday_count" align="center">&nbsp;</td>
@@ -185,6 +257,21 @@ $(document).ready(function() {
             <td><span style="font-size:18px;"> No Record</span></td>
         </tr>
     </table>
+  </div>
+            <div align="left" class="span2">
+                <?php if ($fine != 0) { ?>
+                    <button class="badge badge-important" id="popup_2">Fine : Rs.<?php echo $fine ?></button>
+                <?php } ?>
+                <?php if ($earnings != 0) { ?>
+                    <button class="badge badge-info" id="popup_3">Earning : Rs.<?php echo $earnings ?></button>
+                <?php } ?>
+                <?php if ($fine != 0 && $earnings != 0) { ?>
+                    <button class="badge badge-success">Balance : Rs.<?php echo $fine - $earnings ?></button>
+                <?php } ?>
+                <?php if ($late_fee != 0) { ?>
+                    <button class="badge badge-important" id="popup_1">Late Fee : Rs.<?php echo $late_fee ?></button>
+                <?php } ?>
+            </div>
   </div>
   
   <div class="row-fluid">
