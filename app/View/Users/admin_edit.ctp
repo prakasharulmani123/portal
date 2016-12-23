@@ -232,6 +232,14 @@ function get_cities(id)
         </div>
         
         <div class="row-form">
+          <div class="span3">Casual Leaves*:</div>
+          <div class="span9">
+            <?php echo $this->Form->input('casual_leave', array('type'=>'text', 'label'=>false, 'class' => 'validate[required]', 'style'=>'width:80px')); ?>
+          </div>
+          <div class="clear"></div>
+        </div>
+        
+        <div class="row-form">
           <div class="span3">Active:</div>
           <div class="span9">
             <?php echo $this->Form->input('active', array('type' => 'checkbox','label'=>false)); ?>

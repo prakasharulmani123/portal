@@ -549,11 +549,11 @@ class UsersController extends AppController {
     public function admin_change_timings() {
         $timings = array();
         foreach ($this->request->data('Users') as $key => $user) {
-            if(is_array($user)){
-                if(isset($user['meridian'])){
-                    $timings[$key] = date('H:i:s', strtotime($user['hours'].':'.$user['minutes'].':00 '.$user['meridian']));
-                }else{
-                    $timings[$key] = date('H:i:s', strtotime($user['hours'].':'.$user['minutes'].':00'));
+            if (is_array($user)) {
+                if (isset($user['meridian'])) {
+                    $timings[$key] = date('H:i:s', strtotime($user['hours'] . ':' . $user['minutes'] . ':00 ' . $user['meridian']));
+                } else {
+                    $timings[$key] = date('H:i:s', strtotime($user['hours'] . ':' . $user['minutes'] . ':00'));
                 }
             }
         }
@@ -568,13 +568,12 @@ class UsersController extends AppController {
         $this->Session->setFlash("Timings changes successfully", 'flash_success');
         return $this->redirect('timings');
     }
-    
+
 ///////////////////////////////////////////////////////////////////////////////
 
     public function app_test() {
         
     }
-
 }
 
 ?>

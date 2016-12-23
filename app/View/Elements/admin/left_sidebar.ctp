@@ -1,5 +1,5 @@
 <?php 
-$marray= array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17);//define number of main menus
+$marray= array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19);//define number of main menus
 $open = $open1 = $open2 = $open3 = $open4 = $open5 = "";
 
 if($cpage=='dashboard')
@@ -45,6 +45,12 @@ if($cpage=='meeting')
 $marray[15]='active';
 if($cpage=='timings')
 $marray[16]='active';
+if($cpage=='my_attendance')
+$marray[17]='active';
+if($cpage=='import_attendance')
+$marray[18]='active';
+if($cpage=='mycomplaints')
+$marray[19]='active';
 ?>
 
 <div class="breadLine">
@@ -183,10 +189,15 @@ $marray[16]='active';
   
     <li class="<?php echo $marray[14]; ?>"> <a href="<?php echo  $this->base?>/admin/late_entries"> <span class="isw-archive"></span><span class="text">Late Entries</span> </a> </li>
 
+    <li class="<?php echo $marray[16]; ?>"> <a href="<?php echo  $this->base?>/admin/users/timings"> <span class="isw-time"></span><span class="text">Office Timings</span> </a> </li>
+    
     <li class="<?php echo $marray[15]; ?>"> <a href="<?php echo  $this->base?>/admin/meetings"> <span class="isw-chat"></span><span class="text">Meetings</span> </a> </li>
 
-    <li class="<?php echo $marray[16]; ?>"> <a href="<?php echo  $this->base?>/admin/users/timings"> <span class="isw-time"></span><span class="text">Office Timings</span> </a> </li>
+    <li class="<?php echo $marray[17]; ?>"> <a href="<?php echo  $this->base?>/admin/user_attendances"> <span class="isw-time"></span><span class="text">Attendance</span> </a> </li>
 
+    <li class="<?php echo $marray[18];?>"> <a href="<?php  echo  $this->base?>/admin/user_attendances/import_attendance"> <span class="isw-cloud"></span><span class="text">Import Attendance</span> </a> </li>
+
+    <li class="<?php echo $marray[19];?>"> <a href="<?php  echo  $this->base?>/admin/user_complaints"> <span class="isw-right"></span><span class="text">Complaints</span> </a> </li>
 </ul>
 
 <div class="dr"><span></span></div>

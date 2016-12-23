@@ -38,6 +38,16 @@
                     <?php }?>
                 </div>
                 
+                <div class="bb">
+                	<a href="<?php echo $this->base?>/admin/user_complaints" title="Permission Requests"><span class="ibw-right"></span></a>
+                    <?php $per_count = $this->requestAction('admin/user_complaints/get_complaints_count'); ?>
+                    <?php if($per_count > 0){ ?>
+	                    <div class="caption red">
+						<?php echo $per_count; ?>
+                    </div>
+                    <?php }?>
+                </div>
+                
                 <?php $pending_reports = $this->requestAction('pending_reports/check_all_user_pending_reports_active');?>
 				
                 <?php if(!empty($pending_reports)):?>

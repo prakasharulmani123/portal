@@ -4,7 +4,7 @@
 }
 </style>
 <?php */?><?php 
-$marray= array(0,1,2,3,4,5,6,7,8,9,10,11,12);//define number of main menus
+$marray= array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);//define number of main menus
 $open = '';
 
 if($cpage=='dailystatus')
@@ -35,6 +35,14 @@ if($cpage=='meeting')
 $marray[11]='active';
 if($cpage=='meeting_su')
 $marray[12]='active';
+if($cpage=='mycomplaints')
+$marray[13]='active';
+if($cpage=='theircomplaints')
+$marray[14]='active';
+if($cpage=='import_attendance')
+$marray[15]='active';
+if($cpage=='my_attendance')
+$marray[16]='active';
 ?>
 <div class="breadLine">
   <div class="arrow"></div>
@@ -118,6 +126,12 @@ $marray[12]='active';
     <li class="<?php echo $marray[11];?>"> <a href="<?php  echo  $this->base?>/meetings"> <span class="isw-chats"></span><span class="text">Meetings</span> </a> </li>
     <?php if($this->Session->read('User.super_user') == 1){ ?>
     <li class="<?php echo $marray[12];?>"> <a href="<?php  echo  $this->base?>/meetings/meetings_su"> <span class="isw-chats"></span><span class="text">View Employee Meetings</span> </a> </li>
+    <?php } ?>
+    <li class="<?php echo $marray[13];?>"> <a href="<?php  echo  $this->base?>/user_complaints"> <span class="isw-right"></span><span class="text">My Complaints</span> </a> </li>
+    <li class="<?php echo $marray[14];?>"> <a href="<?php  echo  $this->base?>/user_complaints/theirs"> <span class="isw-left"></span><span class="text">Their Complaints</span> </a> </li>
+    <li class="<?php echo $marray[16];?>"> <a href="<?php  echo  $this->base?>/user_attendances"> <span class="isw-time"></span><span class="text">My Attendance</span> </a> </li>
+    <?php if($this->Session->read('User.super_user') == 1){ ?>
+    <li class="<?php echo $marray[15];?>"> <a href="<?php  echo  $this->base?>/user_attendances/import_attendance"> <span class="isw-cloud"></span><span class="text">Import Attendance</span> </a> </li>
     <?php } ?>
 </ul>
 

@@ -1,4 +1,5 @@
 <script type="text/javascript">
+    <?php if (!$this->request->is('ajax')) { ?>
     $(function () {
         $("#PermissionFromDate").datepicker({
             dateFormat: 'dd-mm-yy',
@@ -11,18 +12,35 @@
             changeYear: true
         });
     });
+    <?php } ?>
 
     $(document).ready(function () {
-        $("#leave-index").dataTable({
-            "iDisplayLength": 10,
-            "sPaginationType": "full_numbers",
-            "bLengthChange": true,
-            "bFilter": true,
-            "bInfo": true,
-            "bPaginate": true});
+//        $("#leave-index").dataTable({
+//            "iDisplayLength": 10,
+//            "sPaginationType": "full_numbers",
+//            "bLengthChange": true,
+//            "bFilter": true,
+//            "bInfo": true,
+//            "bPaginate": true});
     });
 
     jQuery(document).ready(function () {
+        $('input[type="checkbox"].checkrow').change(function() {
+            if($(this).attr('checked')){
+                $(this).closest('tr').find('td').css('background-color', '#DCDCDA');
+            }else{
+                $(this).closest('tr').find('td').css('background-color', '');
+            }
+        });
+
+        $('input[type="checkbox"].checkall').change(function() {
+            if($(this).attr('checked')){
+                $('input[type="checkbox"].checkrow').closest('tr').find('td').css('background-color', '#DCDCDA');
+            }else{
+                $('input[type="checkbox"].checkrow').closest('tr').find('td').css('background-color', '');
+            }
+        });
+
         $(".b_popup_4").dialog({
             autoOpen: false,
             modal: true,
@@ -169,6 +187,7 @@
     </div>
 </div>                                        
 
+<?php if (!$this->request->is('ajax')) { ?>
 <div style="margin:10px 50px 10px 23px;">
     <?php echo $this->Form->create('Permission'); ?>
     <?php
@@ -215,6 +234,7 @@
     <?php echo $this->Form->end(); ?>
     <div class="clear"></div>
 </div>
+<?php } ?>
 
 <?php if (!$this->request->is('ajax')) { ?>
     <div class="workplace">
@@ -243,7 +263,7 @@
                 <table cellpadding="0" cellspacing="0" width="100%" class="table" id="leave-index-xxx">
                     <thead>
                         <tr>
-                            <th width="5%"><input type="checkbox" name="checkall"/></th>
+                            <th width="5%"><input type="checkbox" name="checkall" class="checkall"/></th>
                             <th width="5%">No</th>
                             <th width="15%">Name</th>
                             <th width="10%">Requisition</th>
@@ -259,6 +279,9 @@
                     <tbody>
                         <?php
                         $i = 1;
+                        $page = $this->params['paging']['Permission']['page'];
+                        $limit = $this->params['paging']['Permission']['limit'];
+                        $counter = ($page * $limit) - $limit + 1;
                         foreach ($leaves as $leave):
                             $user = $this->requestAction('users/get_user', array('pass' => array('User.id' => $leave['Permission']['user_id'])));
 
@@ -268,8 +291,8 @@
                             $hours = ($interval->format('%h') * 60) + ($interval->format('%i'));
                             ?>
                             <tr id="<?php echo $leave['Permission']['id'] ?>">
-                                <td><input id="checkbox<?php echo $leave['Permission']['id'] ?>" name="checkbox<?php echo $leave['Permission']['id'] ?>" type="checkbox" value="<?php echo $leave['Permission']['id'] ?>" /></td>
-                                <td><?php echo h($i); ?></td>
+                                <td><input id="checkbox<?php echo $leave['Permission']['id'] ?>" name="checkbox<?php echo $leave['Permission']['id'] ?>" type="checkbox" value="<?php echo $leave['Permission']['id'] ?>" class="checkrow" /></td>
+                                <td><?php echo h($counter); ?></td>
                                 <td><?php echo h($user['User']['employee_name']); ?></td>
                                 <td>
                                     <?php
@@ -309,17 +332,18 @@
                                             <li><a id="a-permission-decline-<?php echo $leave['Permission']['id'] ?>" href="javascript:permission_sent(<?php echo $leave['Permission']['id'] ?>, 'decline', <?php echo $leave['Permission']['user_id'] ?>,<?php echo $leave['Permission']['id'] ?>)" status="2">Declined</a></li>
                                         </ul>
                                     </div>
+                                </td>
                                 <td><span id="remarks_<?php echo $leave['Permission']['id'] ?>"><?php echo h($leave['Permission']['remarks']) ?></span></td>
                                 </td>
                             </tr>
                             <?php
-                            $i++;
+                            $counter++;
                         endforeach;
                         ?>
                     </tbody>
                 </table>
                 <?php
-                $this->paginator->options(array('update' => '#content'));
+//                $this->paginator->options(array('update' => '#content'));
 //        $paginator = $this->Paginator;
                 $summary = $this->Paginator->counter('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}');
                 echo "<div class='dataTables_info' id='leave-index_info'>{$summary}</div>";

@@ -54,6 +54,16 @@ $(document).ready(function() {
                     <?php }?>
                 </div>
                 
+                <div class="bb">
+                	<a href="<?php echo $this->base?>/user_complaints/theirs" title="Their Complaints"><span class="ibw-left"></span></a>
+                    <?php $per_count = $this->requestAction('user_complaints/user_get_their_complaint_count'); ?>
+                    <?php if($per_count > 0){ ?>
+	                    <div class="caption red">
+						<?php echo $per_count; ?>
+                    </div>
+                    <?php }?>
+                </div>
+                
                 <?php $pending_reports = $this->requestAction('pending_reports/check_user_pending_reports_active/'.$this->Session->read('User.id'));?>
 				
                 <?php if(!empty($pending_reports)):?>

@@ -116,7 +116,9 @@ $(document).ready(function(){
         return false;
     });        
     
-    $("input[name=checkall]").click(function(){
+    $("body").on('click', 'input[name=checkall]',function(){
+        
+        console.log($(this).parents('table').find('.checker span'));
     
         if(!$(this).is(':checked'))
             $(this).parents('table').find('.checker span').removeClass('checked').find('input[type=checkbox]').attr('checked',false);
