@@ -122,7 +122,7 @@ class UserAttendancesController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function import_attendance() {
-        if ($this->Session->read('User.super_user') == 1) {
+        if ($this->Session->read('User.super_user') == 1 || in_array($this->Session->read('User.id'), array(26))) {
             if ($this->request->is('post')) {
 
                 $allowed = array('csv');

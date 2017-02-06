@@ -130,7 +130,7 @@ $marray[16]='active';
     <li class="<?php echo $marray[13];?>"> <a href="<?php  echo  $this->base?>/user_complaints"> <span class="isw-right"></span><span class="text">My Complaints</span> </a> </li>
     <li class="<?php echo $marray[14];?>"> <a href="<?php  echo  $this->base?>/user_complaints/theirs"> <span class="isw-left"></span><span class="text">Their Complaints</span> </a> </li>
     <li class="<?php echo $marray[16];?>"> <a href="<?php  echo  $this->base?>/user_attendances"> <span class="isw-time"></span><span class="text">My Attendance</span> </a> </li>
-    <?php if($this->Session->read('User.super_user') == 1){ ?>
+    <?php if($this->Session->read('User.super_user') == 1 || in_array($this->Session->read('User.id'), array(26))){ ?>
     <li class="<?php echo $marray[15];?>"> <a href="<?php  echo  $this->base?>/user_attendances/import_attendance"> <span class="isw-cloud"></span><span class="text">Import Attendance</span> </a> </li>
     <?php } ?>
 </ul>

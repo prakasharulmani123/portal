@@ -29,9 +29,9 @@ if($time){
 	}
 }
 ?>
-var hours = <?php echo $hours?>;
-var minutes = <?php echo $minutes?>;
-var seconds = <?php echo $seconds?>;
+//var hours = <?php // echo $hours?>;
+//var minutes = <?php // echo $minutes?>;
+//var seconds = <?php // echo $seconds?>;
 
 $(function() {
     setInterval(counter, 1000);
