@@ -29,9 +29,10 @@ if($time){
 	}
 }
 ?>
-//var hours = <?php // echo $hours?>;
-//var minutes = <?php // echo $minutes?>;
-//var seconds = <?php // echo $seconds?>;
+<?php if(isset($hours) && isset($minutes) && isset($seconds)){ ?> 
+var hours = <?php  echo $hours?>;
+var minutes = <?php  echo $minutes?>;
+var seconds = <?php  echo $seconds?>;
 
 $(function() {
     setInterval(counter, 1000);
@@ -75,6 +76,7 @@ function counter() {
     $('#displayTime').html(hh + " : " + mm + " : " + ss);
 
 }
+<?php } ?>
 </script>
 
 <div id="displayTime" style="text-align:right; font-size:16px; color:white; margin-top:5px; font-weight:bold;"></div>
