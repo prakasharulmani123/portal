@@ -43,7 +43,7 @@
           <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td width="10%">&nbsp;</td>
-                <td width="80%" align="left" valign="top"><font style="font-family: Georgia, 'Times New Roman', Times, serif; color:#010101; font-size:24px"><strong><em>Birthday Reminder</em></strong></font><br /><br />
+                <td width="80%" align="left" valign="top"><font style="font-family: Georgia, 'Times New Roman', Times, serif; color:#010101; font-size:24px"><strong><em>Complaint Notification</em></strong></font><br /><br />
                 <font style="font-family: Verdana, Geneva, sans-serif; color:#666766; font-size:13px; line-height:21px">
                     <span style="text-align:left">Complaint: <?php echo $complaint ?></span>
                 <br /><br />
