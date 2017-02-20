@@ -41,7 +41,6 @@ class UserComplaintsController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 
     public function add() {
-        $usersList = ClassRegistry::init('User')->getActiveUserList();
         if ($this->request->is('post')) {
             if (isset($this->request->data['UserComplaint']['file'])) {
                 $filename = $this->request->data['UserComplaint']['file']['name'];
@@ -59,7 +58,7 @@ class UserComplaintsController extends AppController {
             if ($this->UserComplaint->save($this->request->data)) {
                 $this->Session->setFlash('Complaint Sent Successfully', 'flash_success');
 
-                $this->Email->to = $usersList;
+                $this->Email->to = ClassRegistry::init('User')->getActiveUserList('User.id', 'User.email');
                 $this->Email->subject = 'A new Complaint Notification';
                 $this->Email->replyTo = 'admin@arkinfotec.com';
                 $this->Email->from = 'admin@arkinfotec.com';
@@ -73,6 +72,7 @@ class UserComplaintsController extends AppController {
                 $this->Session->setFlash('Failed to Send Complaint', 'flash_error');
             }
         }
+        $usersList = ClassRegistry::init('User')->getActiveUserList();
         $this->layout = "user-inner";
         $this->set('cpage', 'mycomplaints');
         $this->set('complaint_users', $usersList);

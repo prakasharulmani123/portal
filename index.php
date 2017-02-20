@@ -25,8 +25,6 @@
 /**
  *  Get CakePHP's root directory
  */
-echo 'hi';
-exit;
 define('APP_DIR', 'app');
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__FILE__));
