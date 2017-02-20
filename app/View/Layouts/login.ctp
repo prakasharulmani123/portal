@@ -9,7 +9,11 @@ $cakeDescription = __d('Admin', 'Admin ');
 		<?php echo $cakeDescription ?>|
 		<?php echo $title_for_layout; ?>
 	</title>
-    <title>Login - Aquarius - responsive admin panel</title>
+    <?php 
+    echo $this->Html->meta('favicon.ico', 'http://www.arkinfotec.com/wp-content/themes/ark/images/favicon.ico', array (
+    'type' => 'icon' 
+));
+?>
     
     <?php 
 //	echo $this->Html->image('favicon.ico');
