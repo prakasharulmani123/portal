@@ -24,9 +24,10 @@
                         <tr>
                             <th width="6%">No</th>
                             <th width="10%">Date</th>
-                            <!--<th width="20%">Person Name</th>-->
+                            <th width="20%">Sender</th>
+                            <th width="20%">Complaint To</th>
                             <th width="25%">Complaint</th>
-                            <th width="5%">Fine Amount</th>
+                            <!--<th width="5%">Fine Amount</th>-->
                             <th width="5%">Status</th>
                             <!--<th width="12%">Actions</th>-->
                             <th width="15%">Remarks</th>
@@ -38,7 +39,8 @@
                             <tr>
                                 <td><?php echo h($i); ?></td>
                                 <td><?php echo date('Y-m-d', strtotime($user_complaint['UserComplaint']['created'])) ?></td>
-                                <!--<td><?php echo h($user_complaint['Sender']['employee_name']); ?></td>-->
+                                <td><?php echo h($user_complaint['Sender']['employee_name']); ?></td>
+                                <td><?php echo h($user_complaint['Receiver']['employee_name']); ?></td>
                                 <td><?php 
                                 echo h($user_complaint['UserComplaint']['reason']);
                                 if($user_complaint['UserComplaint']['file']){
@@ -47,7 +49,7 @@
                                 }
                                 ?>
                                 </td>
-                                <td><?php echo h($user_complaint['UserComplaint']['fine_amount']); ?></td>
+                                <!--<td><?php echo h($user_complaint['UserComplaint']['fine_amount']); ?></td>-->
                                 <td>
                                     <p>
                                     <?php

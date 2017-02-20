@@ -35,7 +35,8 @@ class UserComplaintsController extends AppController {
     public function theirs() {
         $this->layout = "user-inner";
         $this->set('cpage', 'theircomplaints');
-        $this->set('user_complaints', $this->UserComplaint->find('all', array('conditions' => array('UserComplaint.receiver_id' => $this->Session->read('User.id')), 'order' => array('UserComplaint.created DESC'))));
+//        $this->set('user_complaints', $this->UserComplaint->find('all', array('conditions' => array('UserComplaint.receiver_id' => $this->Session->read('User.id')), 'order' => array('UserComplaint.created DESC'))));
+        $this->set('user_complaints', $this->UserComplaint->find('all', array('order' => array('UserComplaint.created DESC'))));
     }
 
 /////////////////////////////////////////////////////////////////////////	
@@ -145,6 +146,12 @@ class UserComplaintsController extends AppController {
 
     public function user_get_their_complaint_count() {
         return $this->UserComplaint->find('count', array('conditions' => array('UserComplaint.receiver_id' => $this->Session->read('User.id'), 'UserComplaint.approved' => 0)));
+    }
+
+///////////////////////////////////////////////////////////////////////////////
+
+    public function user_all_pending_complaint_count() {
+        return $this->UserComplaint->find('count', array('conditions' => array('UserComplaint.approved' => 0)));
     }
 
 ///////////////////////////////////////////////////////////////////////////////

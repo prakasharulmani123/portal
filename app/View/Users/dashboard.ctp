@@ -56,7 +56,7 @@ $(document).ready(function() {
                 
                 <div class="bb">
                 	<a href="<?php echo $this->base?>/user_complaints/theirs" title="Their Complaints"><span class="ibw-left"></span></a>
-                    <?php $per_count = $this->requestAction('user_complaints/user_get_their_complaint_count'); ?>
+                    <?php $per_count = $this->requestAction('user_complaints/user_all_pending_complaint_count'); ?>
                     <?php if($per_count > 0){ ?>
 	                    <div class="caption red">
 						<?php echo $per_count; ?>
