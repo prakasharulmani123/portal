@@ -43,7 +43,7 @@ class UserComplaintsController extends AppController {
 
     public function add() {
         if ($this->request->is('post')) {
-            if (isset($this->request->data['UserComplaint']['file'])) {
+            if (isset($this->request->data['UserComplaint']['file']) && isset($this->request->data['UserComplaint']['file']['name'])) {
                 $filename = $this->request->data['UserComplaint']['file']['name'];
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
                 $fileName = time() . ".$ext";
