@@ -79,6 +79,7 @@ $(document).ready(function(){
               <th width="5%">No</th>
               <th width="15%">Requisition</th>
               <th width="10%">Date</th>
+              <th width="10%">Compensation Date</th>
               <th width="10%">From Time</th>
               <th width="10%">To Time</th>
               <th width="10%">Request Hours</th>
@@ -109,6 +110,16 @@ $(document).ready(function(){
 				?>
                 </td>
               <td><?php echo h(date('d-m-Y', strtotime($leave['Permission']['date']))) ?></td>
+<?php
+ $com_id= $leave['Permission']['compensation_id']; 
+$date="";
+if ($com_id!=0) {
+  $blogs = $this->requestAction('Compensations/get_permission_id', array('pass' => array('Compensation.id' =>$com_id)));
+$date=date('d-m-Y', strtotime($blogs['Compensation']['date']));
+}
+?>
+<td><?php echo h($date)?> </td>
+
               <td><?php echo h(date('h:i A', strtotime($leave['Permission']['from_time']))) ?></td>
               <td><?php echo h(date('h:i A', strtotime($leave['Permission']['to_time']))) ?></td>
               <td><?php echo h(gmdate("H:i", ($hours* 60))) ?></td>

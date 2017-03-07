@@ -157,6 +157,7 @@ function leave_sent(id, sts, user_id, leave_id){
               <th width="15%">Requisition</th>
               <th width="10%">Date</th>
               <th width="10%">Days</th>
+ <th width="10%">Compensation Days</th>
               <th width="10%">Reason</th>
               <th width="10%">Status</th>
               <th width="20%">Remarks</th>
@@ -190,6 +191,9 @@ function leave_sent(id, sts, user_id, leave_id){
 			  <?php 
 				switch ($leave['Leave']['days'])
 				{
+                                 case 0:
+                                          echo '_';
+                                          break; 
 				case 0.5:
 					echo 'Half a day';
 					break;
@@ -210,6 +214,20 @@ function leave_sent(id, sts, user_id, leave_id){
 					break;
 				}
 			  ?></td>
+<?php $comp_leave= $leave['Leave']['compensation_id']; 
+$string = unserialize($comp_leave);
+ $records = array();
+if (is_array($string)||is_object($string))
+{
+foreach($string as $key=>$value){
+  $blogs = $this->requestAction('Compensations/get_id', array('pass' => array('Compensation.id' =>$value)));
+$records[]=date('d-m-Y', strtotime($blogs['Compensation']['date'])); 
+ }
+}
+  $imp_rec= implode(" & ",(array)$records);
+
+?>
+ <td><?php echo h($imp_rec)?> </td>
 				  <td><?php echo h($leave['Leave']['reason'])?></td>
 	              <td>
 				  <?php 

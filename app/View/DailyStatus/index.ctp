@@ -8,7 +8,25 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        var cate_id = document.getElementById('DailyStatusCategoryId').value;
+        $.ajax({
+		url: BaseURL+"/projects/find/",
+		beforeSend: function(){
+		},
+		dataType: "JSON",
+		success: function(data){
+			var projectlist = new Array();
+			$.each( data, function(i, obj) {
+			  projectlist.push( obj)
+			});
+
+
+			
+			$( "#DailyStatusProjectname" ).autocomplete({
+				source: projectlist
+			});
+		}
+	});
+                      var cate_id = document.getElementById('DailyStatusCategoryId').value;
         get_lunch(cate_id);
 
 <?php //$check = $this->Session->read('DailyReportSend')   ?>
@@ -29,6 +47,8 @@
                     var _stopContinue = !confirm("Now you are sending report earlier from Actual Office End time : " + moment(_end_time.html()).format('h:mm:ss a') + "\nAre you sure to Proceed?");
                 }
             }
+            
+            
             if (_stopContinue)
                 return false;
 
@@ -602,7 +622,6 @@ $mer = array('am' => 'am', 'pm' => 'pm');
                     $all_category[$category['Category']['id']] = $category['Category']['category'];
                 }
                 ?>
-
                 <div class="row-form">
                     <div class="span3">Category*:</div>
                     <div class="span4">
@@ -833,7 +852,8 @@ $mer = array('am' => 'am', 'pm' => 'pm');
 
                 <div id="added_reports">
 
-                    <?php if (!empty($reports)) { ?>
+                    <?php if (!empty($reports)) {
+                                                ?>
                     <div><h4 align="center">Your Daily Status Report</h4></div>
                         <?php
                         $worked_hours = $total_hours = 0;

@@ -212,6 +212,7 @@
         $to_date = date('d-m-Y', strtotime($to_date));
     }
     ?>
+    
     <b><?php echo " Employee : " ?></b>
     <?php echo $this->Form->input('user_id', array('label' => false, 'div' => false, 'class' => 'form-control', 'empty' => 'All', 'options' => array($all_user), 'selected' => $all['user_id'], 'style' => 'width:140px; margin-top:6px;')); ?>
 
@@ -268,6 +269,7 @@
                             <th width="15%">Name</th>
                             <th width="10%">Requisition</th>
                             <th width="8%">Date</th>
+                             <th width="8%">Compensation Date</th>
                             <th width="8%">From Time</th>
                             <th width="8%">To Time</th>
                             <th width="8%">Request Hours</th>
@@ -304,6 +306,17 @@
                                     ?>
                                 </td>
                                 <td><?php echo h(date('d-m-Y', strtotime($leave['Permission']['date']))) ?></td>
+                             
+   <?php
+ $com_id= $leave['Permission']['compensation_id']; 
+$date="";
+if ($com_id!=0) {
+  $blogs = $this->requestAction('Compensations/get_permission_id', array('pass' => array('Compensation.id' =>$com_id)));
+$date=date('d-m-Y', strtotime($blogs['Compensation']['date']));
+}
+?>
+<td><?php echo h($date)?> </td>
+
                                 <td><?php echo h(date('h:i A', strtotime($leave['Permission']['from_time']))) ?></td>
                                 <td><?php echo h(date('h:i A', strtotime($leave['Permission']['to_time']))) ?></td>
                                 <td><?php echo h(gmdate("H:i", ($hours * 60))) ?></td>

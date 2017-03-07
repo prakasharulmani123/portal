@@ -13,6 +13,9 @@ echo $this->Html->meta('favicon.ico', 'http://www.arkinfotec.com/wp-content/them
 echo $this->Html->css(array('stylesheets'));
 echo $this->Html->css(array('fullcalendar.print'),'stylesheet',array('media' => 'print'));
 ?>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js'></script>
 <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js'></script>
 <script>BaseURL = "<?php echo $this->base?>";</script>

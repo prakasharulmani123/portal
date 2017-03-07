@@ -16,6 +16,9 @@ class DailystatusController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function index() {
+
+// public function getWeek($date){
+//$date1 = date('Y-m-d H:i:a',strtotime($report['TempReport']['date']));
         $this->layout = "user-inner";
         $this->set('cpage', 'dailystatus');
 
@@ -267,35 +270,104 @@ class DailystatusController extends AppController {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function add_daily_report() {
+    public function add_daily_report($id = NULL) {
+        $this->loadModel('Project');
+        $this->loadModel('Compensation');
         $this->loadModel('TempReport');
         $this->loadModel('PendingReport');
-
         $temp_reports = $this->TempReport->findAllByUserIdAndDate($this->Session->read('User.id'), date('Y-m-d'));
         $pending_report = $this->PendingReport->findByUserIdAndDate($this->Session->read('User.id'), date('Y-m-d'));
-
         $reports = array();
-
         foreach ($temp_reports as $key => $temp_report):
             $reports[$key]['DailyStatus'] = $temp_report['TempReport'];
+        $reports[$key]['DailyStatus']='project_id';
             unset($reports[$key]['DailyStatus']['id']);
         endforeach;
-
         if ($reports) {
+           pr($reports);exit;
+            ///////Adding Projects Name:
+            $records = array();
+            foreach ($reports as $report) {
+                $name = $report['DailyStatus']['projectname'];
+                if ($name != NULL) {
+                    $project_name = $report['DailyStatus']['projectname'];
+                    $results = $this->Project->find('count', array('conditions' => array('Project.projectname' => $project_name)));
+                    if ($results == 0) {
+                        $data = array(
+                            'Project' => array(
+                                'projectname' => $project_name,
+                            )
+                        );
+                        $this->Project->saveAll($data);
+                    }
+                }
+                $get_com = $this->Project->find('list', array('conditions' => array('Project.projectname' => $name)));
+               $report['DailyStatus']['project_id'] = '24';
+                // $records[] = $get_com;
+            }
+//           
+//pr($reports);exit;
+            
             if ($this->DailyStatus->saveAll($reports)) {
+                $worked_hours = 0;
+                foreach ($reports as $key => $report) {
+                    $datetime1 = new DateTime($report['DailyStatus']['start_time']);
+                    $datetime2 = new DateTime($report['DailyStatus']['end_time']);
+                    $interval = $datetime1->diff($datetime2);
+                    if ($report['DailyStatus']['category_id'] != 23 && $report['DailyStatus']['category_id'] != 22 && $report['DailyStatus']['category_id'] != 24) {
+                        $worked_hours += ($interval->format('%h') * 60) + ($interval->format('%i'));
+                    }
+                }
+                $workhours = gmdate("H:i", ($worked_hours * 60)) . '<br>';
+                $permission_time = '04:00';
+                $min_time = '02:00';
+                if ($workhours >= $min_time) {
+                    $date_time = $reports[0]['DailyStatus']['date'];
+                    $day = date('D', strtotime($date_time));
+                    $this->loadModel('Holiday');
+                    $officialleave = $this->Holiday->find('count', array('conditions' => array('Holiday.date=' . $date_time)));
+                    if ($day == 'Thu' || $officialleave) {
+                        $this->Compensation->create();
+                        $user_id = $this->Session->read('User.id');
+                        $max_time = '06:00';
+                        $greeting = ($day == 'Sun') ? 'working on sunday' : 'working on ' . $date_time;
+                        $calculateday = ($workhours >= $max_time || $workhours <= $permission_time ) ? '1' : '0.5';
+                        $type = ($workhours <= $permission_time) ? 'P' : 'L';
+                        $data = array(
+                            'Compensation' => array(
+                                'user_id' => $user_id,
+                                'date' => $date_time,
+                                'days' => $calculateday,
+                                'comments' => $greeting,
+                                'status' => '0',
+                                'type' => $type,
+                            )
+                        );
 
+                        $this->Compensation->save($data);
+                        $this->loadModel('User');
+                        $this->User->id = $user_id;
+                        $this->User->updateAll(array(
+                            'User.compensation_leave' => 'User.compensation_leave + 1'), array('User.id' => $user_id));
+
+                        $this->redirect(array('action' => 'index'));
+                    } else {
+                        $this->Session->setFlash('');
+                        $this->redirect(array('action' => 'index'));
+                    }
+                } else {
+                    $this->Session->setFlash('');
+                    $this->redirect(array('action' => 'index'));
+                }
                 foreach ($temp_reports as $temp_report):
                     $this->TempReport->delete($temp_report['TempReport']['id']);
                 endforeach;
-
                 if (!empty($pending_report)) {
                     $this->PendingReport->delete($pending_report['PendingReport']['id']);
                 }
             };
-
             $this->daily_status_mail();
             $this->send_mom();
-
             $this->Session->write('report_send', 1);
             $this->Session->setFlash('Your report has been sent suceesfully', 'flash_success');
             return $this->redirect('/dailystatus');
@@ -363,10 +435,10 @@ class DailystatusController extends AppController {
                 $document = $phpWord->loadTemplate('PhpWord/resources/MOM.docx');
                 $name = date('Y-m-d') . '-' . $meeting['Project']['projectname'] . '-' . $this->Session->read('User.id') . '.doc';
 
-                // Variables on different parts of document
+// Variables on different parts of document
                 $document->setValue('weekday', date('F d, Y')); // On header
                 $document->setValue('time', date('H:i:s')); // On footer
-                // On content
+// On content
                 $document->setValue('m_date', date('M d, Y', strtotime($meeting['Meeting']['meeting_date'])));
                 $document->setValue('m_loc', $meeting['Meeting']['meeting_location']);
                 $document->setValue('user', $this->Session->read('User.name'));
@@ -909,7 +981,6 @@ class DailystatusController extends AppController {
 
     public function add_reports() {
         $this->layout = '';
-
 //		if($this->request->is('post') || $this->request->is('put')){
         $this->loadModel('TempReport');
         $insert = array();

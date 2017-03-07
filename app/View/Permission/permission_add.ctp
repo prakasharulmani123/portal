@@ -1,7 +1,11 @@
 <script>
 $( document ).ready(function() {
-	<?php $current_permissions = $this->requestAction('permission/user_get_current_month_permission_new'); ?>
-	<?php if($current_permissions >= 3){?>
+	<?php $current_permissions = $this->requestAction('permission/user_get_current_month_permission_new');
+       $add_permissions = $this->requestAction('Compensations/add_current_month_permission_new');  
+       $count_pr=3;
+       $total_pr=$add_permissions + $count_pr;
+           ?>
+	<?php if($current_permissions >= $count_pr && $current_permissions > $total_pr){?>
 		
 		var message = 'You have already taken ' + <?php echo $current_permissions ?>  + ' permissions';
 		document.getElementById('permission_details').innerHTML = message;
@@ -140,7 +144,7 @@ function validSubmit(){
     
   <div class="dialog b_popup_2" id="b_popup_2" style="display: none;" title="Confirmation">                                
     <div class="block">
-    <p>Requistion : <span id="request"></span></p>
+    <p>Requisition : <span id="request"></span></p>
     <p>Permission Date : <b><span id="date"></span></b></p>
     <p>From : <b><span id="from_time"></span></b></p>
     <p>To : <b><span id="to_time"></span></b></p>
@@ -164,7 +168,8 @@ function validSubmit(){
         <div class="row-form">
           <div class="span3">Employee Name:</div>
           <div class="span9">
-           <?php echo $users['User']['employee_name']; ?>
+           <?php echo $users['User']['employee_name'];
+          ?>
           </div>
           <div class="clear"></div>
         </div>

@@ -3,7 +3,17 @@ class ProjectsController extends AppController {
 	public $name='Projects';
 
 /////////////////////////////////////////////////////////////////////////	
-	
+	public function find() {
+              $this->autoRender = false;
+                      $project = array();
+        $pro_name = $this->Project->find('all');
+        foreach ($pro_name as $key => $product) {
+            array_push($project, ucfirst($product['Project']['projectname']));
+        }
+        asort($project);
+        echo json_encode(array_unique($project));
+    }
+    ////////////////////////
 	public function beforeFilter(){
 		$this->set('cpage', 'project');
 		parent::beforefilter();

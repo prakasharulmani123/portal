@@ -151,15 +151,15 @@ class PermissionController extends AppController {
     public function permission_add() {
         $this->set('cpage', 'permission');
         $this->layout = "user-inner";
-        if ($this->request->is('post') || $this->request->is('put')) {
 
+        if ($this->request->is('post') || $this->request->is('put')) {
             $check_permission = $this->Permission->findByUserIdAndDate($this->Session->read('User.id'), date('Y-m-d', strtotime($this->data['Permission']['date'])));
 
             if (empty($check_permission)) {
                 $this->request->data['Permission']['date'] = date('Y-m-d', strtotime($this->data['Permission']['date']));
                 $this->request->data['Permission']['user_id'] = $this->Session->read('User.id');
 
-                //update from and to time
+//update from and to time
                 if ($this->data['Permission']['from']['meridian'] == 'pm') {
                     if ($this->data['Permission']['from']['hours'] != '12') {
                         $this->request->data['Permission']['from_time'] = date('Y-m-d', strtotime($this->data['Permission']['date'])) . ' ' . ($this->data['Permission']['from']['hours'] + 12) . ':' . $this->data['Permission']['from']['minutes'] . ':' . '00';
@@ -197,6 +197,17 @@ class PermissionController extends AppController {
                   $this->request->data['Permission']['permission_leave'] = 2;
                   }
                  */
+                $pr_count = $this->Permission->find('count', array('conditions' => array('Permission.user_id' => $this->Session->read('User.id'), 'MONTH(Permission.date)' => date('m'), 'YEAR(Permission.date)' => date('Y'), 'Permission.approved !=' => 2)));
+                $this->loadModel('Compensation');
+                $cm_count = $this->Compensation->find('count', array('conditions' => array('AND' => array('Compensation.user_id=' . $this->Session->read('User.id')), array('Compensation.status' => 0), array('Compensation.type' => 'P'))));
+
+                if ($pr_count >= 3 && $cm_count > 0) {
+                    $cm_userid = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('AND' => array('Compensation.user_id' => $this->Session->read('User.id')), array('Compensation.status' => 0), array('Compensation.type' => 'P'))));
+                    $cm_id = $cm_userid['Compensation']['id'];
+                    $data1_com = array('Compensation' => array('id' => $cm_id, 'status' => true));
+                    $this->Compensation->save($data1_com, true, array('status'));
+                    $this->request->data['Permission']['compensation_id'] = $cm_id;
+                }
                 if ($this->Permission->save($this->request->data)) {
                     $this->permission_request_mail($this->Permission->getLastInsertId());
                     $this->Session->setFlash('Permission Request Submitted Sucessfully', 'flash_success');
@@ -337,6 +348,17 @@ class PermissionController extends AppController {
         );
 
         if ($this->Permission->save($update)) {
+            $this->loadModel('Compensation');
+            if ($this->data['status'] == 2) {
+                $leave = $this->Permission->find('first', array('recursive' => -1, 'conditions' => array('AND' => array('Permission.approved' => 2, 'Permission.id' => $this->data['id']))));
+                $compensation_userid = $leave['Permission']['user_id'];
+                $compensation_id = $leave['Permission']['compensation_id'];
+                $lists = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id=' . $compensation_id)));
+                if ($lists) {
+                    $data1_com = array('Compensation' => array('id' => $compensation_id, 'status' => 0));
+                    $this->Compensation->save($data1_com, false, array('status'));
+                }
+            }
             $status = $this->data['status'];
             $return = array();
 
@@ -552,7 +574,7 @@ class PermissionController extends AppController {
             $this->request->data['Permission']['date'] = date('Y-m-d', strtotime($this->data['Permission']['date']));
             $this->request->data['Permission']['user_id'] = $this->data['Permission']['user_id'];
 
-            //update from and to time
+//update from and to time
             if ($this->data['Permission']['from']['meridian'] == 'pm') {
                 if ($this->data['Permission']['from']['hours'] != '12') {
                     $this->request->data['Permission']['from_time'] = date('Y-m-d') . ' ' . ($this->data['Permission']['from']['hours'] + 12) . ':' . $this->data['Permission']['from']['minutes'] . ':' . '00';

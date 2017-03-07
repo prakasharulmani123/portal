@@ -3,6 +3,13 @@
 class User extends AppModel {
 
     public $name = 'User';
+     var $hasMany = array(
+        'Compensation' => array(
+            'className' => 'Compensation',
+            'foreignKey' => 'user_id'
+        ),
+    );
+     
     public $validate = array('email' => array('login' => array('rule' => 'isUnique', 'message' => 'Email Already Exists')));
 
     public function getActiveUserList($field1 = 'User.id', $field2 = 'User.employee_name') {
