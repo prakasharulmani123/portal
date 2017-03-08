@@ -201,7 +201,7 @@ class LeaveController extends AppController {
                             )
                         );
                         $this->Compensation->saveAll($com_data);
-                        $insert_data['Leave']['compensation_id'] = $compensation_id;
+                        $insert_data['Leave']['compensation_id'] = $string;
                         $insert_data['Leave']['days'] = 0.00;
                     }
                 }

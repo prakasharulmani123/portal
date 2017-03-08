@@ -280,17 +280,16 @@ class DailystatusController extends AppController {
         $reports = array();
         foreach ($temp_reports as $key => $temp_report):
             $reports[$key]['DailyStatus'] = $temp_report['TempReport'];
-        $reports[$key]['DailyStatus']='project_id';
             unset($reports[$key]['DailyStatus']['id']);
         endforeach;
         if ($reports) {
-           pr($reports);exit;
+
             ///////Adding Projects Name:
             $records = array();
-            foreach ($reports as $report) {
+            foreach ($reports as $key=> $report) {
                 $name = $report['DailyStatus']['projectname'];
                 if ($name != NULL) {
-                    $project_name = $report['DailyStatus']['projectname'];
+                   $project_name = $report['DailyStatus']['projectname'];
                     $results = $this->Project->find('count', array('conditions' => array('Project.projectname' => $project_name)));
                     if ($results == 0) {
                         $data = array(
@@ -300,14 +299,17 @@ class DailystatusController extends AppController {
                         );
                         $this->Project->saveAll($data);
                     }
+                    $get_pro = $this->Project->find('first', array('fields' => array('Project.id'), 'conditions' => array('Project.projectname' => $project_name)));
+                    $pr_id = $get_pro['Project']['id'];
+                    $reports[$key]['DailyStatus']['project_id'] = $pr_id;
                 }
-                $get_com = $this->Project->find('list', array('conditions' => array('Project.projectname' => $name)));
-               $report['DailyStatus']['project_id'] = '24';
-                // $records[] = $get_com;
+                // pr($report['DailyStatus']['project_id']); pr($get_pro);exit;
             }
-//           
-//pr($reports);exit;
-            
+//       $uname = $report['DailyStatus']['projectname'];
+//    $get_pro = $this->Project->find('first', array('fields' => array('Project.id'), 'conditions' => array('Project.projectname' => $uname)));
+//         $pr_id = $get_pro['Project']['id'];
+//          $report['DailyStatus']['project_id'] = $pr_id;
+            // pr($uname);pr($pr_id);exit;
             if ($this->DailyStatus->saveAll($reports)) {
                 $worked_hours = 0;
                 foreach ($reports as $key => $report) {

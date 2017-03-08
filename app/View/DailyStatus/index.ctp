@@ -642,7 +642,6 @@ $mer = array('am' => 'am', 'pm' => 'pm');
                         </div>
                         <div class="clear"></div>
                     </div>
-
                     <div class="row-form">
                         <div class="span3">Kind of works*:</div>
                         <div class="span6">
