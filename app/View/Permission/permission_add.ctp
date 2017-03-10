@@ -233,7 +233,7 @@ function validSubmit(){
           </div>
           <div class="clear"></div>
         </div>
-
+          
         <div class="row-form">
           <div class="span3">Reason for Permission*:</div>
           <div class="span9">

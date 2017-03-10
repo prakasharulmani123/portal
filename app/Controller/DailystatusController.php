@@ -328,7 +328,7 @@ class DailystatusController extends AppController {
                     $day = date('D', strtotime($date_time));
                     $this->loadModel('Holiday');
                     $officialleave = $this->Holiday->find('count', array('conditions' => array('Holiday.date=' . $date_time)));
-                    if ($day == 'Thu' || $officialleave) {
+                    if ($day == 'Wed' || $officialleave) {
                         $this->Compensation->create();
                         $user_id = $this->Session->read('User.id');
                         $max_time = '06:00';

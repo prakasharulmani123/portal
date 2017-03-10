@@ -151,6 +151,7 @@ class PermissionController extends AppController {
     public function permission_add() {
         $this->set('cpage', 'permission');
         $this->layout = "user-inner";
+        $u_id = $this->Session->read('User.id');
 
         if ($this->request->is('post') || $this->request->is('put')) {
             $check_permission = $this->Permission->findByUserIdAndDate($this->Session->read('User.id'), date('Y-m-d', strtotime($this->data['Permission']['date'])));
@@ -346,57 +347,9 @@ class PermissionController extends AppController {
                 'remarks' => $this->data['remarks'],
             )
         );
-
         if ($this->Permission->save($update)) {
-            $this->loadModel('Compensation');
-            if ($this->data['status'] == 2) {
-                $leave = $this->Permission->find('first', array('recursive' => -1, 'conditions' => array('AND' => array('Permission.approved' => 2, 'Permission.id' => $this->data['id']))));
-                $compensation_userid = $leave['Permission']['user_id'];
-                $compensation_id = $leave['Permission']['compensation_id'];
-                $lists = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id=' . $compensation_id)));
-                if ($lists) {
-                    $data1_com = array('Compensation' => array('id' => $compensation_id, 'status' => 0));
-                    $this->Compensation->save($data1_com, false, array('status'));
-                }
-            }
-            $status = $this->data['status'];
-            $return = array();
 
-            $add_to = $this->requestAction('emails/all_to_email');
-
-            foreach ($add_to as $to) {
-                $array = explode(',', $to['Email']['options']);
-
-                foreach ($array as $key => $value) {
-                    if ($value == 2) {
-                        $all_to[$to['Email']['id']] = $to['Email']['email'];
-                    }
-                }
-            }
-
-            if (empty($all_to)) {
-                $all_to = "";
-            }
-
-            if ($status != 0) {
-                if ($status == 1) {
-                    $subject = 'Permission Accepted';
-                } elseif ($status == 2) {
-                    $subject = 'Permission Declined';
-                }
-                $user = $this->requestAction('users/get_user', array('pass' => array('User.id' => $this->data['user_id'])));
-                $this->Email->to = $user['User']['email'];
-                $this->Email->cc = $all_to;
-                $this->Email->subject = $subject;
-                $this->Email->replyTo = $this->Session->read('User.email');
-                $this->Email->from = $this->Session->read('User.email');
-                $this->Email->template = 'permissionaccept';
-                $this->Email->sendAs = 'html';
-                $this->set('user', $user);
-                $this->set('permission', $this->Permission->find('first', array('conditions' => array('Permission.id' => $this->data['id']))));
-                $this->set('status', $status);
-                $this->Email->send();
-            }
+            $this->permission_remarks();
 
             $status = $this->data['status'];
             $return = array();
@@ -418,6 +371,69 @@ class PermissionController extends AppController {
             echo json_encode($return);
         }
         exit;
+    }
+
+    public function permission_remarks() {
+        $this->loadModel('Compensation');
+        if ($this->data['status'] == 1) {
+            $app = $this->Permission->find('first', array('recursive' => -1, 'conditions' => array('AND' => array('Permission.approved' => 1, 'Permission.id' => $this->data['id']))));
+            $com_userid = $app['Permission']['user_id'];
+            $com_id = $app['Permission']['compensation_id'];
+            $aplists = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id=' . $com_id)));
+            if ($aplists) {
+                $app_com = array('Compensation' => array('id' => $com_id, 'status' => 1));
+                $this->Compensation->save($app_com, true, array('status'));
+            }
+        }
+                             
+        if ($this->data['status'] == 2) {
+            $dec = $this->Permission->find('first', array('recursive' => -1, 'conditions' => array('AND' => array('Permission.approved' => 2, 'Permission.id' => $this->data['id']))));
+            $compensation_userid = $dec['Permission']['user_id'];
+            $compensation_id = $dec['Permission']['compensation_id'];
+            $dlists = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id=' . $compensation_id)));
+            if ($dlists) {
+                $data1_com = array('Compensation' => array('id' => $compensation_id, 'status' => 0));
+                $this->Compensation->save($data1_com, false, array('status'));
+            }
+        }
+        $status = $this->data['status'];
+        $return = array();
+
+        $add_to = $this->requestAction('emails/all_to_email');
+
+        foreach ($add_to as $to) {
+            $array = explode(',', $to['Email']['options']);
+
+            foreach ($array as $key => $value) {
+                if ($value == 2) {
+                    $all_to[$to['Email']['id']] = $to['Email']['email'];
+                }
+            }
+        }
+
+        if (empty($all_to)) {
+            $all_to = "";
+        }
+
+        if ($status != 0) {
+            if ($status == 1) {
+                $subject = 'Permission Accepted';
+            } elseif ($status == 2) {
+                $subject = 'Permission Declined';
+            }
+            $user = $this->requestAction('users/get_user', array('pass' => array('User.id' => $this->data['user_id'])));
+            $this->Email->to = $user['User']['email'];
+            $this->Email->cc = $all_to;
+            $this->Email->subject = $subject;
+            $this->Email->replyTo = $this->Session->read('User.email');
+            $this->Email->from = $this->Session->read('User.email');
+            $this->Email->template = 'permissionaccept';
+            $this->Email->sendAs = 'html';
+            $this->set('user', $user);
+            $this->set('permission', $this->Permission->find('first', array('conditions' => array('Permission.id' => $this->data['id']))));
+            $this->set('status', $status);
+            $this->Email->send();
+        }
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -630,7 +646,9 @@ class PermissionController extends AppController {
 
     public function admin_bulk_status_change() {
         $ids = $this->data['permission_ids'];
+
         foreach ($ids as $id) {
+
             $update = array(
                 'Permission' => array(
                     'id' => $id,
@@ -639,45 +657,84 @@ class PermissionController extends AppController {
                 )
             );
 
-            if ($this->Permission->save($update)) {
-                $status = $this->data['status'];
-                $return = array();
+            if ($this->Permission->saveAll($update)) {
+                $app_userid = $this->Permission->find('all', array('recursive' => -1, 'conditions' => array('Permission.id' => $id)));
+                foreach ($app_userid as $app_id) {
+                    $com_userid = $app_id['Permission']['user_id'];
+                    $this->loadModel('Compensation');
+                    $alists = $this->Compensation->find('count', array('conditions' => array('AND' => array('Compensation.user_id' => $com_userid), array('Compensation.status' => 0), array('Compensation.type' => 'P'))));
 
-                $add_to = $this->requestAction('emails/all_to_email');
-
-                foreach ($add_to as $to) {
-                    $array = explode(',', $to['Email']['options']);
-
-                    foreach ($array as $key => $value) {
-                        if ($value == 2) {
-                            $all_to[$to['Email']['id']] = $to['Email']['email'];
+                    if ($alists > 0 && $this->data['status'] == 1) {
+                        $appr_id = $this->Permission->find('first', array('recursive' => -1, 'conditions' => array('AND' => array('Permission.approved' => 1, 'Permission.id' => $id))));
+                        $comp_id = $appr_id['Permission']['compensation_id'];
+                        $aplist = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id=' . $comp_id, 'Compensation.status' => 0)));
+//                        pr($appr_id);
+//                        pr($comp_id);
+//                        pr($aplist);
+//                        exit;
+                        if ($aplist) {
+                            $comid = array('Compensation' => array('id' => $comp_id, 'status' => 1));
+                            $this->Compensation->save($comid, true, array('status'));
                         }
                     }
                 }
 
-                if (empty($all_to)) {
-                    $all_to = "";
-                }
 
-                if ($status != 0) {
-                    if ($status == 1) {
-                        $subject = 'Permission Accepted';
-                    } elseif ($status == 2) {
-                        $subject = 'Permission Declined';
+                $find_userid = $this->Permission->find('all', array('recursive' => -1, 'conditions' => array('Permission.id' => $id)));
+                foreach ($find_userid as $Per_id) {
+                    $comp_userid = $Per_id['Permission']['user_id'];
+                    $this->loadModel('Compensation');
+                    $clists = $this->Compensation->find('count', array('conditions' => array('AND' => array('Compensation.user_id' => $comp_userid), array('Compensation.status' => 1), array('Compensation.type' => 'P'))));
+                    //pr($find_userid); pr($comp_userid);pr($clists);exit;
+                    if ($clists > 0 && $this->data['status'] == 2) {
+                        $leave = $this->Permission->find('first', array('recursive' => -1, 'conditions' => array('AND' => array('Permission.approved' => 2, 'Permission.id' => $id))));
+                        $compensation_id = $leave['Permission']['compensation_id'];
+                        $lists = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id=' . $compensation_id, 'Compensation.status' => 1)));
+
+                        if ($lists) {
+                            $data1_com = array('Compensation' => array('id' => $compensation_id, 'status' => 0));
+                            $this->Compensation->save($data1_com, false, array('status'));
+                            // pr($data1_com); pr($compensation_id);pr($lists);exit;
+                        }
                     }
-                    $user = $this->requestAction('users/get_user', array('pass' => array('User.id' => $this->data['user_id'])));
-                    $this->Email->to = $user['User']['email'];
-                    $this->Email->cc = $all_to;
-                    $this->Email->subject = $subject;
-                    $this->Email->replyTo = $this->Session->read('User.email');
-                    $this->Email->from = $this->Session->read('User.email');
-                    $this->Email->template = 'permissionaccept';
-                    $this->Email->sendAs = 'html';
-                    $this->set('user', $user);
-                    $this->set('permission', $this->Permission->find('first', array('conditions' => array('Permission.id' => $this->data['id']))));
-                    $this->set('status', $status);
-                    $this->Email->send();
                 }
+                $status = $this->data['status'];
+                $return = array();
+//                $add_to = $this->requestAction('emails/all_to_email');
+//
+//                foreach ($add_to as $to) {
+//                    $array = explode(',', $to['Email']['options']);
+//
+//                    foreach ($array as $key => $value) {
+//                        if ($value == 2) {
+//                            $all_to[$to['Email']['id']] = $to['Email']['email'];
+//                        }
+//                    }
+//                }
+//
+//                if (empty($all_to)) {
+//                    $all_to = "";
+//                }
+//
+//                if ($status != 0) {
+//                    if ($status == 1) {
+//                        $subject = 'Permission Accepted';
+//                    } elseif ($status == 2) {
+//                        $subject = 'Permission Declined';
+//                    }
+//                    $user = $this->requestAction('users/get_user', array('pass' => array('User.id' => $this->data['user_id'])));
+//                    $this->Email->to = $user['User']['email'];
+//                    $this->Email->cc = $all_to;
+//                    $this->Email->subject = $subject;
+//                    $this->Email->replyTo = $this->Session->read('User.email');
+//                    $this->Email->from = $this->Session->read('User.email');
+//                    $this->Email->template = 'permissionaccept';
+//                    $this->Email->sendAs = 'html';
+//                    $this->set('user', $user);
+//                    $this->set('permission', $this->Permission->find('first', array('conditions' => array('Permission.id' => $this->data['id']))));
+//                    $this->set('status', $status);
+//                    $this->Email->send();
+//                }
             }
         }
         $status = $this->data['status'];
@@ -701,6 +758,51 @@ class PermissionController extends AppController {
         exit;
     }
 
+//    public function permission_status_change() {
+//       $find_userid = $this->Permission->find('first', array('recursive' => -1, 'conditions' => array('Permission.id' => $id)));
+//                $comp_userid = $find_userid['Permission']['user_id'];
+//                $this->loadModel('Compensation');
+//                $clists = $this->Compensation->find('count', array('conditions' => array('AND' => array('Compensation.user_id' => $comp_userid), array('Compensation.status' => 0), array('Compensation.type' => 'P'))));
+//                if ($clists > 0 && $this->data['status'] == 2) {
+//                    $leave = $this->Permission->find('first', array('recursive' => -1, 'conditions' => array('AND' => array('Permission.approved' => 2, 'Permission.id' => $this->data['id']))));
+//                    $compensation_userid = $leave['Permission']['user_id'];
+//                    $compensation_id = $leave['Permission']['compensation_id'];
+//                    $lists = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id=' . $compensation_id)));
+//                    if ($lists) {
+//                        $data1_com = array('Compensation' => array('id' => $compensation_id, 'status' => 0));
+//                        $this->Compensation->save($data1_com, false, array('status'));
+//                    }
+//                }
+//    }
+//     public function admin_bulk_status_change() {
+//             $ids=array('862','860','845');
+//        foreach ($ids as $id) {
+//                               
+//            $update = array(
+//                'Permission' => array(
+//                    'id' => $id,
+//                    'approved' => 2,
+//                    'remarks' => 'kkkkkkkkkkkkkk',
+//                )
+//            );
+//        // pr($update); pr($ids);exit;
+//                   if($this->Permission->saveAll($update)){
+//                         echo '--';
+//                      echo 'success';
+//                      
+//                      }
+//            
+//     }}
+//    if ($this->data['status'] == 2) {
+//            $leave = $this->Permission->find('first', array('recursive' => -1, 'conditions' => array('AND' => array('Permission.approved' => 2, 'Permission.id' => $this->data['id']))));
+//            $compensation_userid = $leave['Permission']['user_id'];
+//            $compensation_id = $leave['Permission']['compensation_id'];
+//            $lists = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id=' . $compensation_id)));
+//            if ($lists) {
+//                $data1_com = array('Compensation' => array('id' => $compensation_id, 'status' => 0));
+//                $this->Compensation->save($data1_com, false, array('status'));
+//            }
+//        }
 }
 
 ?>

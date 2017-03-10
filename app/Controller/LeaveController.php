@@ -42,7 +42,7 @@ class LeaveController extends AppController {
         }
         if ($this->Session->check('LeaveForm')) {
             $all = $this->Session->read('LeaveForm');
-            // $this->set(compact('comday'));
+// $this->set(compact('comday'));
             if ($all['from_date'] != '') {
                 if ($all['approved'] == '') {
                     $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $this->Session->read('User.id'), 'Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Leave.created DESC')));
@@ -138,7 +138,7 @@ class LeaveController extends AppController {
         $this->layout = "user-inner";
         $u_id = $this->Session->read('User.id');
         $this->loadModel('Compensation');
-        $lists = $this->Compensation->find('count', array('conditions' => array('AND' => array('Compensation.user_id=' . $u_id), array('Compensation.status' => 0),array('Compensation.type' => 'L'))));
+        $lists = $this->Compensation->find('count', array('conditions' => array('AND' => array('Compensation.user_id=' . $u_id), array('Compensation.status' => 0), array('Compensation.type' => 'L'))));
         $this->set('lists', $lists);
 
         if ($this->request->is('post') || $this->request->is('put')) {
@@ -150,13 +150,15 @@ class LeaveController extends AppController {
                 $insert_data = array();
                 $check_sun_day = false;
                 $leave_count = $this->user_get_all_leave_count_per_year($this->Session->read('User.id'), date('Y', strtotime($this->data['Leave']['date'])));
-                //$leave_count = $this->user_get_all_leave_count_per_year($this->Session->read('User.id'),date('Y'));
+//$leave_count = $this->user_get_all_leave_count_per_year($this->Session->read('User.id'),date('Y'));
 
                 $insert_data = $this->request->data;
                 $status = $insert_data['Leave']['status'];
+//                pr($status);
+//                exit;
                 $leave_days = $insert_data['Leave']['days'];
                 if ($status == 1) {
-                    $com_list = $this->Compensation->find('all', array('recursive' => -1, 'conditions' => array('AND' => array('Compensation.user_id=' . $u_id), array('Compensation.status' => 0))));
+                    $com_list = $this->Compensation->find('all', array('recursive' => -1, 'conditions' => array('AND' => array('Compensation.user_id=' . $u_id), array('Compensation.status' => 0), array('Compensation.type' => 'L'))));
                     $records = array();
                     foreach ($com_list as $adddays) {
                         $remaining_days = 0;
@@ -201,7 +203,7 @@ class LeaveController extends AppController {
                             )
                         );
                         $this->Compensation->saveAll($com_data);
-                        $insert_data['Leave']['compensation_id'] = $string;
+                        $insert_data['Leave']['compensation_id'] = $compensation_id;
                         $insert_data['Leave']['days'] = 0.00;
                     }
                 }
@@ -237,7 +239,7 @@ class LeaveController extends AppController {
                     $insert_data['SubLeave'][$x]['status'] = '-';
                 }
 
-                //delete pending report on leave days			
+//delete pending report on leave days			
                 if ($insert_data['Leave']['days'] > 0.5) {
                     $this->loadModel('PendingReport');
 
@@ -248,7 +250,7 @@ class LeaveController extends AppController {
                         }
                     }
                 }
-                //end
+//end
 
                 if ($this->Leave->saveAll($insert_data)) {
                     $this->leave_request_mail($this->Leave->getLastInsertId());
@@ -421,11 +423,11 @@ class LeaveController extends AppController {
                 if ($leave_count + $sub_day <= $user['User']['casual_leave']) {
                     $update['SubLeave'][$sub_leave['id']]['status'] = 'C';
                 } else {
-                    //newly added for paid and casual leave on same day
+//newly added for paid and casual leave on same day
                     if ($leave_count + $sub_day > $user['User']['casual_leave'] && $leave_count + $sub_day == $user['User']['casual_leave'] + 0.5 && count($insert_data['SubLeave']) != 1 && $insert_data['SubLeave'][$key]['day'] != '0.5') {
                         $update['SubLeave'][$sub_leave['id']]['paid_casual_this_day'] = 0.5;
                     }
-                    //end
+//end
                     $update['SubLeave'][$sub_leave['id']]['status'] = 'P';
                 }
                 $leave_count = $leave_count + $sub_day;
@@ -451,21 +453,55 @@ class LeaveController extends AppController {
                 $update['SubLeave'][$sub_leave['id']]['status'] = '-';
             }
         }
+
+//        $this->loadModel('Compensation');
+//        $leave = $this->Leave->find('first', array('recursive' => -1, 'conditions' => array('Leave.approved' => $this->data['status'], 'Leave.id' => $this->data['id'])));
+//        $compensation_userid = $leave['Leave']['user_id'];
+//        $compensation_id = $leave['Leave']['compensation_id'];
+//        $lists = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id=' . $compensation_id, 'Compensation.type' => 'L', 'Compensation.status' => 0)));
+////        pr($compensation_userid);
+////        pr($compensation_id);
+////        pr($leave);
+////        pr($lists);
+////        exit;
+//        if ($lists) {
+//            $data1_com = array('Compensation' => array('id' => $compensation_id, 'status' => 1));
+//                        pr($data1_com);
+//        exit;
+//            $this->Compensation->save($data1_com, true, array('status'));
+//        }
+
+
         if ($this->Leave->saveAll($update)) {
             $this->loadModel('Compensation');
-            if ($this->data['status']==2) {
-            $leave = $this->Leave->find('first', array('recursive' => -1, 'conditions' => array('AND' => array('Leave.approved' => 2, 'Leave.id' => $this->data['id']))));
-                         $compensation_userid = $leave['Leave']['user_id'];
+            if ($this->data['status'] == 1) {
+                $leave = $this->Leave->find('first', array('recursive' => -1, 'conditions' => array('Leave.approved' => 1, 'Leave.id' => $this->data['id'])));
+                $compensation_userid = $leave['Leave']['user_id'];
                 $compensation_id = $leave['Leave']['compensation_id'];
                 $string = unserialize($compensation_id);
                 foreach ($string as $key => $value) {
-                    $lists = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id=' . $value)));
+                    $lists = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id=' . $value, 'Compensation.type' => 'L', 'Compensation.status' => 0)));
+                    if ($lists) {
+                        $data1_com = array('Compensation' => array('id' => $value, 'status' => 1));
+                        $this->Compensation->save($data1_com, true, array('status'));
+                    }
+                }
+            }
+            if ($this->data['status'] == 2) {
+                $this->loadModel('Compensation');
+                $leave = $this->Leave->find('first', array('recursive' => -1, 'conditions' => array('AND' => array('Leave.approved' => 2, 'Leave.id' => $this->data['id']))));
+                $compensation_userid = $leave['Leave']['user_id'];
+                $compensation_id = $leave['Leave']['compensation_id'];
+                $string = unserialize($compensation_id);
+                foreach ($string as $key => $value) {
+                    $lists = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id=' . $value, 'Compensation.type' => 'L', 'Compensation.status' => 1)));
                     if ($lists) {
                         $data1_com = array('Compensation' => array('id' => $value, 'status' => 0));
                         $this->Compensation->save($data1_com, false, array('status'));
                     }
                 }
             }
+
             $status = $this->data['status'];
             $return = array();
             $add_to = $this->requestAction('emails/all_to_email');
@@ -963,18 +999,18 @@ class LeaveController extends AppController {
                     if ($leave_count + $sub_day <= $user['User']['casual_leave']) {
                         $insert_data['SubLeave'][$key]['status'] = 'C';
                     } else {
-                        //newly added for paid and casual leave on same day
+//newly added for paid and casual leave on same day
                         if ($leave_count + $sub_day > $user['User']['casual_leave'] && $leave_count + $sub_day == $user['User']['casual_leave'] + 0.5 && count($insert_data['SubLeave']) != 1 && $insert_data['SubLeave'][$key]['day'] != '0.5') {
                             $insert_data['SubLeave'][$key]['paid_casual_this_day'] = 0.5;
                         }
-                        //end
+//end
                         $insert_data['SubLeave'][$key]['status'] = 'P';
                     }
                     $leave_count = $leave_count + $sub_day;
                 }
             }
 
-            //delete pending report on leave days			
+//delete pending report on leave days			
             if ($insert_data['Leave']['days'] > 0.5) {
                 $this->loadModel('PendingReport');
 
@@ -985,7 +1021,7 @@ class LeaveController extends AppController {
                     }
                 }
             }
-            //end
+//end
 
             if ($this->Leave->saveAll($insert_data)) {
 //				$this->leave_request_mail($this->Leave->getLastInsertId());
