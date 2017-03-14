@@ -416,6 +416,7 @@ class PermissionController extends AppController {
         $status = $this->data['status'];
         $return = array();
 
+        
         $add_to = $this->requestAction('emails/all_to_email');
 
         foreach ($add_to as $to) {
@@ -671,41 +672,8 @@ class PermissionController extends AppController {
                     'remarks' => $this->data['remarks'],
                 )
             );
-            if ($this->Permission->saveALl($update)) {
+            if ($this->Permission->saveAll($update)) {
                 $this->permission_remarks($id);
-                $status = $this->data['status'];
-                $return = array();
-                $add_to = $this->requestAction('emails/all_to_email');
-                foreach ($add_to as $to) {
-                    $array = explode(',', $to['Email']['options']);
-                    foreach ($array as $key => $value) {
-                        if ($value == 2) {
-                            $all_to[$to['Email']['id']] = $to['Email']['email'];
-                        }
-                    }
-                }
-                if (empty($all_to)) {
-                    $all_to = "";
-                }
-                if ($status != 0) {
-                    if ($status == 1) {
-                        $subject = 'Permission Accepted';
-                    } elseif ($status == 2) {
-                        $subject = 'Permission Declined';
-                    }
-                    $user = $this->requestAction('users/get_user', array('pass' => array('User.id' => $this->data['user_id'])));
-                    $this->Email->to = $user['User']['email'];
-                    $this->Email->cc = $all_to;
-                    $this->Email->subject = $subject;
-                    $this->Email->replyTo = $this->Session->read('User.email');
-                    $this->Email->from = $this->Session->read('User.email');
-                    $this->Email->template = 'permissionaccept';
-                    $this->Email->sendAs = 'html';
-                    $this->set('user', $user);
-                    $this->set('permission', $this->Permission->find('first', array('conditions' => array('Permission.id' => $this->data['id']))));
-                    $this->set('status', $status);
-                    $this->Email->send();
-                }
             }
         }
         $status = $this->data['status'];
