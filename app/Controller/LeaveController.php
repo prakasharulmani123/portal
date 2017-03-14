@@ -200,6 +200,7 @@ class LeaveController extends AppController {
                                 'days' => '0.50',
                                 'comments' => $compensation_comments,
                                 'status' => '0',
+                                 'type' => 'L',
                             )
                         );
                         $this->Compensation->saveAll($com_data);
@@ -454,25 +455,7 @@ class LeaveController extends AppController {
             }
         }
 
-//        $this->loadModel('Compensation');
-//        $leave = $this->Leave->find('first', array('recursive' => -1, 'conditions' => array('Leave.approved' => $this->data['status'], 'Leave.id' => $this->data['id'])));
-//        $compensation_userid = $leave['Leave']['user_id'];
-//        $compensation_id = $leave['Leave']['compensation_id'];
-//        $lists = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id=' . $compensation_id, 'Compensation.type' => 'L', 'Compensation.status' => 0)));
-////        pr($compensation_userid);
-////        pr($compensation_id);
-////        pr($leave);
-////        pr($lists);
-////        exit;
-//        if ($lists) {
-//            $data1_com = array('Compensation' => array('id' => $compensation_id, 'status' => 1));
-//                        pr($data1_com);
-//        exit;
-//            $this->Compensation->save($data1_com, true, array('status'));
-//        }
-
-
-        if ($this->Leave->saveAll($update)) {
+               if ($this->Leave->saveAll($update)) {
             $this->loadModel('Compensation');
             if ($this->data['status'] == 1) {
                 $leave = $this->Leave->find('first', array('recursive' => -1, 'conditions' => array('Leave.approved' => 1, 'Leave.id' => $this->data['id'])));
