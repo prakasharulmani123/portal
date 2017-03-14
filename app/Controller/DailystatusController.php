@@ -320,6 +320,7 @@ class DailystatusController extends AppController {
                         $worked_hours += ($interval->format('%h') * 60) + ($interval->format('%i'));
                     }
                 }
+                
                 $workhours = gmdate("H:i", ($worked_hours * 60)) . '<br>';
                 $permission_time = '04:00';
                 $min_time = '02:00';
@@ -351,16 +352,9 @@ class DailystatusController extends AppController {
                         $this->User->id = $user_id;
                         $this->User->updateAll(array(
                             'User.compensation_leave' => 'User.compensation_leave + 1'), array('User.id' => $user_id));
-
-                        $this->redirect(array('action' => 'index'));
-                    } else {
-                        $this->Session->setFlash('');
-                        $this->redirect(array('action' => 'index'));
                     }
-                } else {
-                    $this->Session->setFlash('');
-                    $this->redirect(array('action' => 'index'));
                 }
+                
                 foreach ($temp_reports as $temp_report):
                     $this->TempReport->delete($temp_report['TempReport']['id']);
                 endforeach;
