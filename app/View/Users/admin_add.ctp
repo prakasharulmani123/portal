@@ -58,7 +58,7 @@ function get_cities(id)
 		}  
 	}
 	
-	AJAX.open("get",  "/portal/cities/get_all_cities/" + id, true);
+	AJAX.open("get",  "/cities/get_all_cities/" + id, true);
 //	AJAX.open("get",  BaseURL+"cities/get_all_cities/" + id, true);
 	AJAX.send(null);
 }
