@@ -286,10 +286,10 @@ class DailystatusController extends AppController {
 
             ///////Adding Projects Name:
             $records = array();
-            foreach ($reports as $key=> $report) {
+            foreach ($reports as $key => $report) {
                 $name = $report['DailyStatus']['projectname'];
                 if ($name != NULL) {
-                   $project_name = $report['DailyStatus']['projectname'];
+                    $project_name = $report['DailyStatus']['projectname'];
                     $results = $this->Project->find('count', array('conditions' => array('Project.projectname' => $project_name)));
                     if ($results == 0) {
                         $data = array(
@@ -320,7 +320,7 @@ class DailystatusController extends AppController {
                         $worked_hours += ($interval->format('%h') * 60) + ($interval->format('%i'));
                     }
                 }
-                
+
                 $workhours = gmdate("H:i", ($worked_hours * 60)) . '<br>';
                 $permission_time = '04:00';
                 $min_time = '02:00';
@@ -354,7 +354,7 @@ class DailystatusController extends AppController {
                             'User.compensation_leave' => 'User.compensation_leave + 1'), array('User.id' => $user_id));
                     }
                 }
-                
+
                 foreach ($temp_reports as $temp_report):
                     $this->TempReport->delete($temp_report['TempReport']['id']);
                 endforeach;
@@ -563,6 +563,42 @@ class DailystatusController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function admin_monthly_report() {
+        $this->set('cpage', 'month_report');
+        if ($this->request->is('post') || $this->request->is('put')) {
+            $this->Session->write('DailyStatusMonth.user_id', '');
+            $this->Session->write('DailyStatusMonth.month', '');
+            $this->Session->write('DailyStatusMonth.year', '');
+
+            if ($this->request->data['DailyStatus']['user_id'] != '') {
+                $this->Session->write('DailyStatusMonth.user_id', $this->request->data['DailyStatus']['user_id']);
+            }
+
+            if (!empty($this->request->data['DailyStatus']['month'])) {
+                $this->Session->write('DailyStatusMonth.month', date('m', strtotime($this->request->data['DailyStatus']['month'])));
+                $this->Session->write('DailyStatusMonth.year', date('Y', strtotime($this->request->data['DailyStatus']['month'])));
+            }
+
+            return $this->redirect(array('action' => 'admin_monthly_report'));
+        }
+
+        if ($this->Session->check('DailyStatusMonth')) {
+            $all = $this->Session->read('DailyStatusMonth');
+
+            if ($all['user_id'] != '' && $all['month'] != '' && $all['year'] != '') {
+                $dailyreports = $this->dates_month($all['month'], $all['year']);
+            }
+//			$dailyreports = $this->DailyStatus->find('all', array('conditions'=>array($user_query != '' ? $user_query : '', $month_query != '' ? $month_query : '', $year_query != '' ? $year_query : ''), 'order'=>array('DailyStatus.date ASC'), 'group'=>array('DailyStatus.date,DailyStatus.user_id')));
+        } else {
+            $all = array('user_id' => '', 'month' => '', 'year' => '');
+//			$dailyreports = $this->DailyStatus->find('all', array('order'=>array('DailyStatus.date ASC'), 'group'=>array('DailyStatus.date','DailyStatus.user_id')));
+        }
+
+        $this->set(compact('all'));
+        $this->set('users', $this->requestAction('users/get_all_users'));
+        $this->set(compact('dailyreports'));
+    }
+////////////ajkjkjkl
+ public function admin_all_monthly_report() {
         $this->set('cpage', 'month_report');
         if ($this->request->is('post') || $this->request->is('put')) {
             $this->Session->write('DailyStatusMonth.user_id', '');
