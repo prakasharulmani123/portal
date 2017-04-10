@@ -757,7 +757,7 @@ class LeaveController extends AppController {
         } else {
             $all = array('user_id' => '', 'month' => '', 'year' => '');
         }
-
+        $this->set(compact('User'));
         $this->set(compact('all'));
         $this->set('users', $this->requestAction('users/get_all_users'));
         $this->set(compact('leaves'));
