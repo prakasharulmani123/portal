@@ -224,10 +224,25 @@ if (empty($all['month'])) {
                         <th width="10%">view</th>
                         </thead>
                         <tbody>
-                            <?php foreach ($all_user as $key => $all_use) { ?>
+                            <?php foreach ($all_user as $key => $all_use) {
+//                                    print_r($key);exit;?>
                                 <tr>
                                     <td><span style="font-size:14px;padding:45px;"><?php echo $all_use; ?></span></td>
                                     <?php
+                                    $employee = $this->requestAction('users/get_user', array('pass' => array($key)));
+        $leaves_month = $this->requestAction('leave/get_current_month_leave_approved/' . $key . '/' . $all['month'] . '/' . $all['year']);
+        $holidays_month = $this->requestAction('holidays/get_holidays_per_month/' . $all['month'] . '/' . $all['year']);
+        $leaves = $leaves_month;
+        $check_sun_day = false;
+        $holidays = array();
+
+        foreach ($holidays_month as $holiday_month) {
+            $holidays[$holiday_month['Holiday']['name'] . ',' . $holiday_month['Holiday']['date']] = $holiday_month['Holiday']['date'];
+        }
+
+        $permissions = $this->requestAction('permission/get_permission_approved_per_month/' . $key . '/' . $all['month'] . '/' . $all['year']);
+                                    
+                                    
                                     $row = 1;
 
                                     $half_day = '';
@@ -432,7 +447,6 @@ if (empty($all['month'])) {
                                         if ($check_leave == true) {
                                             $leave_row = $this->requestAction('leave/get_leave_by_userid_date/' . $key . '/' . $dailyreport);
                                             if ($leave_row['SubLeave'][0]['day'] == 1) {
-
                                                 $leave_count++;
                                             } elseif ($leave_row['SubLeave'][0]['day'] == 0.5 && $half_day_showed == false) {
                                                 $half_day_count++;
