@@ -114,8 +114,7 @@ function validSubmit(){
       <?php }?>
 
 
-   
-      
+        
         <div class="row-form">
           <div class="span3">Reason for Leave*:</div>
           <div class="span9">
