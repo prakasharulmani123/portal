@@ -16,6 +16,7 @@ class EmailsController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 
 	public function admin_index() {
+                            $this->layout = "admin-inner";
 		$this->set('emails', $this->Email->find('all'));
 	}
 
@@ -23,6 +24,7 @@ class EmailsController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 
 	public function admin_add() {
+              $this->layout = "admin-inner";
 		if($this->request->is('post')){
 			foreach($this->data['Email']['options'] as $key => $option){
 				if($option == 0){
@@ -43,6 +45,7 @@ class EmailsController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 	
 	public function admin_edit($id=null) {
+              $this->layout = "admin-inner";
 		$this->Email->id = $id;
 		if($this->request->is('post') || $this->request->is('put')){
 			foreach($this->data['Email']['options'] as $key => $option){
@@ -68,6 +71,7 @@ class EmailsController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 	
 	public function admin_email_delete($id=null){
+              $this->layout = "admin-inner";
 		if ($this->Email->delete($id)){
 			$this->Session->setFlash('Email deleted Successfully', 'flash_success');
 			return $this->redirect('/admin/emails');
