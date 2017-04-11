@@ -59,6 +59,7 @@ class UserAttendancesController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_index() {
+          $this->layout = "admin-inner";
         $this->set('cpage', 'my_attendance');
         if ($this->request->is('post') || $this->request->is('put')) {
             $this->Session->write('UserAttendance.user_id', '');
@@ -108,6 +109,7 @@ class UserAttendancesController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function admin_reset() {
+          $this->layout = "admin-inner";
         $this->Session->delete('UserAttendance');
         return $this->redirect(array('action' => 'admin_index'));
     }
@@ -158,6 +160,7 @@ class UserAttendancesController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_import_attendance() {
+          $this->layout = "admin-inner";
         if ($this->request->is('post')) {
 
             $allowed = array('csv');
