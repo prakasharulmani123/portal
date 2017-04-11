@@ -22,6 +22,7 @@ class HolidaysController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 
 	public function admin_add() {
+              $this->layout = "admin-inner";
 		if($this->request->is('put') || $this->request->is('post')){
 			$this->request->data['Holiday']['date'] = date('Y-m-d', strtotime($this->data['Holiday']['date']));
 			if($this->Holiday->save($this->request->data)){
@@ -36,6 +37,7 @@ class HolidaysController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 
 	public function admin_edit($id=NULL) {
+              $this->layout = "admin-inner";
 		if($this->request->is('put') || $this->request->is('post')){
 			$this->Holiday->id = $id;
 			$this->request->data['Holiday']['date'] = date('Y-m-d', strtotime($this->data['Holiday']['date']));
@@ -54,6 +56,7 @@ class HolidaysController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 
 	public function admin_holiday_delete($id=NULL) {
+              $this->layout = "admin-inner";
 		if ($this->Holiday->delete($id)){
 			$this->Session->setFlash('Holiday Deleted Successfully', 'flash_success');
 			return $this->redirect('/admin/holidays');
