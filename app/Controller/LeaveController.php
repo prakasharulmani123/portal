@@ -68,6 +68,7 @@ class LeaveController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_index($id = NULL) {
+        $this->layout = "admin-inner";
         $this->set('cpage', 'leave');
 
         if ($this->request->is('post') || $this->request->is('put')) {
@@ -200,7 +201,7 @@ class LeaveController extends AppController {
                                 'days' => '0.50',
                                 'comments' => $compensation_comments,
                                 'status' => '0',
-                                 'type' => 'L',
+                                'type' => 'L',
                             )
                         );
                         $this->Compensation->saveAll($com_data);
@@ -368,6 +369,7 @@ class LeaveController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_view($id = NULL) {
+        $this->layout = "admin-inner";
         $this->set('cpage', 'leave');
 
         $leave = $this->Leave->find('first', array('conditions' => array('Leave.id' => $id)));
@@ -405,6 +407,7 @@ class LeaveController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_add_remarks() {
+        $this->layout = "admin-inner";
         $update = array(
             'Leave' => array(
                 'id' => $this->data['id'],
@@ -455,7 +458,7 @@ class LeaveController extends AppController {
             }
         }
 
-               if ($this->Leave->saveAll($update)) {
+        if ($this->Leave->saveAll($update)) {
             $this->loadModel('Compensation');
             if ($this->data['status'] == 1) {
                 $leave = $this->Leave->find('first', array('recursive' => -1, 'conditions' => array('Leave.approved' => 1, 'Leave.id' => $this->data['id'])));
@@ -721,6 +724,7 @@ class LeaveController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_monthly_report() {
+        $this->layout = "admin-inner";
         $this->set('cpage', 'leave_month_report');
         $this->loadModel('SubLeave');
 
@@ -807,6 +811,7 @@ class LeaveController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_customize_leave() {
+        $this->layout = "admin-inner";
         $this->set('cpage', 'leave');
 
         if ($this->request->is('post') || $this->request->is('put')) {
@@ -871,6 +876,7 @@ class LeaveController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_get_sub_leave_days_ajax($leave_id) {
+        $this->layout = "admin-inner";
         $this->loadModel('SubLeave');
         $this->SubLeave->recursive = -1;
         $sub_leaves = $this->SubLeave->findAllByLeaveId($leave_id);
@@ -902,6 +908,7 @@ class LeaveController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_update_sub_leave_days_ajax() {
+        $this->layout = "admin-inner";
         $this->loadModel('SubLeave');
 
         $update = array('SubLeave' => $this->data);
@@ -924,6 +931,7 @@ class LeaveController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_add() {
+        $this->layout = "admin-inner";
         $this->set('cpage', 'leave');
         $this->layout = "admin-inner";
         if ($this->request->is('post') || $this->request->is('put')) {
