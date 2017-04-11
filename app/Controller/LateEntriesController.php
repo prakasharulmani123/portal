@@ -299,7 +299,7 @@ class LateEntriesController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 
     public function admin_index() {
-
+  $this->layout = "admin-inner";
         if ($this->request->is('post') || $this->request->is('put')) {
             $this->Session->write('LateReport.user_id', '');
             $this->Session->write('LateReport.from_date', '');
@@ -375,8 +375,9 @@ class LateEntriesController extends AppController {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-    public function admin_add_remarks() {
-        $update = array(
+    public function admin_add_remarks() {  
+        $this->layout = "admin-inner";
+                $update = array(
             'LateEntry' => array(
                 'id' => $this->data['id'],
                 'approved' => $this->data['status'],
