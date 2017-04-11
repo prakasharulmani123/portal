@@ -76,6 +76,7 @@ class DailystatusController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function admin_index() {
+        $this->layout = "admin-inner";
         $this->set('cpage', 'dailyreports');
         if ($this->request->is('post') || $this->request->is('put')) {
             $this->Session->write('DailyStatus.user_id', '');
@@ -125,6 +126,8 @@ class DailystatusController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function daily_status_mail() {
+        $this->layout = "admin-inner";
+
         $all_to = $all_cc = $all_bcc = array();
 
         $add_to = $this->requestAction('emails/all_to_email');
@@ -228,8 +231,8 @@ class DailystatusController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function admin_view($id = NULL) {
+        $this->layout = "admin-inner";
         $this->set('cpage', 'dailystatus');
-
         $dailyreport = $this->DailyStatus->find('first', array('conditions' => array('DailyStatus.id' => $id)));
         $user_id = $dailyreport['DailyStatus']['user_id'];
         $date = $dailyreport['DailyStatus']['date'];
@@ -563,6 +566,7 @@ class DailystatusController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function admin_monthly_report() {
+        $this->layout = "admin-inner";
         $this->set('cpage', 'month_report');
         if ($this->request->is('post') || $this->request->is('put')) {
             $this->Session->write('DailyStatusMonth.user_id', '');
@@ -597,8 +601,10 @@ class DailystatusController extends AppController {
         $this->set('users', $this->requestAction('users/get_all_users'));
         $this->set(compact('dailyreports'));
     }
+
 ////////////ajkjkjkl
- public function admin_all_monthly_report() {
+    public function admin_all_monthly_report() {
+        $this->layout = "admin-inner";
         $this->set('cpage', 'month_report');
         if ($this->request->is('post') || $this->request->is('put')) {
             $this->Session->write('DailyStatusMonth.user_id', '');
@@ -658,6 +664,7 @@ class DailystatusController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function admin_export_to_csv() {
+        $this->layout = "admin-inner";
         $all = $this->Session->read('DailyStatusMonth');
         $dailyreports = $this->dates_month($all['month'], $all['year']);
         $employee = $this->requestAction('users/get_user', array('pass' => array($all['user_id'])));
