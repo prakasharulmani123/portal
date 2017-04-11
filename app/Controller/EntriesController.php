@@ -15,6 +15,7 @@ class EntriesController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function admin_index() {
+          $this->layout = "admin-inner";
         $this->set('cpage', 'entry');
         $this->layout = "admin-inner";
         if ($this->request->is('post') || $this->request->is('put')) {
