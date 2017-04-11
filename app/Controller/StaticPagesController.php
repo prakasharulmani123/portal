@@ -13,6 +13,7 @@ class StaticPagesController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 
 	public function admin_index(){
+              $this->layout = "admin-inner";
 		if($this->request->is('put') || $this->request->is('post')){
 			if($this->StaticPage->save($this->request->data)){
 				echo $this->Session->setFlash('Saved Successfully', 'flash_success');
