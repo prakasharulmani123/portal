@@ -13,12 +13,14 @@ class WorksController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 	
 	public function admin_index() {
+              $this->layout = "admin-inner";
 		$this->set('works', $this->Work->find('all',array('order'=>array('Work.work'=>'ASC')))); 
 	}
 	
 /////////////////////////////////////////////////////////////////////////	
 
 	public function admin_add() {
+              $this->layout = "admin-inner";
 		if($this->request->is('put') || $this->request->is('post')){
 			if($this->Work->save($this->request->data)){
 				echo $this->Session->setFlash('Project Work Added', 'flash_success');
@@ -32,6 +34,7 @@ class WorksController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 
 	public function admin_edit($id=NULL) {
+              $this->layout = "admin-inner";
 		if($this->request->is('put') || $this->request->is('post')){
 			$this->Work->id = $id;
 			if($this->Work->save($this->request->data)){
@@ -49,6 +52,7 @@ class WorksController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 
 	public function admin_work_delete($id=NULL) {
+              $this->layout = "admin-inner";
 		if ($this->Work->delete($id)){
 			$this->Session->setFlash('Work Deleted Successfully', 'flash_success');
 			return $this->redirect('/admin/works');
