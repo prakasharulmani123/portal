@@ -251,6 +251,7 @@ class MeetingsController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 	
 	public function admin_index() {
+              $this->layout = "admin-inner";
 		if ($this->request->is('post') || $this->request->is('put')) 
 		{
 			$this->Session->write('Meeting.from_date', '');
@@ -317,6 +318,7 @@ class MeetingsController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 	
 	public function admin_meetings_view($user_id, $date) {
+              $this->layout = "admin-inner";
 		$meetings = $this->Meeting->find('all',array('conditions' => array('Meeting.user_id' => $user_id, 'Meeting.meeting_date' => $date), 'order'=>array('Meeting.meeting_schedule_start'=>'ASC')));
 		
 		$this->set(compact('meetings', 'date')); 
