@@ -13,12 +13,14 @@ class CategoriesController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 	
 	public function admin_index() {
+              $this->layout = "admin-inner";
 		$this->set('categories', $this->Category->find('all',array('order'=>array('Category.category'=>'ASC')))); 
 	}
 	
 /////////////////////////////////////////////////////////////////////////	
 
 	public function admin_add() {
+              $this->layout = "admin-inner";
 		if($this->request->is('put') || $this->request->is('post')){
 			if($this->Category->save($this->request->data)){
 				echo $this->Session->setFlash('Project Category Added', 'flash_success');
@@ -32,6 +34,7 @@ class CategoriesController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 
 	public function admin_edit($id=NULL) {
+              $this->layout = "admin-inner";
 		if($this->request->is('put') || $this->request->is('post')){
 			$this->Category->id = $id;
 			if($this->Category->save($this->request->data)){
@@ -49,6 +52,7 @@ class CategoriesController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 
 	public function admin_category_delete($id=NULL) {
+              $this->layout = "admin-inner";
 		if ($this->Category->delete($id)){
 			$this->Session->setFlash('Category Deleted Successfully', 'flash_success');
 			return $this->redirect('/admin/categories');
