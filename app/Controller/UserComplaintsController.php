@@ -26,6 +26,7 @@ class UserComplaintsController extends AppController {
 /////////////////////////////////////////////////////////////////////////	
 
     public function admin_index() {
+          $this->layout = "admin-inner";
         $this->set('cpage', 'mycomplaints');
         $this->set('user_complaints', $this->UserComplaint->find('all', array('order' => array('UserComplaint.created DESC'))));
     }
@@ -111,6 +112,7 @@ class UserComplaintsController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_add_remarks() {
+          $this->layout = "admin-inner";
         $update = array(
             'UserComplaint' => array(
                 'id' => $this->data['id'],
