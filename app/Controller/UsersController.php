@@ -22,7 +22,7 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             $user = $this->User->find('first', array('conditions' => array('User.email' => $this->data['User']['email'], 'User.active' => 1)));
             if (!empty($user)) {
-                if ($user['User']['role'] != 'admin') {
+                if ($user['User']['role'] == 'user') {
                     if ($user['User']['password'] == md5($this->data['User']['password'])) {
                         $this->Session->write('User.id', $user['User']['id']);
                         $this->Session->write('User.email', $user['User']['email']);
@@ -32,7 +32,7 @@ class UsersController extends AppController {
                         $this->Session->write('User.casual_leave', $user['User']['casual_leave']);
                         $this->Session->write('User.super_user', $user['User']['super_user']);
                         $this->Session->write('User.timings', $user['User']['timings']);
-//						$this->requestAction('pendingreports/check_belated_pending_reports');
+//			$this->requestAction('pendingreports/check_belated_pending_reports');
                         $this->redirect('/users/dashboard');
                     } else {
                         $this->Session->setFlash("Password Doesn't Match", 'flash_error');
@@ -54,13 +54,14 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             $user = $this->User->find('first', array('conditions' => array('User.email' => $this->data['User']['email'], 'User.active' => 1)));
             if (!empty($user)) {
-                if ($user['User']['role'] == 'admin') {
+                if ($user['User']['role'] == 'admin' || ($user['User']['role'] == 'user' && $user['User']['super_user'] == 1)) {
                     if ($user['User']['password'] == md5($this->data['User']['password'])) {
                         $this->Session->write('User.id', $user['User']['id']);
                         $this->Session->write('User.email', $user['User']['email']);
                         $this->Session->write('User.role', $user['User']['role']);
                         $this->Session->write('User.name', $user['User']['employee_name']);
                         $this->Session->write('User.photo', $user['User']['photo']);
+                        $this->Session->write('User.super_user', $user['User']['super_user']);
                         $this->redirect(array('controller' => 'users', 'action' => 'index', 'admin' => true));
                     } else {
                         $this->Session->setFlash("Password Doesn't Match", 'flash_error');
@@ -117,6 +118,7 @@ class UsersController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_employee($status = NULL) {
+                        $this->layout = "admin-inner";
         $this->set('users', $this->User->find('all', array('conditions' => array('User.role' => 'user', 'User.active' => $status))));
         $this->set('status', $status);
         $this->set('cpage', 'employee');
@@ -125,6 +127,7 @@ class UsersController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_add() {
+                        $this->layout = "admin-inner";
         $this->set('cpage', 'employee');
         if ($this->request->is('post') || $this->request->is('put')) {
             $user = $this->get_all_users();
@@ -185,6 +188,7 @@ class UsersController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_edit($id = null) {
+                        $this->layout = "admin-inner";
         $this->User->id = $id;
         $this->set('cpage', 'employee');
         if ($this->request->is('put') || $this->request->is('post')) {
@@ -302,6 +306,7 @@ class UsersController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_profile($id = null) {
+                $this->layout = "admin-inner";
         $this->set('cpage', '');
         if ($this->request->is('post') || $this->request->is('put')) {
             $this->User->id = $this->Session->read('User.id');
@@ -574,6 +579,7 @@ class UsersController extends AppController {
     public function app_test() {
         
     }
+
 }
 
 ?>
