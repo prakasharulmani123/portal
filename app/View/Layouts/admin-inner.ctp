@@ -10,13 +10,32 @@
 echo $this->Html->meta('favicon.ico', 'http://www.arkinfotec.com/wp-content/themes/ark/images/favicon.ico', array (
     'type' => 'icon' 
 ));
+echo $this->Html->css(array('jquery.tree.min.css'));
 echo $this->Html->css(array('stylesheets'));
 echo $this->Html->css(array('fullcalendar.print'),'stylesheet',array('media' => 'print'));
 ?>
 <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js'></script>
 <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js'></script>
 
+<!-- include jQuery and jQueryUI libraries -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css"/>
+
+
+<!-- initialize checkboxTree plugin -->
+<script type="text/javascript">
+    //<!--
+    $(document).ready(function() {
+        $('#tree').tree({
+            /* specify here your options */
+        });
+    });
+//-->
+</script>
+
 <?php 
+echo $this->Html->script(array('minified/jquery.tree.min.js'));
 
 echo $this->Html->script(array('plugins/jquery/jquery.mousewheel.min','plugins/cookie/jquery.cookies.2.2.0.min','plugins/bootstrap.min','plugins/charts/excanvas.min','plugins/charts/jquery.flot','plugins/charts/jquery.flot.stack','plugins/charts/jquery.flot.pie','plugins/charts/jquery.flot.resize','plugins/sparklines/jquery.sparkline.min','plugins/fullcalendar/fullcalendar.min','plugins/select2/select2.min','plugins/uniform/uniform','plugins/maskedinput/jquery.maskedinput-1.3.min','plugins/validation/languages/jquery.validationEngine-en','plugins/validation/jquery.validationEngine','plugins/mcustomscrollbar/jquery.mCustomScrollbar.min','plugins/animatedprogressbar/animated_progressbar','plugins/qtip/jquery.qtip-1.0.0-rc3.min','plugins/cleditor/jquery.cleditor','plugins/dataTables/jquery.dataTables.min',/*'plugins/dataTables/jquery.dataTables.columnFilter',*/'plugins/fancybox/jquery.fancybox.pack'));
 
