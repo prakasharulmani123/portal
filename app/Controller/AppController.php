@@ -55,12 +55,15 @@ class AppController extends Controller {
 
     public function __validateLoginStatus() {
         if ($this->action != 'database_mysql_dump') {
-            if ($this->action != 'admin_login' && $this->action != 'login') {
+            if ($this->action != 'admin_login' && $this->action != 'login' && $this->action != 'admin_logout' && $this->action != 'logout') {
                 if ($this->Session->check('User')) {
                     if ($this->params['prefix'] == 'admin') {
                         if ($this->Session->read('User.super_user') == 0 && $this->Session->read('User.role') == 'user') {
                             return $this->redirect('/users/dashboard');
                         }
+                    }
+                    if (!$this->access_rights()) {
+                        return $this->render('/Errors/error500');
                     }
                     if ($this->Session->read('User.role') == 'admin') {
                         $this->layout = "admin-inner";
@@ -75,6 +78,30 @@ class AppController extends Controller {
             } elseif ($this->action == 'login') {
                 if ($this->Session->check('User')) {
                     return $this->redirect('/users/dashboard');
+                }
+            }
+        }
+    }
+
+    private function access_rights() {
+        if ($this->Session->read('User.role') == 'admin') {
+            return true;
+        } else {
+            $this->loadModel('Module');
+            if ($this->Session->read('User.super_user') == 1 && $this->Session->read('User.role') == 'user') {
+                $demodule = json_decode($this->Session->read('User.access'));
+                $request_path = $_SERVER['REQUEST_URI'];
+                $exp = explode('/admin', $request_path);
+                $path = explode('/', substr($exp[1], 1));
+                $module = $path[0];
+                if (isset($path[1])) {
+                    $module .= '/' . $path[1];
+                }
+                $roles = $this->Module->find('first', array('conditions' => array('Module.url' => $module))); //we get the authors from the database       
+                if($roles){
+                    return in_array($roles['Module']['id'], $demodule);
+                }else{
+                    return false;
                 }
             }
         }
@@ -102,7 +129,7 @@ class AppController extends Controller {
         $databaseName = $dataSource->getSchemaName();
 
 
-        // Do a short header
+// Do a short header
         $return .= '-- Database: `' . $databaseName . '`' . "\n";
         $return .= '-- Generation time: ' . date('D jS M Y H:i:s') . "\n\n\n";
 
@@ -117,7 +144,7 @@ class AppController extends Controller {
             $tables = is_array($tables) ? $tables : explode(',', $tables);
         }
 
-        // Run through all the tables
+// Run through all the tables
         foreach ($tables as $table) {
             $tableData = $this->{$modelName}->query('SELECT * FROM ' . $table);
 
@@ -126,7 +153,7 @@ class AppController extends Controller {
             $createTableEntry = current(current($createTableResult));
             $return .= "\n\n" . $createTableEntry['Create Table'] . ";\n\n";
 
-            // Output the table data
+// Output the table data
             foreach ($tableData as $tableDataIndex => $tableDataDetails) {
 
                 $return .= 'INSERT INTO ' . $table . ' VALUES(';
@@ -136,10 +163,10 @@ class AppController extends Controller {
                     if (is_null($dataValue)) {
                         $escapedDataValue = 'NULL';
                     } else {
-                        // Convert the encoding
+// Convert the encoding
                         $escapedDataValue = mb_convert_encoding($dataValue, "UTF-8", "ISO-8859-1");
 
-                        // Escape any apostrophes using the datasource of the model.
+// Escape any apostrophes using the datasource of the model.
                         $escapedDataValue = $this->{$modelName}->getDataSource()->value($escapedDataValue);
                     }
 
@@ -159,7 +186,7 @@ class AppController extends Controller {
         $ret['database'] = $databaseName;
         return $ret;
 
-        // Set the default file name
+// Set the default file name
 //		$fileName = $databaseName . '-backup-' . date('Y-m-d_H-i-s') . '.sql';
 //		$content = "some text here";
 //		$fp = fopen(WWW_ROOT . "files/db_backup/".$fileName,"wb");
@@ -173,7 +200,7 @@ class AppController extends Controller {
 //		$attachments = array();
 //		$this->Email->attachments = array(WWW_ROOT.'files/db_backup/'.$fileName);
 //		$this->Email->send('Database backup');
-        // Serve the file as a download
+// Serve the file as a download
 //		$this->autoRender = false;
 //		$this->response->type('Content-Type: text/x-sql');
 //		$this->response->file('files/db_backup/'.$fileName, array('download' => true, 'name' => 'DB'));
