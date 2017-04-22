@@ -13,6 +13,17 @@ class UsersController extends AppController {
         if ($this->action != 'forgot_password' && $this->action != 'get_user') {
             $this->__validateLoginStatus();
         }
+        $this->loadModel('Module');
+        $urlarray = array();
+        $demodule = json_decode($this->Session->read('User.access'));
+        foreach ($demodule as $key => $module):
+            $modules = $this->Module->find('first', array('conditions' => array('Module.id' => $module)));
+            $urlarray[] = $modules['Module']['url'];
+           $phparray=array_filter($urlarray); 
+           $urlarraylist= array_values($phparray);
+                  $encodelist = json_encode($urlarraylist,JSON_UNESCAPED_SLASHES);
+                          endforeach;
+        $this->set('encodelist', $encodelist);
     }
 
 ///////////////////////////////////////////////////////////////////////////////
