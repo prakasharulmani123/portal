@@ -58,13 +58,14 @@ class AppController extends Controller {
             if ($this->action != 'admin_login' && $this->action != 'login' && $this->action != 'admin_logout' && $this->action != 'logout') {
                 if ($this->Session->check('User')) {
                     if ($this->params['prefix'] == 'admin') {
-                        if ($this->Session->read('User.super_user') == 0 && $this->Session->read('User.role') == 'user') {
-                            return $this->redirect('/users/dashboard');
-                        }
-                    }
-                    if (!$this->access_rights()) {
+                        if (!$this->access_rights()) {
                         return $this->render('/Errors/error500');
                     }
+                        if ($this->Session->read('User.super_user') == 0 && $this->Session->read('User.role') == 'user') {
+                            return $this->redirect('/users');
+                        }
+                    }
+                    
                     if ($this->Session->read('User.role') == 'admin') {
                         $this->layout = "admin-inner";
                     }
@@ -91,6 +92,9 @@ class AppController extends Controller {
             if ($this->Session->read('User.super_user') == 1 && $this->Session->read('User.role') == 'user') {
                 $demodule = json_decode($this->Session->read('User.access'));
                 $request_path = $_SERVER['REQUEST_URI'];
+                if($request_path == '/portal/branches/dev/admin/users'){
+                    return true;
+                }else{
                 $exp = explode('/admin', $request_path);
                 $path = explode('/', substr($exp[1], 1));
                 $module = $path[0];
@@ -104,7 +108,7 @@ class AppController extends Controller {
                     return false;
                 }
             }
-        }
+            }   }
     }
 
     public function beforeFilter() {
