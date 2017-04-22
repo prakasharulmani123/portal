@@ -1,3 +1,21 @@
+<?php   echo $this->Html->css(array('jquery.tree.min.css'));?>
+
+<!-- include jQuery and jQueryUI libraries for tree -->
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+        <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css"/>
+        <?php echo $this->Html->script(array('minified/jquery.tree.min.js'));?>
+
+<!-- initialize checkboxTree plugin -->
+        <script type="text/javascript">
+            //<!--
+            $(document).ready(function () {
+                $('#tree').tree({
+                    /* specify here your options */
+                });
+            });
+        //-->
+       </script>
 <div class="workplace">
     <?php echo $this->Form->create('User', array('id' => 'validation', 'type' => 'file')); ?>
     <div class="row-fluid">
