@@ -114,7 +114,7 @@ $mer = array('am' => 'am', 'pm' => 'pm');
                                 <td><?php echo h($user['User']['employee_name']); ?></td>
                                 <td><?php echo h($user['User']['designation']); ?></td>
                                 <td>
-                                    <a href="javascript:open_edit(<?php echo $user['User']['id'] ?>)" title="Edit"><span class="icon-pencil"></span></a>                                 
+                                    <a class="check-access" href="javascript:open_edit(<?php echo $user['User']['id'] ?>)" title="Edit"><span class="icon-pencil"></span></a>                                 
                                 </td>
                             </tr>
                             <?php
