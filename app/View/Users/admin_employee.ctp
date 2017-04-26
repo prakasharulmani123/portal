@@ -18,7 +18,7 @@
                 <h1><?php echo $status == 1 ? 'Active' : 'In-active' ?> Employees</h1>
                 <?php if ($status == 1) { ?>
                     <ul class="buttons">
-                        <li><a href="<?php echo $this->base ?>/admin/users/add" title="Add Employee"><span class="isw-plus"></span></a></li>
+                        <li><a class="check-access" href="<?php echo $this->base ?>/admin/users/add" title="Add Employee"><span class="isw-plus"></span></a></li>
                     </ul>
                 <?php } ?>
                 <div class="clear"></div>
@@ -48,8 +48,8 @@
                                 <td><?php echo h(date("d-m-Y", strtotime($user['User']['joined_on']))); ?></td>
                                 <td><span style="display:none"><?php echo $user['User']['active'] ?></span><?php echo $this->Html->link($this->Html->image('icon_' . $user['User']['active'] . '.png'), array('controller' => 'users', 'action' => 'switch', 'active', $user['User']['id']), array('class' => 'status', 'escape' => false)); ?></td>
                                 <td>
-                                    <a href="<?php echo $this->base ?>/admin/users/edit/<?php echo $user['User']['id']; ?>" title="Edit Employee"><span class="icon-pencil"></span></a> 
-                                    <a href="<?php echo $this->base ?>/admin/users/view/<?php echo $user['User']['id'] ?>" title="View Employee"><span class="isb-text_document"></span></a> 
+                                    <a class="check-access" href="<?php echo $this->base ?>/admin/users/edit/<?php echo $user['User']['id']; ?>" title="Edit Employee"><span class="icon-pencil"></span></a> 
+                                    <a class="check-access" href="<?php echo $this->base ?>/admin/users/view/<?php echo $user['User']['id'] ?>" title="View Employee"><span class="isb-text_document"></span></a> 
                 <?php  if($this->Session->read('User.id')==1) {
                 if($user['User']['super_user']==1  && $user['User']['active']==1){?>
                               <a href="<?php echo $this->base ?>/admin/users/access/<?php echo $user['User']['id'] ?>" title="Access Module"><span class="icon-user"></span></a> 
