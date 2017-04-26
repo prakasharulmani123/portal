@@ -59,7 +59,7 @@ class AppController extends Controller {
                 if ($this->Session->check('User')) {
                     if ($this->params['prefix'] == 'admin') {
                         if (!$this->access_rights()) {
-                            return $this->render('/Errors/error500');
+                            return $this->render('/Errors/error403');
                         }
                         if ($this->Session->read('User.super_user') == 0 && $this->Session->read('User.role') == 'user') {
                             return $this->redirect('/users');
@@ -102,7 +102,7 @@ class AppController extends Controller {
                         $module .= '/' . $path[1];
                     }
                     $roles = $this->Module->find('first', array('conditions' => array('Module.url' => $module))); //we get the authors from the database       
-                    if ($roles) {
+                    if (is_array($roles['Module']['id']) && $roles) {
                         return in_array($roles['Module']['id'], $demodule);
                     } else {
                         return false;
@@ -114,6 +114,7 @@ class AppController extends Controller {
 
     public function beforeFilter() {
         date_default_timezone_set("Asia/Kolkata");
+         if ($this->action == 'admin_login'){
         if ($this->Session->read('User.super_user') == 1 && $this->Session->read('User.role') == 'user') {
             $this->loadModel('Module');
             $urlarray = array();
@@ -126,6 +127,7 @@ class AppController extends Controller {
                 $encodelist = json_encode($urlarraylist, JSON_UNESCAPED_SLASHES);
             endforeach;
             $this->set('encodelist', $encodelist);
+        }
         }
     }
 
