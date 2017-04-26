@@ -59,13 +59,13 @@ class AppController extends Controller {
                 if ($this->Session->check('User')) {
                     if ($this->params['prefix'] == 'admin') {
                         if (!$this->access_rights()) {
-                        return $this->render('/Errors/error500');
-                    }
+                            return $this->render('/Errors/error500');
+                        }
                         if ($this->Session->read('User.super_user') == 0 && $this->Session->read('User.role') == 'user') {
                             return $this->redirect('/users');
                         }
                     }
-                    
+
                     if ($this->Session->read('User.role') == 'admin') {
                         $this->layout = "admin-inner";
                     }
@@ -92,27 +92,41 @@ class AppController extends Controller {
             if ($this->Session->read('User.super_user') == 1 && $this->Session->read('User.role') == 'user') {
                 $demodule = json_decode($this->Session->read('User.access'));
                 $request_path = $_SERVER['REQUEST_URI'];
-                if($request_path == '/portal/branches/dev/admin/users'){
+                if ($request_path == '/portal/branches/dev/admin/users') {
                     return true;
-                }else{
-                $exp = explode('/admin', $request_path);
-                $path = explode('/', substr($exp[1], 1));
-                $module = $path[0];
-                if (isset($path[1])) {
-                    $module .= '/' . $path[1];
-                }
-                $roles = $this->Module->find('first', array('conditions' => array('Module.url' => $module))); //we get the authors from the database       
-                if($roles){
-                    return in_array($roles['Module']['id'], $demodule);
-                }else{
-                    return false;
+                } else {
+                    $exp = explode('/admin', $request_path);
+                    $path = explode('/', substr($exp[1], 1));
+                    $module = $path[0];
+                    if (isset($path[1])) {
+                        $module .= '/' . $path[1];
+                    }
+                    $roles = $this->Module->find('first', array('conditions' => array('Module.url' => $module))); //we get the authors from the database       
+                    if ($roles) {
+                        return in_array($roles['Module']['id'], $demodule);
+                    } else {
+                        return false;
+                    }
                 }
             }
-            }   }
+        }
     }
 
     public function beforeFilter() {
         date_default_timezone_set("Asia/Kolkata");
+        if ($this->Session->read('User.super_user') == 1 && $this->Session->read('User.role') == 'user') {
+            $this->loadModel('Module');
+            $urlarray = array();
+            $demodule = json_decode($this->Session->read('User.access'));
+            foreach ($demodule as $key => $module):
+                $modules = $this->Module->find('first', array('conditions' => array('Module.id' => $module)));
+                $urlarray[] = $modules['Module']['url'];
+                $phparray = array_filter($urlarray);
+                $urlarraylist = array_values($phparray);
+                $encodelist = json_encode($urlarraylist, JSON_UNESCAPED_SLASHES);
+            endforeach;
+            $this->set('encodelist', $encodelist);
+        }
     }
 
 ///////////////////////////////////////////////////////////////////////////////
