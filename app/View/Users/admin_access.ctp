@@ -34,11 +34,12 @@
                             <?php
                             foreach ($roles as $role) :
                                  $array = json_decode( $findaccesses);
-                                   if (in_array($role['Module']['id'],$array)) {
+                            if (is_array($array) && in_array($role['Module']['id'],$array)) {
                                                 $checked = 'checked';
                                             } else {
                                                 $checked = '';
                                             }
+                            
                                 ?>
                                 <ul>
                                     <li>
@@ -54,9 +55,9 @@
                                                         </li>
                                                     </ul>   
                                         <?php } ?>
-                                    <?php endforeach;
-                                
-                                ?> 
+                            <?php   
+                            endforeach; 
+                                      ?> 
                                     </li>
                                 </ul>
     <?php
