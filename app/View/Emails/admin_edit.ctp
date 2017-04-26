@@ -51,7 +51,8 @@ $(document).ready(function(){
         <div class="row-form">
           <div class="span3">Options*:</div>
           <div class="span9">
-          <?php $i = 0; foreach($options as $key => $value){?>
+          <?php $i = 0; foreach($options as $key => $value){
+                ?>
           <?php
 			$check = array_search($key, $array); 
 			if($check != ""){$checked = 'checked';}else{$checked = '';}
