@@ -3,9 +3,8 @@
     <head>
         <title><?php echo $title_for_layout; ?></title>
         <?php
-//        print_r($encodelist) ;exit;
         ////echo $this->Html->image('favicon.ico');
-//echo $this->Html->meta('icon');
+       //echo $this->Html->meta('icon');
 
         echo $this->Html->meta('favicon.ico', 'http://www.arkinfotec.com/wp-content/themes/ark/images/favicon.ico', array(
             'type' => 'icon'
@@ -32,7 +31,7 @@
         <div class="menu"> <?php echo $this->element('admin/left_sidebar'); ?> </div>
         <div class="content">
             <?php
-//echo $this->element('admin/bread_line');
+          //echo $this->element('admin/bread_line');
             echo $this->Session->flash();
             echo $this->fetch('content');
             ?>
@@ -57,24 +56,30 @@
                 });
 
                 $('a.check-access').each(function () {
-//                    $(this).addClass('hidden');
                     var href = $(this).attr('href');
+                    console.log(href);
                     var array = href.split('/admin/');
                     var id = <?php echo $encodelist; ?>;
-                    var list= "";
-                    if (typeof (array[1]) != "undefined" && array[1] != null) {
+                    var list = "";
+                    if (typeof (array[1]) !== "undefined" && array[1] !== null) {
                         var array_2 = array[1].split('/');
                         var list = array_2[0];
-                        if (typeof (array_2[1]) != "undefined" && array_2[1] !== null) {
+                        if (typeof (array_2[1]) !== "undefined" && array_2[1] !== null) {
                             var list = list + '/' + array_2[1];
                         }
+                         console.log(list);
                     }
-                   console.log(list);
-                    if ($.inArray(list, id)>-1) {
-                         $('a.check-access').show();
-                    } else {
-                       $('a.check-access').hide();
+                    if ($.inArray(list, id) === -1) {
+                        $(this).addClass('hidden');
+                    }
 
+                });
+                $('.li_check_access').each(function () {
+                    var numhideItems = $(this).find('.check-access.hidden').length;
+                    var numItems = $(this).find('.check-access').length;
+                    if (numItems == numhideItems)
+                    {
+                        $(this).hide();
                     }
                 });
 
