@@ -17,7 +17,7 @@ $(document).ready(function(){
         <div class="isw-grid"></div>
         <h1>Category</h1>
         <ul class="buttons">
-          <li><a href="<?php echo $this->base?>/admin/categories/add" title="Add Category"><span class="isw-plus"></span></a></li>
+          <li><a class="check-access" href="<?php echo $this->base?>/admin/categories/add" title="Add Category"><span class="isw-plus"></span></a></li>
         </ul>
         <div class="clear"></div>
       </div>
@@ -36,7 +36,7 @@ $(document).ready(function(){
               <td><?php echo h($i); ?></td>
               <td><?php echo h($category['Category']['category']); ?></td>
               <td>
-              <a href="<?php echo $this->base?>/admin/categories/edit/<?php echo $category['Category']['id'];?>" title="Edit Category"><span class="icon-pencil"></span></a> 
+              <a class="check-access" href="<?php echo $this->base?>/admin/categories/edit/<?php echo $category['Category']['id'];?>" title="Edit Category"><span class="icon-pencil"></span></a> 
               <?php echo $this->Html->link('<span class="icon-remove"></span>',array('controller'=>'categories', 'action'=>'admin_category_delete', $category['Category']['id']), array('title'=>'Delete Category', 'escape'=>false, 'confirm'=>'Are you sure to delete '.$category['Category']['category'].'?')); ?>
               </td>
             </tr>
