@@ -17,7 +17,7 @@ $(document).ready(function(){
         <div class="isw-mail"></div>
         <h1>Email</h1>
         <ul class="buttons">
-          <li><a href="<?php echo $this->base?>/admin/emails/add" title="Add Email"><span class="isw-plus"></span></a></li>
+          <li><a class="check-access" href="<?php echo $this->base?>/admin/emails/add" title="Add Email"><span class="isw-plus"></span></a></li>
         </ul>
         <div class="clear"></div>
       </div>
@@ -60,7 +60,7 @@ $(document).ready(function(){
               <td><?php echo $this->Html->link($this->Html->image('icon_' . $email['Email']['active'] . '.png'), array('controller' => 'emails', 'action' => 'switch', 'active', $email['Email']['id']), array('class' => 'status', 'escape' => false)); ?></td>
 			  </td>
               <td>
-              <a href="<?php echo $this->base?>/admin/emails/edit/<?php echo $email['Email']['id'];?>" title="Edit Email"><span class="icon-pencil"></span></a> 
+              <a class="check-access" href="<?php echo $this->base?>/admin/emails/edit/<?php echo $email['Email']['id'];?>" title="Edit Email"><span class="icon-pencil"></span></a> 
               <?php echo $this->Html->link('<span class="icon-remove"></span>',array('controller'=>'emails', 'action'=>'admin_email_delete', $email['Email']['id']), array('title'=>'Delete Email', 'escape'=>false, 'confirm'=>'Are you sure to delete '.$email['Email']['name'].'?')); ?>
               </td>
             </tr>
