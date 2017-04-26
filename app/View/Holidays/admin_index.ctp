@@ -17,7 +17,7 @@ $(document).ready(function(){
         <div class="isw-bookmark"></div>
         <h1>Holidays</h1>
         <ul class="buttons">
-          <li><a href="<?php echo $this->base?>/admin/holidays/add" title="Add Holiday"><span class="isw-plus"></span></a></li>
+          <li><a class="check-access" href="<?php echo $this->base?>/admin/holidays/add" title="Add Holiday"><span class="isw-plus"></span></a></li>
         </ul>
         <div class="clear"></div>
       </div>
@@ -38,7 +38,7 @@ $(document).ready(function(){
               <td><?php echo date('d-m-Y', strtotime($holiday['Holiday']['date'])); ?></td>
               <td><?php echo h($holiday['Holiday']['name']); ?></td>
               <td>
-              <a href="<?php echo $this->base?>/admin/holidays/edit/<?php echo $holiday['Holiday']['id'];?>" title="Edit Holiday"><span class="icon-pencil"></span></a> 
+              <a class="check-access" href="<?php echo $this->base?>/admin/holidays/edit/<?php echo $holiday['Holiday']['id'];?>" title="Edit Holiday"><span class="icon-pencil"></span></a> 
               <?php echo $this->Html->link('<span class="icon-remove"></span>',array('controller'=>'holidays', 'action'=>'admin_holiday_delete', $holiday['Holiday']['id']), array('title'=>'Delete Holiday', 'escape'=>false, 'confirm'=>'Are you sure to delete '.$holiday['Holiday']['name'].'?')); ?>
               </td>
             </tr>
