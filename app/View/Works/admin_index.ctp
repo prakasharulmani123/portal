@@ -17,7 +17,7 @@ $(document).ready(function(){
         <div class="isw-archive"></div>
         <h1>Work</h1>
         <ul class="buttons">
-          <li><a href="<?php echo $this->base?>/admin/works/add" title="Add Works"><span class="isw-plus"></span></a></li>
+          <li><a class="check-access" href="<?php echo $this->base?>/admin/works/add" title="Add Works"><span class="isw-plus"></span></a></li>
         </ul>
         <div class="clear"></div>
       </div>
@@ -36,7 +36,7 @@ $(document).ready(function(){
               <td><?php echo h($i); ?></td>
               <td><?php echo h($work['Work']['work']); ?></td>
               <td>
-              <a href="<?php echo $this->base?>/admin/works/edit/<?php echo $work['Work']['id'];?>" title="Edit Work"><span class="icon-pencil"></span></a> 
+              <a class="check-access" href="<?php echo $this->base?>/admin/works/edit/<?php echo $work['Work']['id'];?>" title="Edit Work"><span class="icon-pencil"></span></a> 
               <?php echo $this->Html->link('<span class="icon-remove"></span>',array('controller'=>'works', 'action'=>'admin_work_delete', $work['Work']['id']), array('title'=>'Delete Work', 'escape'=>false, 'confirm'=>'Are you sure to delete '.$work['Work']['work'].'?')); ?>
               </td>
             </tr>
