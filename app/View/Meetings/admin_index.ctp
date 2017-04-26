@@ -107,7 +107,7 @@ $(document).ready(function(){
               </td>
               <td>
               <?php /*?><a href="<?php echo $this->base?>/admin/meetings/edit/<?php echo $meeting['Meeting']['id'];?>" title="Edit Meeting"><span class="icon-pencil"></span></a><?php */?>
-              <a href="<?php echo $this->base?>/admin/meetings/meetings_view/<?php echo $meeting['Meeting']['user_id'];?>/<?php echo date('Y-m-d', strtotime($meeting['Meeting']['meeting_date']));?>" title="View Meeting"><span class="isb-text_document"></span></a>
+              <a class="check-access" href="<?php echo $this->base?>/admin/meetings/meetings_view/<?php echo $meeting['Meeting']['user_id'];?>/<?php echo date('Y-m-d', strtotime($meeting['Meeting']['meeting_date']));?>" title="View Meeting"><span class="isb-text_document"></span></a>
               <?php //echo $this->Html->link('<span class="icon-remove"></span>',array('controller'=>'meetings', 'action'=>'admin_meeting_delete', $meeting['Meeting']['id']), array('title'=>'Delete Meeting', 'escape'=>false, 'confirm'=>'Are you sure to delete '.$meeting['Meeting']['meeting_date'].'?')); ?>
               </td>
             </tr>
