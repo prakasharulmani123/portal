@@ -4,7 +4,7 @@
         <title><?php echo $title_for_layout; ?></title>
         <?php
         ////echo $this->Html->image('favicon.ico');
-       //echo $this->Html->meta('icon');
+        //echo $this->Html->meta('icon');
 
         echo $this->Html->meta('favicon.ico', 'http://www.arkinfotec.com/wp-content/themes/ark/images/favicon.ico', array(
             'type' => 'icon'
@@ -31,7 +31,21 @@
         <div class="menu"> <?php echo $this->element('admin/left_sidebar'); ?> </div>
         <div class="content">
             <?php
-          //echo $this->element('admin/bread_line');
+            //////////////////////////////////Hiding unnecessary links in super_user side:
+            if ($this->Session->read('User.super_user') == 1 && $this->Session->read('User.role') == 'user') {
+                App::import('Model', 'Module');
+                $this->Module = new Module();
+                $demodule = json_decode($this->Session->read('User.access'));
+                foreach ($demodule as $key => $module):
+                    $modules = $this->Module->find('first', array('conditions' => array('Module.id' => $module)));
+                    $urlarray[] = $modules['Module']['url'];
+                    $phparray = array_filter($urlarray);
+                    $urlarraylist = array_values($phparray);
+                    $encodelist = json_encode($urlarraylist, JSON_UNESCAPED_SLASHES);
+            endforeach; }
+            ////////////////////////////////////////////////////////////////////////////
+           
+            //echo $this->element('admin/bread_line');
             echo $this->Session->flash();
             echo $this->fetch('content');
             ?>
@@ -67,7 +81,7 @@
                         if (typeof (array_2[1]) !== "undefined" && array_2[1] !== null) {
                             var list = list + '/' + array_2[1];
                         }
-                         console.log(list);
+                        console.log(list);
                     }
                     if ($.inArray(list, id) === -1) {
                         $(this).addClass('hidden');
