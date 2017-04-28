@@ -80,12 +80,12 @@ $marray[19]='active';
             <span class="isw-users"></span><span class="text">Employees</span>
         </a>
         <ul>
-            <li class="<?php echo $marray[1];?> ">
+            <li class="<?php echo $marray[1];?> li_check_access">
                 <a class="check-access"  href="<?php echo  $this->base?>/admin/users/employee/1">
                     <span class="icon-user"></span><span class="text" style="padding-left:1px;">Active</span>
                 </a>                  
             </li>          
-            <li class="<?php echo $marray[1];?>">
+            <li class="<?php echo $marray[1];?> li_check_access">
                 <a class="check-access"  href="<?php echo  $this->base?>/admin/users/employee/0">
                     <span class="icon-user"></span><span class="text" style="padding-left:1px;">In-active</span>
                 </a>                  
@@ -99,12 +99,12 @@ $marray[19]='active';
             <span class="isw-plus"></span><span class="text">Pending Reports</span>
         </a>
         <ul>
-            <li class="<?php echo $marray[13];?> ">
+            <li class="<?php echo $marray[13];?> li_check_access">
                 <a class="check-access"  href="<?php echo  $this->base?>/admin/pending_reports">
                     <span class="icon-tasks"></span><span class="text">View</span>
                 </a>                  
             </li>          
-            <li class="<?php echo $marray[13];?> ">
+            <li class="<?php echo $marray[13];?> li_check_access">
                 <a class="check-access"  href="<?php echo  $this->base?>/admin/pending_reports/add">
                     <span class="icon-tasks"></span><span class="text" style="padding-left:1px;">Add</span>
                 </a>                  
@@ -118,12 +118,12 @@ $marray[19]='active';
             <span class="isw-graph"></span><span class="text">Project</span>
         </a>
         <ul>
-            <li class="<?php echo $marray[4];?> " >
+            <li class="<?php echo $marray[4];?> li_check_access" >
                 <a class="check-access"  href="<?php echo  $this->base?>/admin/categories">
                     <span class="icon-th-large"></span><span class="text">Category</span>
                 </a>                  
             </li>          
-            <li class="<?php echo $marray[5];?> " >
+            <li class="<?php echo $marray[5];?> li_check_access" >
                 <a class="check-access"  href="<?php echo  $this->base?>/admin/works">
                     <span class=" icon-briefcase"></span><span class="text" style="padding-left:1px;">Work</span>
                 </a>                  
@@ -136,17 +136,17 @@ $marray[19]='active';
             <span class="isw-target"></span><span class="text">Leave</span>
         </a>
         <ul>
-            <li class="<?php echo $marray[6];?> " >
+            <li class="<?php echo $marray[6];?> li_check_access" >
                 <a class="check-access"  href="<?php echo  $this->base?>/admin/leave">
                     <span class="icon-tasks"></span><span class="text">Leave Requests</span>
                 </a>                  
             </li>          
-            <li class="<?php echo $marray[6];?> " >
+            <li class="<?php echo $marray[6];?> li_check_access" >
                 <a class="check-access"  href="<?php echo  $this->base?>/admin/leave/customize_leave">
                     <span class="icon-tasks"></span><span class="text" style="padding-left:1px;">Casual / Paid Toggle</span>
                 </a>                  
             </li>                     
-            <li class="<?php echo $marray[6];?> ">
+            <li class="<?php echo $marray[6];?> li_check_access">
                 <a class="check-access"   href="<?php echo  $this->base?>/admin/leave/add">
                     <span class="icon-tasks"></span><span class="text" style="padding-left:1px;">Add Leave</span>
                 </a>                  
@@ -159,12 +159,12 @@ $marray[19]='active';
             <span class="isw-list"></span><span class="text">Permission</span>
         </a>
         <ul>
-            <li class="<?php echo $marray[8];?> " >
+            <li class="<?php echo $marray[8];?> li_check_access" >
                 <a class="check-access"  href="<?php echo  $this->base?>/admin/permission">
                     <span class="icon-tasks"></span><span class="text">Permission Requests</span>
                 </a>                  
             </li>          
-            <li class="<?php echo $marray[8];?> " >
+            <li class="<?php echo $marray[8];?> li_check_access" >
                 <a class="check-access"  href="<?php echo  $this->base?>/admin/permission/add">
                     <span class="icon-tasks"></span><span class="text">Add Permission</span>
                 </a>                  
@@ -178,8 +178,8 @@ $marray[19]='active';
     <li class="openable<?php echo " ".$open1;?> li_check_access">
         <a class=""  href="#"><span class="isw-calendar"></span><span class="text">Monthly Reports</span></a>
         <ul>
-	        <li class="<?php echo $marray[9];?> "> <a class="check-access"  href="<?php  echo  $this->base?>/admin/dailystatus/monthly_report"><span class="icon-calendar"></span><span class="text">Daily Reports</span> </a> </li>
-            <li class="<?php echo $marray[11];?> "><a class="check-access"  href="<?php  echo  $this->base?>/admin/leave/monthly_report"><span class="icon-calendar"></span><span class="text">Leave Reports</span></a></li>
+	        <li class="<?php echo $marray[9];?> li_check_access"> <a class="check-access"  href="<?php  echo  $this->base?>/admin/dailystatus/monthly_report"><span class="icon-calendar"></span><span class="text">Daily Reports</span> </a> </li>
+            <li class="<?php echo $marray[11];?> li_check_access"><a class="check-access"  href="<?php  echo  $this->base?>/admin/leave/monthly_report"><span class="icon-calendar"></span><span class="text">Leave Reports</span></a></li>
         </ul>                
     </li>
   <li class="<?php echo $marray[10]; ?> li_check_access" > <a class="check-access"  href="<?php echo  $this->base?>/admin/holidays"> <span class="isw-bookmark"></span><span class="text">Holidays</span> </a>	 
