@@ -49,5 +49,4 @@ class AppHelper extends Helper {
 		);
 		return $this->Html->scriptBlock('var Shop = ' . $this->Js->object($shop) . ';');
 	}
-
 }
