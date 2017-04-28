@@ -74,7 +74,7 @@ class PermissionController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_index() {
-          $this->layout = "admin-inner";
+        $this->layout = "admin-inner";
         $this->set('cpage', 'permission');
 
         if ($this->request->is('post') || $this->request->is('put')) {
@@ -232,7 +232,7 @@ class PermissionController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_reset() {
-          $this->layout = "admin-inner";
+        $this->layout = "admin-inner";
         $this->Session->delete('Permission');
         return $this->redirect(array('action' => 'admin_index'));
     }
@@ -306,7 +306,7 @@ class PermissionController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_view($id = NULL) {
-          $this->layout = "admin-inner";
+        $this->layout = "admin-inner";
         $this->set('cpage', 'leave');
 
         $leave = $this->Permission->find('first', array('conditions' => array('Permission.id' => $id)));
@@ -343,7 +343,7 @@ class PermissionController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_add_remarks() {
-          $this->layout = "admin-inner";
+        $this->layout = "admin-inner";
         $update = array(
             'Permission' => array(
                 'id' => $this->data['id'],
@@ -420,7 +420,7 @@ class PermissionController extends AppController {
         $status = $this->data['status'];
         $return = array();
 
-        
+
         $add_to = $this->requestAction('emails/all_to_email');
 
         foreach ($add_to as $to) {
@@ -606,7 +606,7 @@ class PermissionController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_add() {
-          $this->layout = "admin-inner";
+        $this->layout = "admin-inner";
         $this->set('cpage', 'permission');
         $this->layout = "admin-inner";
         if ($this->request->is('post') || $this->request->is('put')) {
@@ -668,7 +668,7 @@ class PermissionController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function admin_bulk_status_change() {
-          $this->layout = "admin-inner";
+        $this->layout = "admin-inner";
         $ids = $this->data['permission_ids'];
         foreach ($ids as $id) {
             $update = array(
