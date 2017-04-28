@@ -32,37 +32,47 @@
                     <div class="span8">
                         <div id="tree" style="font-size:11px;">
                             <?php
+                            App::import('Model', 'User');
+                            $this->User = new User();
+                            $useraccess = $this->User->find('first', array('conditions' => array('User.id' => $id)));
+                            $accessid = $useraccess['User']['access'];
                             foreach ($roles as $role) :
-                                 $array = json_decode( $findaccesses);
-                            if (is_array($array) && in_array($role['Module']['id'],$array)) {
-                                                $checked = 'checked';
-                                            } else {
-                                                $checked = '';
-                                            }
-                            
+                                $array = json_decode($findaccesses);
+//                                print_r($array);print_r($accessid);exit;
+                                if (is_array($array) && in_array($role['Module']['id'], $array) && $findaccesses == $accessid) {
+                                    $checked = 'checked';
+                                } else {
+                                    $checked = '';
+                                }
                                 ?>
                                 <ul>
                                     <li>
                                         <?php
-                                            echo $this->Form->input($role['Module']['module_name'], array('type' => 'checkbox', 'name' => "modules[]", 'value' => $role['Module']['id'], $checked));
-                                            foreach ($childs as $child) :
-                                                if ($role['Module']['id'] == $child['Module']['parent_id']) {
-                                                    ?>
-                                                    <ul>
-                                                        <li>
-                                                    <?php echo $this->Form->input($child['Module']['module_name'], array('type' => 'checkbox', 'name' => "modules[]", 'value' => $child['Module']['id'], $checked)); ?>
+                                        echo $this->Form->input($role['Module']['module_name'], array('type' => 'checkbox', 'name' => "modules[]", 'value' => $role['Module']['id'], $checked));
+                                        foreach ($childs as $child) :
+                                            if (is_array($array) && in_array($child['Module']['id'], $array) && $findaccesses == $accessid) {
+                                                $checked = 'checked';
+                                            } else {
+                                                $checked = '';
+                                            }
+                                            if ($role['Module']['id'] == $child['Module']['parent_id']) {
+                                                ?>
+                                                <ul>
+                                                    <li>
+                                                        <?php echo $this->Form->input($child['Module']['module_name'], array('type' => 'checkbox', 'name' => "modules[]", 'value' => $child['Module']['id'], $checked)); ?>
 
-                                                        </li>
-                                                    </ul>   
-                                        <?php } ?>
-                            <?php   
-                            endforeach; 
-                                      ?> 
+                                                    </li>
+                                                </ul>   
+                                            <?php } ?>
+                                            <?php
+                                        endforeach;
+                                        ?> 
                                     </li>
                                 </ul>
-    <?php
-endforeach;
-?>
+                                <?php
+                            endforeach;
+//                            }
+                            ?>
                         </div>
                     </div>
                     <div class="clear"></div>
@@ -76,5 +86,5 @@ endforeach;
             <input type="button" name="back" id="back" value="Back" class="btn" onclick="location.href = '<?php echo $this->base; ?>/admin/users/employee/1'" />          
         </div>
     </div>
-<?php echo $this->Form->end(); ?>
+    <?php echo $this->Form->end(); ?>
 </div>
