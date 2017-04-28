@@ -102,7 +102,7 @@ class AppController extends Controller {
                         $module .= '/' . $path[1];
                     }
                     $roles = $this->Module->find('first', array('conditions' => array('Module.url' => $module))); //we get the authors from the database       
-                    if (is_array($roles['Module']['id']) && $roles) {
+                    if (is_array($roles) &&  $roles) {
                         return in_array($roles['Module']['id'], $demodule);
                     } else {
                         return false;
@@ -114,21 +114,7 @@ class AppController extends Controller {
 
     public function beforeFilter() {
         date_default_timezone_set("Asia/Kolkata");
-         if ($this->action == 'admin_login'){
-        if ($this->Session->read('User.super_user') == 1 && $this->Session->read('User.role') == 'user') {
-            $this->loadModel('Module');
-            $urlarray = array();
-            $demodule = json_decode($this->Session->read('User.access'));
-            foreach ($demodule as $key => $module):
-                $modules = $this->Module->find('first', array('conditions' => array('Module.id' => $module)));
-                $urlarray[] = $modules['Module']['url'];
-                $phparray = array_filter($urlarray);
-                $urlarraylist = array_values($phparray);
-                $encodelist = json_encode($urlarraylist, JSON_UNESCAPED_SLASHES);
-            endforeach;
-            $this->set('encodelist', $encodelist);
-        }
-        }
+       
     }
 
 ///////////////////////////////////////////////////////////////////////////////
