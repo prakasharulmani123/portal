@@ -36,15 +36,18 @@
                 App::import('Model', 'Module');
                 $this->Module = new Module();
                 $demodule = json_decode($this->Session->read('User.access'));
+                $urlarraylist = [];
                 foreach ($demodule as $key => $module):
                     $modules = $this->Module->find('first', array('conditions' => array('Module.id' => $module)));
-                    $urlarray[] = $modules['Module']['url'];
-                    $phparray = array_filter($urlarray);
-                    $urlarraylist = array_values($phparray);
-                    $encodelist = json_encode($urlarraylist, JSON_UNESCAPED_SLASHES);
-            endforeach; }
+                    if ($modules) {
+                        $urlarray[] = $modules['Module']['url'];
+                    }
+                endforeach;
+                $phparray = array_filter($urlarray);
+                $urlarraylist = array_values($phparray);
+                $encodelist = json_encode($urlarraylist, JSON_UNESCAPED_SLASHES);
+            }
             ////////////////////////////////////////////////////////////////////////////
-           
             //echo $this->element('admin/bread_line');
             echo $this->Session->flash();
             echo $this->fetch('content');
