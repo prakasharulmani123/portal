@@ -92,11 +92,13 @@ class AppController extends Controller {
             if ($this->Session->read('User.super_user') == 1 && $this->Session->read('User.role') == 'user') {
                 $demodule = json_decode($this->Session->read('User.access'));
                 $request_path = $_SERVER['REQUEST_URI'];
-                if ($request_path == '/portal/branches/dev/admin/users') {
+                $exp = explode('/admin', $request_path);
+                $path = explode('/', substr($exp[1], 1));
+                if ($path == 'users') {
                     return true;
                 } else {
-                    $exp = explode('/admin', $request_path);
-                    $path = explode('/', substr($exp[1], 1));
+//                    $exp = explode('/admin', $request_path);
+//                    $path = explode('/', substr($exp[1], 1));
                     $module = $path[0];
                     if (isset($path[1])) {
                         $module .= '/' . $path[1];
