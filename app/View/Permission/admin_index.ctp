@@ -240,15 +240,16 @@
 <?php if (!$this->request->is('ajax')) { ?>
     <div class="workplace">
         <div class="row-fluid">
-            <div class="btn-group span2" style="float:right;">
-
+            <div class="btn-group span2 li_check_access" style="float:right;">
+                <!--<div class="li_check_access">-->
                 <button data-toggle="dropdown" class="btn btn-info dropdown-toggle" id="com_button">
                     <span id="span_com">Bulk Change Status</span> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="javascript:change_status(1)">Approved</a></li>
-                    <li><a href="javascript:change_status(2)">Declined</a></li>
+                    <li class=""><a class="check-access" data-href="/admin/permission/add_remarks"  href="javascript:change_status(1)">Approved</a></li>
+                    <li  class=""><a class="check-access" data-href="/admin/permission/add_remarks"  href="javascript:change_status(2)">Declined</a></li>
                 </ul>
+                <!--</div>-->
             </div>
         </div>
 
@@ -335,14 +336,14 @@ $date=date('d-m-Y', strtotime($blogs['Compensation']['date']));
                                         $value = 'Declined';
                                     }
                                     ?>
-                                    <div class="btn-group"> 
+                                    <div class="btn-group li_check_access"> 
                                         <button data-toggle="dropdown" class="btn btn-mini <?php echo $button; ?> dropdown-toggle" id="button_<?php echo $leave['Permission']['id'] ?>">
                                             <span id="span_<?php echo $leave['Permission']['id'] ?>"><?php echo $value; ?></span> <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu">
                         <!--                    <li><a href="#" user-id="<?php echo $leave['Permission']['user_id'] ?>" leave-id="<?php echo $leave['Permission']['id'] ?>" status="0">Pending</a></li>
-                                            -->                    <li><a id="a-permission-approve-<?php echo $leave['Permission']['id'] ?>" href="javascript:permission_sent(<?php echo $leave['Permission']['id'] ?>, 'approve', <?php echo $leave['Permission']['user_id'] ?>,<?php echo $leave['Permission']['id'] ?>)" status="1">Approved</a></li>
-                                            <li><a id="a-permission-decline-<?php echo $leave['Permission']['id'] ?>" href="javascript:permission_sent(<?php echo $leave['Permission']['id'] ?>, 'decline', <?php echo $leave['Permission']['user_id'] ?>,<?php echo $leave['Permission']['id'] ?>)" status="2">Declined</a></li>
+                                            -->                    <li class=""><a class="check-access" id="a-permission-approve-<?php echo $leave['Permission']['id'] ?>" data-href="/admin/permission/add_remarks" href="javascript:permission_sent(<?php echo $leave['Permission']['id'] ?>, 'approve', <?php echo $leave['Permission']['user_id'] ?>,<?php echo $leave['Permission']['id'] ?>)" status="1">Approved</a></li>
+                                            <li class=""><a class="check-access" id="a-permission-decline-<?php echo $leave['Permission']['id'] ?>" data-href="/admin/permission/add_remarks" href="javascript:permission_sent(<?php echo $leave['Permission']['id'] ?>, 'decline', <?php echo $leave['Permission']['user_id'] ?>,<?php echo $leave['Permission']['id'] ?>)" status="2">Declined</a></li>
                                         </ul>
                                     </div>
                                 </td>
