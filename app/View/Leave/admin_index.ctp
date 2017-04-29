@@ -252,8 +252,8 @@ $records[]=date('d-m-Y', strtotime($blogs['Compensation']['date']));
               </button>
                 <ul class="dropdown-menu">
 <!--                    <li><a href="#" user-id="<?php echo $leave['Leave']['user_id']?>" leave-id="<?php echo $leave['Leave']['id']?>" status="0">Pending</a></li>
--->                    <li><a class="check-access" id="a-leave-approve-<?php echo $leave['Leave']['id']?>" href="javascript:leave_sent(<?php echo $leave['Leave']['id']?>, 'approve', <?php echo $leave['Leave']['user_id']?>,<?php echo $leave['Leave']['id']?>)" status="1">Approved</a></li>
-                    <li><a class="check-access" id="a-leave-decline-<?php echo $leave['Leave']['id']?>" href="javascript:leave_sent(<?php echo $leave['Leave']['id']?>, 'decline', <?php echo $leave['Leave']['user_id']?>,<?php echo $leave['Leave']['id']?>)" status="2">Declined</a></li>
+-->                    <li><a class="check-access" id="a-leave-approve-<?php echo $leave['Leave']['id']?>" data-href="/admin/leave/add_remarks"  href="javascript:leave_sent(<?php echo $leave['Leave']['id']?>, 'approve', <?php echo $leave['Leave']['user_id']?>,<?php echo $leave['Leave']['id']?>)" status="1">Approved</a></li>
+                    <li><a class="check-access" id="a-leave-decline-<?php echo $leave['Leave']['id']?>" data-href="/admin/leave/add_remarks"  href="javascript:leave_sent(<?php echo $leave['Leave']['id']?>, 'decline', <?php echo $leave['Leave']['user_id']?>,<?php echo $leave['Leave']['id']?>)" status="2">Declined</a></li>
                 </ul>
                       <!--</div>-->
                 </div>
