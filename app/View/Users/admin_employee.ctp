@@ -50,13 +50,19 @@
                                 <td>
                                     <a class="check-access" href="<?php echo $this->base ?>/admin/users/edit/<?php echo $user['User']['id']; ?>" title="Edit Employee"><span class="icon-pencil"></span></a> 
                                     <a class="check-access" href="<?php echo $this->base ?>/admin/users/view/<?php echo $user['User']['id'] ?>" title="View Employee"><span class="isb-text_document"></span></a> 
-                <?php  if($this->Session->read('User.id')==1) {
-                if($user['User']['super_user']==1  && $user['User']['active']==1){?>
-                              <a href="<?php echo $this->base ?>/admin/users/access/<?php echo $user['User']['id'] ?>" title="Access Module"><span class="icon-user"></span></a> 
-                <?php }
-                }  ?>
+                                    <?php
+                                    $hide_module = 'hidden';
+                                    
+                                    if($this->Session->read('User.role')== 'admin') {
+                                        if($user['User']['super_user']==1  && $user['User']['active']==1){
+                                            $hide_module = '';
+                                        }
+                                    }
+                                    ?>    
+                                    <a href="<?php echo $this->base ?>/admin/users/access/<?php echo $user['User']['id'] ?>" title="Access Module" class="access_module <?php echo $hide_module?>"><span class="icon-user"></span></a> 
                                 </td>
-                                <td><span style="display:none"><?php echo $user['User']['super_user'] ?></span><?php echo $this->Html->link($this->Html->image('icon_' . $user['User']['super_user'] . '.png'), array('controller' => 'users', 'action' => 'switch', 'super_user', $user['User']['id']), array('class' => 'status', 'escape' => false)); ?></td>
+                                <td><span style="display:none"><?php echo $user['User']['super_user'] ?></span><?php echo $this->Html->link($this->Html->image('icon_' . $user['User']['super_user'] . '.png', array()), array('controller' => 'users', 'action' => 'switch', 'super_user', $user['User']['id']), array('class' => 'status', 'escape' => false, 'data-superuser' => true)); ?></td>
+                               
                             </tr>
     <?php $i++;
 endforeach; ?>
