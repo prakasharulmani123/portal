@@ -245,15 +245,17 @@ $records[]=date('d-m-Y', strtotime($blogs['Compensation']['date']));
 					  $value = 'Declined';
 				  }
 				  ?>
-              <div class="btn-group"> 
+              <div class="btn-group li_check_access"> 
+                  <!--<div class="li_check_access">-->
               <button data-toggle="dropdown" class="btn btn-mini <?php echo $button; ?> dropdown-toggle" id="button_<?php echo $leave['Leave']['id']?>">
               	<span id="span_<?php echo $leave['Leave']['id']?>"><?php echo $value; ?></span> <span class="caret"></span>
               </button>
                 <ul class="dropdown-menu">
 <!--                    <li><a href="#" user-id="<?php echo $leave['Leave']['user_id']?>" leave-id="<?php echo $leave['Leave']['id']?>" status="0">Pending</a></li>
--->                    <li><a id="a-leave-approve-<?php echo $leave['Leave']['id']?>" href="javascript:leave_sent(<?php echo $leave['Leave']['id']?>, 'approve', <?php echo $leave['Leave']['user_id']?>,<?php echo $leave['Leave']['id']?>)" status="1">Approved</a></li>
-                    <li><a id="a-leave-decline-<?php echo $leave['Leave']['id']?>" href="javascript:leave_sent(<?php echo $leave['Leave']['id']?>, 'decline', <?php echo $leave['Leave']['user_id']?>,<?php echo $leave['Leave']['id']?>)" status="2">Declined</a></li>
+-->                    <li><a class="check-access" id="a-leave-approve-<?php echo $leave['Leave']['id']?>" href="javascript:leave_sent(<?php echo $leave['Leave']['id']?>, 'approve', <?php echo $leave['Leave']['user_id']?>,<?php echo $leave['Leave']['id']?>)" status="1">Approved</a></li>
+                    <li><a class="check-access" id="a-leave-decline-<?php echo $leave['Leave']['id']?>" href="javascript:leave_sent(<?php echo $leave['Leave']['id']?>, 'decline', <?php echo $leave['Leave']['user_id']?>,<?php echo $leave['Leave']['id']?>)" status="2">Declined</a></li>
                 </ul>
+                      <!--</div>-->
                 </div>
 				  <td><span id="remarks_<?php echo $leave['Leave']['id']?>"><?php echo h($leave['Leave']['remarks'])?></span></td>
                   </td>
