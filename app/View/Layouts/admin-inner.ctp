@@ -63,53 +63,65 @@
                     var p = this.firstChild;
                     if (p.src.match('icon_1.png')) {
                         $(p).attr({src: Shop.basePath + "img/icon_0.png", alt: "Activate"});
+
+                        if ($(this).data('superuser')) {
+                            $(this).closest('tr').find('.access_module').addClass('hidden');
+//                            var abc = $("tr a.access_module").attr("href");
+//                              var array = abc.split('/access/');
+//                              var aid=array[1]
+//                            console.log(aid);
+                        }
                     } else {
                         $(p).attr("src", Shop.basePath + "img/icon_1.png");
                         $(p).attr("alt", "Deactivate");
+
+                        if ($(this).data('superuser')) {
+                            $(this).closest('tr').find('.access_module').removeClass('hidden');
+                        }
                     }
                     ;
                     $.get(this.href);
                     return false;
                 });
-            <?php  if ($this->Session->read('User.super_user') == 1 && $this->Session->read('User.role') == 'user') {?>
-                $('a.check-access').each(function () {
-                    if ($(this).data('href')) {
-                        var href = $(this).data('href');
-                    } else {
-                        var href = $(this).attr('href');
-                    }
-                    var array = href.split('/admin/');
-                    var id = <?php echo $encodelist; ?>;
-                    var list = "";
-                    if (typeof (array[1]) !== "undefined" && array[1] !== null) {
-                        var array_2 = array[1].split('/');
-                        var list = array_2[0];
-                        if (typeof (array_2[1]) !== "undefined" && array_2[1] !== null) {
-                            var list = list + '/' + array_2[1];
+<?php if ($this->Session->read('User.super_user') == 1 && $this->Session->read('User.role') == 'user') { ?>
+                    $('a.check-access').each(function () {
+                        if ($(this).data('href')) {
+                            var href = $(this).data('href');
+                        } else {
+                            var href = $(this).attr('href');
                         }
-                    }
-//                    console.log(list);
-//                    console.log(id);
-//                    console.log($.inArray(list, id) === -1);
-//                    console.log('-------');
-                    if ($.inArray(list, id) === -1) {
-                        $(this).addClass('hidden');
-                    }
+                        var array = href.split('/admin/');
+                        var id = <?php echo $encodelist; ?>;
+                        var list = "";
+                        if (typeof (array[1]) !== "undefined" && array[1] !== null) {
+                            var array_2 = array[1].split('/');
+                            var list = array_2[0];
+                            if (typeof (array_2[1]) !== "undefined" && array_2[1] !== null) {
+                                var list = list + '/' + array_2[1];
+                            }
+                        }
+    //                    console.log(list);
+    //                    console.log(id);
+    //                    console.log($.inArray(list, id) === -1);
+    //                    console.log('-------');
+                        if ($.inArray(list, id) === -1) {
+                            $(this).addClass('hidden');
+                        }
 
-                });
-                
-                $('.li_check_access').each(function () {
-                    var numhideItems = $(this).find('.check-access.hidden').length;
-                    var numItems = $(this).find('.check-access').length;
-                    if (numItems == numhideItems)
-                    {
-                        $(this).hide();
-                    }
-                });
-                   <?php }?>
+                    });
+
+                    $('.li_check_access').each(function () {
+                        var numhideItems = $(this).find('.check-access.hidden').length;
+                        var numItems = $(this).find('.check-access').length;
+                        if (numItems == numhideItems)
+                        {
+                            $(this).hide();
+                        }
+                    });
+<?php } ?>
 
             });
-         
+
         </script>
     </body>
 </html>
