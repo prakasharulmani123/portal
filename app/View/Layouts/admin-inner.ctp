@@ -73,8 +73,11 @@
                 });
 
                 $('a.check-access').each(function () {
-                    var href = $(this).attr('href');
-                    console.log(href);
+                    if($(this).data('href')){
+                        var href = $(this).data('href');
+                    }else{
+                        var href = $(this).attr('href');
+                    }
                     var array = href.split('/admin/');
                     var id = <?php echo $encodelist; ?>;
                     var list = "";
@@ -84,8 +87,11 @@
                         if (typeof (array_2[1]) !== "undefined" && array_2[1] !== null) {
                             var list = list + '/' + array_2[1];
                         }
-                        console.log(list);
                     }
+                    console.log(list);
+                    console.log(id);
+                    console.log($.inArray(list, id) === -1);
+                    console.log('-------');
                     if ($.inArray(list, id) === -1) {
                         $(this).addClass('hidden');
                     }
