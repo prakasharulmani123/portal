@@ -71,11 +71,11 @@
                     $.get(this.href);
                     return false;
                 });
-
+            <?php  if ($this->Session->read('User.super_user') == 1 && $this->Session->read('User.role') == 'user') {?>
                 $('a.check-access').each(function () {
-                    if($(this).data('href')){
+                    if ($(this).data('href')) {
                         var href = $(this).data('href');
-                    }else{
+                    } else {
                         var href = $(this).attr('href');
                     }
                     var array = href.split('/admin/');
@@ -88,15 +88,16 @@
                             var list = list + '/' + array_2[1];
                         }
                     }
-                    console.log(list);
-                    console.log(id);
-                    console.log($.inArray(list, id) === -1);
-                    console.log('-------');
+//                    console.log(list);
+//                    console.log(id);
+//                    console.log($.inArray(list, id) === -1);
+//                    console.log('-------');
                     if ($.inArray(list, id) === -1) {
                         $(this).addClass('hidden');
                     }
 
                 });
+                
                 $('.li_check_access').each(function () {
                     var numhideItems = $(this).find('.check-access.hidden').length;
                     var numItems = $(this).find('.check-access').length;
@@ -105,8 +106,10 @@
                         $(this).hide();
                     }
                 });
+                   <?php }?>
 
             });
+         
         </script>
     </body>
 </html>
