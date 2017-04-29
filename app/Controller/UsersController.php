@@ -133,12 +133,12 @@ class UsersController extends AppController {
     public function admin_access($id = null) {
         $this->layout = "admin-inner";
         $this->set('cpage', 'employee');
-          $this->set('id', $id);
-        $findaccess = $this->User->find('first', array('conditions' => array('User.super_user' => 1, 'User.role' => 'user','User.id'=>$id)));
+        $this->set('id', $id);
+        $findaccess = $this->User->find('first', array('conditions' => array('User.super_user' => 1, 'User.role' => 'user', 'User.id' => $id)));
         $findaccesses = $findaccess['User']['access'];
         $this->set('findaccesses', $findaccesses);
         $this->loadModel('Module');
-        $roles = $this->Module->find('all', array('conditions' => array('Module.parent_id' => 0))); 
+        $roles = $this->Module->find('all', array('conditions' => array('Module.parent_id' => 0)));
         $this->set('roles', $roles);
         $childs = $this->Module->find('all', array('conditions' => array('Module.parent_id !=' => 0)));
         $this->set('childs', $childs);
@@ -151,8 +151,8 @@ class UsersController extends AppController {
             $this->request->data['User']['id'] = $id;
             $this->request->data['User']['access'] = $module;
             if ($this->User->save($this->request->data)) {
-                return $this->redirect('/admin/users/employee/1');
                 $this->Session->setFlash('Added Sucessfully', 'flash_success');
+                return $this->redirect('/admin/users/employee/1');
             } else {
                 $this->Session->setFlash('Failed to add ', 'flash_error');
                 return $this->redirect('/admin/users/dashboard');
