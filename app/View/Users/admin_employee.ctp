@@ -57,9 +57,9 @@
                                         if($user['User']['super_user']==1  && $user['User']['active']==1){
                                             $hide_module = '';
                                         }
-                                    }
-                                    ?>    
-                                    <a href="<?php echo $this->base ?>/admin/users/access/<?php echo $user['User']['id'] ?>" title="Access Module" class="access_module <?php echo $hide_module?>"><span class="icon-user"></span></a> 
+                                    ?>
+                                    <a href="<?php echo $this->base ?>/admin/users/access/<?php echo $user['User']['id'] ?>" title="Access Module" class="access_module <?php echo $hide_module?>"><span class="icon-user"></span></a>
+                                    <?php }?>
                                 </td>
                                 <td><span style="display:none"><?php echo $user['User']['super_user'] ?></span><?php echo $this->Html->link($this->Html->image('icon_' . $user['User']['super_user'] . '.png', array()), array('controller' => 'users', 'action' => 'switch', 'super_user', $user['User']['id']), array('class' => 'status', 'escape' => false, 'data-superuser' => true)); ?></td>
                                
