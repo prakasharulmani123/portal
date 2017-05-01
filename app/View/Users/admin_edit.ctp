@@ -255,7 +255,7 @@ function get_cities(id)
   <div class="row-fluid">                
     <div align="center" class="span12">
       <input type="submit" name="save" id="save" value="Save" class="btn" />
-      <input type="button" name="back" id="back" value="Back" class="btn" onclick="location.href='<?php echo $this->base; ?>/admin/users/employee'" />          
+      <input type="button" name="back" id="back" value="Back" class="btn" onclick="location.href='<?php echo $this->base; ?>/admin/users/employee/1'" />          
     </div>
   </div>
 	<?php echo $this->Form->input('pre_file',array('label'=>false, 'size'=>40, 'type'=>'hidden','value'=>$this->data['User']['photo']));?>	
