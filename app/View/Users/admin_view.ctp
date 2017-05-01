@@ -1,7 +1,7 @@
 <div class="workplace">
     <div class="row-fluid">                
         <div align="right" class="span12">
-          <input type="button" name="back" id="back" value="Back" class="btn" onclick="location.href='<?php echo $this->base; ?>/admin/users/employee'" />          
+          <input type="button" name="back" id="back" value="Back" class="btn" onclick="location.href='<?php echo $this->base; ?>/admin/users/employee/1'" />          
         </div>
     </div>
 
