@@ -139,6 +139,7 @@ class LeaveController extends AppController {
         $this->layout = "user-inner";
         $u_id = $this->Session->read('User.id');
         $this->loadModel('Compensation');
+        $this->loadModel('SubLeave');
         $lists = $this->Compensation->find('count', array('conditions' => array('AND' => array('Compensation.user_id=' . $u_id), array('Compensation.status' => 0), array('Compensation.type' => 'L'))));
         $this->set('lists', $lists);
 
@@ -146,17 +147,13 @@ class LeaveController extends AppController {
             $this->request->data['Leave']['date'] = date('Y-m-d', strtotime($this->data['Leave']['date']));
             $this->request->data['Leave']['user_id'] = $this->Session->read('User.id');
             $check_leave = $this->Leave->findByUserIdAndDate($this->Session->read('User.id'), date('Y-m-d', strtotime($this->data['Leave']['date'])));
-
             if (empty($check_leave)) {
                 $insert_data = array();
                 $check_sun_day = false;
                 $leave_count = $this->user_get_all_leave_count_per_year($this->Session->read('User.id'), date('Y', strtotime($this->data['Leave']['date'])));
 //$leave_count = $this->user_get_all_leave_count_per_year($this->Session->read('User.id'),date('Y'));
-
                 $insert_data = $this->request->data;
                 $status = $insert_data['Leave']['status'];
-//                pr($status);
-//                exit;
                 $leave_days = $insert_data['Leave']['days'];
                 if ($status == 1) {
                     $com_list = $this->Compensation->find('all', array('recursive' => -1, 'conditions' => array('AND' => array('Compensation.user_id=' . $u_id), array('Compensation.status' => 0), array('Compensation.type' => 'L'))));
@@ -204,41 +201,50 @@ class LeaveController extends AppController {
                                 'type' => 'L',
                             )
                         );
+
                         $this->Compensation->saveAll($com_data);
                         $insert_data['Leave']['compensation_id'] = $compensation_id;
                         $insert_data['Leave']['days'] = 0.00;
                     }
                 }
-                $days = $this->request->data['Leave']['days'];
-                $round_days = round($this->request->data['Leave']['days']);
+                $days = $insert_data['Leave']['days'];
+                $round_days = round($insert_data['Leave']['days']);
+                if ($round_days == 0) {
+                    $insert_data['SubLeave'][0] = array(
+                                'date' => date('Y-m-d', strtotime($this->data['Leave']['date'])),
+                                'day' => '0.00',
+                                'paid_casual_this_day' => '0.00',
+                                'status' => '-',
+                    );
+                } else {
+                    for ($x = 1; $x <= $round_days; $x++) {
+                        $sub_day = 1;
 
-                for ($x = 1; $x <= $round_days; $x++) {
-                    $sub_day = 1;
-
-                    if ($x == $round_days) {
-                        if ($round_days != $days) {
-                            $sub_day = 0.5;
-                        }
-                    }
-
-                    if ($x > 1) {
-                        for ($z = 1; $z <= 7; $z++) {
-                            $check_day = date('D', strtotime('+' . $z . ' day', strtotime($insert_data['SubLeave'][$x - 1]['date'])));
-
-                            $this->loadModel('Holiday');
-                            $holiday = $this->Holiday->findByDate(date('Y-m-d', strtotime('+' . $z . ' day', strtotime($insert_data['SubLeave'][$x - 1]['date']))));
-
-                            if ($check_day != 'Sun' && empty($holiday)) {
-                                $insert_data['SubLeave'][$x]['date'] = date('Y-m-d', strtotime('+' . $z . ' day', strtotime($insert_data['SubLeave'][$x - 1]['date'])));
-                                break;
+                        if ($x == $round_days) {
+                            if ($round_days != $days) {
+                                $sub_day = 0.5;
                             }
                         }
-                    } else {
-                        $insert_data['SubLeave'][$x]['date'] = date('Y-m-d', strtotime($this->data['Leave']['date']));
-                    }
 
-                    $insert_data['SubLeave'][$x]['day'] = $sub_day;
-                    $insert_data['SubLeave'][$x]['status'] = '-';
+                        if ($x > 1) {
+                            for ($z = 1; $z <= 7; $z++) {
+                                $check_day = date('D', strtotime('+' . $z . ' day', strtotime($insert_data['SubLeave'][$x - 1]['date'])));
+
+                                $this->loadModel('Holiday');
+                                $holiday = $this->Holiday->findByDate(date('Y-m-d', strtotime('+' . $z . ' day', strtotime($insert_data['SubLeave'][$x - 1]['date']))));
+
+                                if ($check_day != 'Sun' && empty($holiday)) {
+                                    $insert_data['SubLeave'][$x]['date'] = date('Y-m-d', strtotime('+' . $z . ' day', strtotime($insert_data['SubLeave'][$x - 1]['date'])));
+                                    break;
+                                }
+                            }
+                        } else {
+                            $insert_data['SubLeave'][$x]['date'] = date('Y-m-d', strtotime($this->data['Leave']['date']));
+                        }
+
+                        $insert_data['SubLeave'][$x]['day'] = $sub_day;
+                        $insert_data['SubLeave'][$x]['status'] = '-';
+                    }
                 }
 
 //delete pending report on leave days			
@@ -256,6 +262,8 @@ class LeaveController extends AppController {
 
                 if ($this->Leave->saveAll($insert_data)) {
                     $this->leave_request_mail($this->Leave->getLastInsertId());
+
+
                     $this->Session->setFlash('Leave Form Submitted Sucessfully', 'flash_success');
                     return $this->redirect('/leave');
                 } else {
@@ -390,6 +398,20 @@ class LeaveController extends AppController {
 
     public function user_get_leave_requests_count() {
         return $this->Leave->find('count', array('conditions' => array('Leave.user_id' => $this->Session->read('User.id'), 'Leave.approved' => 0)));
+    }
+
+///////////////////////////////////////////////////////////////////////////////
+    public function user_get_compensation_counts() {
+        $this->loadModel('Compensation');
+        $u_id = $this->Session->read('User.id');
+        return $this->Compensation->find('count', array('recursive' => -1, 'conditions' => array('AND' => array('Compensation.user_id=' . $u_id), array('Compensation.status' => 0), array('Compensation.type' => 'L'))));
+    }
+
+///////////////////////////////////////////////////////////////////////////////
+    public function user_get_compensation_permission_counts() {
+        $this->loadModel('Compensation');
+        $u_id = $this->Session->read('User.id');
+        return $this->Compensation->find('count', array('recursive' => -1, 'conditions' => array('AND' => array('Compensation.user_id=' . $u_id), array('Compensation.status' => 0), array('Compensation.type' => 'P'))));
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -565,13 +587,11 @@ class LeaveController extends AppController {
 
     public function user_get_all_leave_count() {
         $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $this->Session->read('User.id'), 'Leave.approved' => 1, 'YEAR(Leave.date)' => date('Y')), 'order' => array('Leave.created DESC')));
-
         if ($leaves) {
             $leave_count = 0;
             foreach ($leaves as $leave) {
                 $leave_count += $leave['Leave']['days'];
             }
-
             return $leave_count;
         } else {
             return 0;
@@ -1028,7 +1048,7 @@ class LeaveController extends AppController {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-    public function user_get_all_leave_count_by_user_id_and_status($user_id, $status, $year) {
+    public function user_get_all_leave_count_by_user_id_and_status($user_id = NULL, $status = NULL, $year = NULL) {
         $this->loadModel('SubLeave');
         $sub_leaves = $this->SubLeave->find('all', array('recursive' => 1, 'conditions' => array('YEAR(SubLeave.date)' => $year, 'SubLeave.status' => $status), 'order' => array('SubLeave.created DESC')));
 
