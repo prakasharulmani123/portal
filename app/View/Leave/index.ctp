@@ -28,8 +28,8 @@ $(document).ready(function(){
 $leave_count = $this->requestAction('leave/user_get_all_leave_count');
 $casual_leave_per_year = $this->requestAction('leave/user_get_all_leave_count_by_user_id_and_status/'.$this->Session->read('User.id').'/C/'.date('Y'));
 $paid_leave_per_year = $this->requestAction('leave/user_get_all_leave_count_by_user_id_and_status/'.$this->Session->read('User.id').'/P/'.date('Y'));
-
 $user_casual_leave = $this->Session->read('User.casual_leave');
+//print_r($user_casual_leave);print_r($casual_leave_per_year);exit;
 ?>
 
     <div class="wBlock auto">
