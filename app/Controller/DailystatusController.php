@@ -306,7 +306,6 @@ class DailystatusController extends AppController {
                     $pr_id = $get_pro['Project']['id'];
                     $reports[$key]['DailyStatus']['project_id'] = $pr_id;
                 }
-                // pr($report['DailyStatus']['project_id']); pr($get_pro);exit;
             }
 //       $uname = $report['DailyStatus']['projectname'];
 //    $get_pro = $this->Project->find('first', array('fields' => array('Project.id'), 'conditions' => array('Project.projectname' => $uname)));
