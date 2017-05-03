@@ -96,7 +96,8 @@ class UsersController extends AppController {
     public function dashboard() {
         $this->layout = "user-inner";
         $this->set('cpage', 'dashboard');
-
+         $this->set('permissioncount', $this->requestAction('leave/user_get_compensation_permission_counts'));
+        $this->set('leavecount', $this->requestAction('leave/user_get_compensation_counts'));
         $this->set('entries', $this->requestAction('entries/get_latest_user_time_in_out'));
         $this->set('reports', $this->requestAction('dailystatus/user_get_recent_reports'));
         $this->set('leaves', $this->requestAction('leave/user_get_current_month_leave'));
