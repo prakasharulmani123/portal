@@ -79,8 +79,8 @@
                 <?php endif; ?>
                  <?php $comp_count = $this->requestAction('leave/user_get_compensation_counts'); ?>
                 <?php if ($comp_count > 0) { ?>
-                    <div class="wBlock green auto clearfix">
-                        <div class="dSpace">
+                    <div class="wBlock green auto clearfix" style="margin:0 auto; position: absolute; top: 2%;right: 16%;">
+                          <div class="dSpace">
                             <h3>Compensation </br> Leave</h3>
                             <span class="number"><?php echo $comp_count; ?></span>   
                         </div>
@@ -88,7 +88,7 @@
                 <?php } ?>
                 <?php $perms_count = $this->requestAction('leave/user_get_compensation_permission_counts'); ?>
                 <?php if ($perms_count > 0) { ?>   
-                    <div class="wBlock yellow auto clearfix ">
+                    <div class="wBlock yellow auto clearfix" style="margin:0 auto; position: absolute; top: 2%;right: 7%;">
                         <div class="dSpace">
                             <h3>Compensation  </br> Permission</h3>
                             <span class="number"><?php echo $perms_count; ?></span>
