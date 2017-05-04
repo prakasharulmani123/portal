@@ -19,7 +19,7 @@ $(function() {
 $(document).ready(function() {
 
 	$("#entryreport-index").dataTable({
-		"iDisplayLength": 10, 
+		"iDisplayLength": 25, 
 		"sPaginationType": "full_numbers",
 		"bLengthChange": true,
 		"bFilter": true,
