@@ -46,7 +46,6 @@
                 $phparray = array_filter($urlarray);
                 $urlarraylist = array_values($phparray);
                 $encodelist = json_encode($urlarraylist, JSON_UNESCAPED_SLASHES);
-                print_r($encodelist);exit;
             }
             ////////////////////////////////////////////////////////////////////////////
             //echo $this->element('admin/bread_line');
