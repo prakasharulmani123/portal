@@ -73,7 +73,7 @@ $(document).ready(function() {
         </div>
 
         <div class="row-form">
-          <div class="span3">Braek Hours:</div>
+          <div class="span3">Break Hours:</div>
           <div class="span9">
 		  <?php echo gmdate("H:i", ($break_hours* 60)).'<br>'?>
           </div>
