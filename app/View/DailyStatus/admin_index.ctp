@@ -65,7 +65,8 @@
     </div>
 <?php } ?>
 
-<?php if (!$this->request->is('ajax')) { ?>
+<?php if (!$this->request->is('ajax')) {
+    ?>
     <div class="workplace">
         <div class="row-fluid">
             <div class="span12">
@@ -89,7 +90,9 @@
                     </thead>
                     <tbody>
                         <?php
-                        $i = 1;
+                        $page = $this->params['paging']['DailyStatus']['page'];
+                        $limit = $this->params['paging']['DailyStatus']['limit'];
+                        $counter = ($page - 1) * $limit + 1;
                         foreach ($dailyreports as $dailyreport):
                             $ctgy = $this->requestAction('Categories/get_category_by_id', array('pass' => array('Category.id' => $dailyreport['DailyStatus']['category_id'])));
                             $work = $this->requestAction('Works/get_work_by_id', array('pass' => array('Work.id' => $dailyreport['DailyStatus']['work_id'])));
@@ -127,19 +130,20 @@
                             }
                             ?>
                             <tr>
-                                <td><?php echo h($i); ?></td>
+                                <td><?php echo h($counter); ?></td>
                                 <?php $employee = $this->requestAction('users/get_user', array('pass' => array($dailyreport['DailyStatus']['user_id']))); ?>
                                 <td><?php echo $employee['User']['employee_name']; ?></td>
                                 <td><?php echo date('d-m-Y', strtotime($dailyreport['DailyStatus']['date'])); ?></td>
                                 <td><?php echo rtrim($projects, ' , '); ?></td>
-                  <!--              <td><?php //echo gmdate("H:i", ($hours* 60)); ?></td>
-                                <td><?php //echo gmdate("H:i", ($break_hours* 60)); ?></td>
+                  <!--              <td><?php //echo gmdate("H:i", ($hours* 60));     ?></td>
+                                <td><?php //echo gmdate("H:i", ($break_hours* 60));     ?></td>
                                 -->              <td><b><?php echo gmdate("H:i", ($worked_hours * 60)); ?></b></td>
                                 <td><a class="check-access" href="<?php echo $this->base ?>/admin/dailystatus/view/<?php echo $dailyreport['DailyStatus']['id'] ?>" title="View Report"><span class="isb-text_document"></span></a> 
                                 </td>
                             </tr>
-                            <?php $i++;
-                        endforeach; ?>
+                            <?php $counter++;
+                        endforeach;
+                        ?>
                     </tbody>
                 </table>
                 <?php
@@ -159,10 +163,10 @@
                 echo $this->paginator->last(" Last >>", array('class' => 'paginate_button', 'tag' => false));
                 echo "</div>";
                 ?>
-                <?php echo $this->Js->writeBuffer(); ?> <!– This is mandotary –>
+<?php echo $this->Js->writeBuffer(); ?> <!– This is mandatory –>
                 <div class="clear"></div>
             </div>
-            <?php if (!$this->request->is('ajax')) { ?>
+<?php if (!$this->request->is('ajax')) { ?>
             </div>
         </div>
         <div class="dr"><span></span></div>
