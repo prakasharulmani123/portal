@@ -196,10 +196,10 @@
     foreach ($users as $user) {
         $all_user[$user['User']['id']] = $user['User']['employee_name'];
     }
-
+ if (isset($all['to_date'] , $all['from_date'])){
     $from_date = $all['from_date'];
     $to_date = $all['to_date'];
-
+ }
     if (empty($from_date)) {
         $from_date = "";
     } else {
@@ -212,9 +212,9 @@
         $to_date = date('d-m-Y', strtotime($to_date));
     }
     ?>
-    
+     <?php $name = isset($all['user_id']) ? $all['user_id'] : null;?>
     <b><?php echo " Employee : " ?></b>
-    <?php echo $this->Form->input('user_id', array('label' => false, 'div' => false, 'class' => 'form-control', 'empty' => 'All', 'options' => array($all_user), 'selected' => $all['user_id'], 'style' => 'width:140px; margin-top:6px;')); ?>
+    <?php echo $this->Form->input('user_id', array('label' => false, 'div' => false, 'class' => 'form-control', 'empty' => 'All', 'options' => array($all_user),'selected' => $name, 'style' => 'width:140px; margin-top:6px;')); ?>
 
     <b><?php echo " From : " ?></b>
     <?php echo $this->Form->input('from_date', array('label' => false, 'div' => false, 'class' => 'form-control', 'value' => $from_date, 'style' => 'width:100px; margin-top:6px;')); ?>
