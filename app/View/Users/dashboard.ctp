@@ -18,6 +18,18 @@
         color: #4E7096;
         font-size: 11px;
     }
+
+    .bb_caption .number{
+        color: #fff;
+        font-size: 30px;
+        font-weight: bold;
+        line-height: 32px;
+    }
+
+    .bb_caption {
+        padding: 0 5px !important;
+        text-decoration: none !important;
+    }
 </style>
 <div class="workplace">
 
@@ -79,20 +91,20 @@
                 <?php endif; ?>
                  <?php $comp_count = $this->requestAction('leave/user_get_compensation_counts'); ?>
                 <?php if ($comp_count > 0) { ?>
-                    <div class="wBlock green auto clearfix" style="margin:0 auto; position: absolute; top: 2%;right: 13%;">
-                          <div class="dSpace">
-                            <h3>Compensation </br> Leave</h3>
+                    <div class="bb green bb2">
+                          <a class="bb_caption" href="javascript:void(0)" title="Compensation Leave">
+                            <span>Compensation </br> Leave</span><br />
                             <span class="number"><?php echo $comp_count; ?></span>   
-                        </div>
+                        </a>
                     </div> 
                 <?php } ?>
                 <?php $perms_count = $this->requestAction('leave/user_get_compensation_permission_counts'); ?>
-                <?php if ($perms_count > 0) { ?>   
-                    <div class="wBlock yellow auto clearfix" style="margin:0 auto; position: absolute; top: 2%;right: 5%;">
-                        <div class="dSpace">
-                            <h3>Compensation  </br> Permission</h3>
+                <?php if ($perms_count > 0) { ?>
+                    <div class="bb yellow bb2">
+                        <a class="bb_caption" href="javascript:void(0)" title="Compensation Permission">
+                            <span>Compensation </br> Permission</span><br />
                             <span class="number"><?php echo $perms_count; ?></span>
-                        </div>
+                        </a>
                     </div>
                 <?php } ?>
                            </div>

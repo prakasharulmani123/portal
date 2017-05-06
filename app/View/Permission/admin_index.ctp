@@ -240,7 +240,7 @@
 <?php if (!$this->request->is('ajax')) { ?>
     <div class="workplace">
         <div class="row-fluid">
-            <div class="btn-group span2 li_check_access" style="float:right;">
+            <div class="btn-group span2 li_check_access">
                 <!--<div class="li_check_access">-->
                 <button data-toggle="dropdown" class="btn btn-info dropdown-toggle" id="com_button">
                     <span id="span_com">Bulk Change Status</span> <span class="caret"></span>
