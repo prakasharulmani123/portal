@@ -417,7 +417,7 @@ class LeaveController extends AppController {
             )
                 )
         );
-        return $sum[0]["total_sum"];
+        return (float) $sum[0]["total_sum"];
     }
 
 ///////////////////////////////////////////////////////////////////////////////
