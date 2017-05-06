@@ -3,7 +3,8 @@
 class EntriesController extends AppController {
 
     public $name = 'Entries';
-    public $components = array('RequestHandler');
+    public $helpers = array('Html', 'Form', 'Paginator', 'Time', 'Js' => array('Jquery'), 'Paginator');
+    public $components = array('Session', 'Cookie', 'Email', 'RequestHandler', 'Paginator');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -15,7 +16,7 @@ class EntriesController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function admin_index() {
-          $this->layout = "admin-inner";
+        $this->layout = "admin-inner";
         $this->set('cpage', 'entry');
         $this->layout = "admin-inner";
         if ($this->request->is('post') || $this->request->is('put')) {
@@ -39,22 +40,28 @@ class EntriesController extends AppController {
             $all = $this->Session->read('Entry');
 
             if ($all['user_id'] == '' && $all['from_date'] == '') {
-                $entries = $this->Entry->find('all', array('order' => array('Entry.time_in DESC')));
+                $entries = array('order' => array('Entry.time_in DESC'));
             } elseif ($all['user_id'] != '' && $all['from_date'] == '') {
-                $entries = $this->Entry->find('all', array('conditions' => array('Entry.user_id' => $all['user_id']), 'order' => array('Entry.time_in DESC')));
+                $entries = array('conditions' => array('Entry.user_id' => $all['user_id']), 'order' => array('Entry.time_in DESC'));
             } elseif ($all['user_id'] == '' && $all['from_date'] != '') {
-                $entries = $this->Entry->find('all', array('conditions' => array('Entry.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Entry.time_in DESC')));
+                $entries = array('conditions' => array('Entry.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Entry.time_in DESC'));
             } elseif ($all['user_id'] != '' && $all['from_date'] != '') {
-                $entries = $this->Entry->find('all', array('conditions' => array('Entry.user_id' => $all['user_id'], 'Entry.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Entry.time_in DESC')));
+                $entries = array('conditions' => array('Entry.user_id' => $all['user_id'], 'Entry.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Entry.time_in DESC'));
             }
         } else {
             $all = array('user_id' => '', 'from_date' => '', 'to_date' => '');
-            $entries = $this->Entry->find('all', array('order' => array('Entry.time_in DESC')));
+            $entries = array('order' => array('Entry.time_in DESC'));
         }
 
+        $entries = array_merge($entries, array('limit' => 25));
+        $this->Paginator->settings = $entries;
+        $entries = $this->Paginator->paginate('Entry');
         $this->set(compact('all'));
         $this->set('users', $this->requestAction('users/get_all_users'));
         $this->set(compact('entries'));
+        if ($this->request->is('ajax')) {
+            $this->render('admin_index', 'ajaxpagination'); // View, Layout
+        }
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -190,17 +197,22 @@ class EntriesController extends AppController {
             $all = $this->Session->read('UserEntry');
 
             if ($all['from_date'] == '') {
-                $entries = $this->Entry->find('all', array('conditions' => array('Entry.user_id' => $this->Session->read('User.id')), 'order' => array('Entry.time_in DESC')));
+                $entries = array('conditions' => array('Entry.user_id' => $this->Session->read('User.id')), 'order' => array('Entry.time_in DESC'));
             } elseif ($all['from_date'] != '') {
-                $entries = $this->Entry->find('all', array('conditions' => array('Entry.user_id' => $this->Session->read('User.id'), 'Entry.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Entry.time_in DESC')));
+                $entries = array('conditions' => array('Entry.user_id' => $this->Session->read('User.id'), 'Entry.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Entry.time_in DESC'));
             }
         } else {
             $all = array('from_date' => '', 'to_date' => '');
-            $entries = $this->Entry->find('all', array('conditions' => array('Entry.user_id' => $this->Session->read('User.id')), 'order' => array('Entry.time_in DESC')));
+            $entries = array('conditions' => array('Entry.user_id' => $this->Session->read('User.id')), 'order' => array('Entry.time_in DESC'));
         }
-
+        $entries = array_merge($entries, array('limit' => 25));
+        $this->Paginator->settings = $entries;
+        $entries = $this->Paginator->paginate('Entry');
         $this->set(compact('all'));
         $this->set(compact('entries'));
+        if ($this->request->is('ajax')) {
+            $this->render('admin_index', 'ajaxpagination'); // View, Layout
+        }
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
