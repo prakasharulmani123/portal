@@ -34,7 +34,7 @@
                 <div class="bb"><a href="<?php echo $this->base ?>/dailystatus" title="Daily Status Report"><span class="ibw-empty_document"></span></a></div>
                 <div class="bb"><a href="<?php echo $this->base ?>/dailystatus/reports" title="My Report"><span class="ibw-text_document"></span></a></div>
                 <div class="bb">
-                    <a href="<?php echo $this->base ?>/leave" title="Leave Requests"><span class="ibw-target"></span></a>
+                    <a href="<?php echo $this->base ?>/leave?approved=0" title="Leave Requests"><span class="ibw-target"></span></a>
                     <?php $leave_count = $this->requestAction('leave/user_get_leave_requests_count'); ?>
                     <?php if ($leave_count > 0) { ?>
                         <div class="caption red">
@@ -45,7 +45,7 @@
                 <div class="bb"><a href="<?php echo $this->base ?>/users/profile" title="Profile"><span class="ibw-settings"></span></a></div>
                 <div class="bb"><a href="<?php echo $this->base ?>/entries" title="Time In / Time Out"><span class="ibw-time"></span></a></div>
                 <div class="bb">
-                    <a href="<?php echo $this->base ?>/permission" title="Permission Requests"><span class="ibw-list"></span></a>
+                    <a href="<?php echo $this->base ?>/permission?approved=0" title="Permission Requests"><span class="ibw-list"></span></a>
                     <?php $per_count = $this->requestAction('permission/user_get_permission_requests_count'); ?>
                     <?php if ($per_count > 0) { ?>
                         <div class="caption red">
