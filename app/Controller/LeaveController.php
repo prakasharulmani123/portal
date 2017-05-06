@@ -91,29 +91,38 @@ class LeaveController extends AppController {
             }
             return $this->redirect(array('action' => 'admin_index'));
         }
-
+        
+        if(isset($_GET['approved'])){
+            $this->Session->write('Leave.approved', $_GET['approved']);
+            return $this->redirect(array('action' => 'admin_index'));
+        }
         if ($this->Session->check('Leave')) {
             $all = $this->Session->read('Leave');
-
-            if ($all['user_id'] == '' && $all['from_date'] == '') {
+            
+            if (!isset($all['user_id'] , $all['from_date']) || $all['user_id'] == '' && $all['from_date'] == '') {
                 if ($all['approved'] == '') {
                     $leaves = $this->Leave->find('all', array('order' => array('Leave.created DESC')));
                 } else {
                     $leaves = $this->Leave->find('all', array('conditions' => array('Leave.approved' => $all['approved']), 'order' => array('Leave.created DESC')));
-                }
-            } elseif ($all['user_id'] != '' && $all['from_date'] == '') {
+                  
+                    }
+            } elseif(!isset($all['user_id'] , $all['from_date']) || $all['user_id'] != '' && $all['from_date'] == '') {
+            
                 if ($all['approved'] == '') {
                     $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $all['user_id']), 'order' => array('Leave.created DESC')));
                 } else {
                     $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $all['user_id'], 'Leave.approved' => $all['approved']), 'order' => array('Leave.created DESC')));
-                }
-            } elseif ($all['user_id'] == '' && $all['from_date'] != '') {
+//                print_r($leaves);exit;
+                    }
+            } elseif (!isset($all['user_id'] , $all['from_date']) || $all['user_id'] == '' && $all['from_date'] != '') {
+             
                 if ($all['approved'] == '') {
                     $leaves = $this->Leave->find('all', array('conditions' => array('Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Leave.created DESC')));
                 } else {
                     $leaves = $this->Leave->find('all', array('conditions' => array('Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date']))), 'Leave.approved' => $all['approved']), 'order' => array('Leave.created DESC')));
                 }
-            } elseif ($all['user_id'] != '' && $all['from_date'] != '') {
+            } elseif (!isset($all['user_id'] , $all['from_date']) || $all['user_id'] != '' && $all['from_date'] != '') {
+              
                 if ($all['approved'] == '') {
                     $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $all['user_id'], 'Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Leave.created DESC')));
                 } else {
@@ -121,11 +130,10 @@ class LeaveController extends AppController {
                 }
             }
         } else {
+         
             $all = array('user_id' => '', 'from_date' => '', 'to_date' => '', 'approved' => '');
             $leaves = $this->Leave->find('all', array('order' => array('Leave.created DESC')));
         }
-
-
         $this->set('leaves', $this->Leave->find('all', array('order' => array('Leave.created DESC'))));
         $this->set(compact('all'));
         $this->set('users', $this->requestAction('users/get_all_users'));
@@ -203,7 +211,7 @@ class LeaveController extends AppController {
                         );
 
                         $this->Compensation->saveAll($com_data);
-                        $insert_data['Leave']['compensation_id'] = $compensation_id;
+                        $insert_data['Leave']['compensation_id'] = $string;
                         $insert_data['Leave']['days'] = 0.00;
                     }
                 }
