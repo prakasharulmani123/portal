@@ -44,7 +44,6 @@ class PermissionController extends AppController {
 
         if ($this->Session->check('Permission')) {
             $all = $this->Session->read('Permission');
-
             $permission_query = '';
             /*
               if($all['permission_leave'] != ''){
@@ -105,10 +104,12 @@ class PermissionController extends AppController {
 
             return $this->redirect(array('action' => 'admin_index'));
         }
-
+        if (isset($_GET['approved'])) {
+            $this->Session->write('Permission.approved', $_GET['approved']);
+            return $this->redirect(array('action' => 'admin_index'));
+        }
         if ($this->Session->check('Permission')) {
             $all = $this->Session->read('Permission');
-
             $permission_query = '';
             /*
               if($all['permission_leave'] != ''){
@@ -121,13 +122,13 @@ class PermissionController extends AppController {
                 $approve_query = 'Permission.approved = ' . $all['approved'];
             }
 
-            if ($all['user_id'] == '' && $all['from_date'] == '') {
+            if (!isset($all['user_id'] , $all['from_date']) || $all['user_id'] == '' && $all['from_date'] == '') {
                 $leaves = array('conditions' => array($permission_query, $approve_query), 'order' => array('Permission.created' => 'DESC'));
-            } elseif ($all['user_id'] != '' && $all['from_date'] == '') {
+            } elseif (!isset($all['user_id'] , $all['from_date']) || $all['user_id'] != '' && $all['from_date'] == '') {
                 $leaves = array('conditions' => array('Permission.user_id' => $all['user_id'], $permission_query, $approve_query), 'order' => array('Permission.created' => 'DESC'));
-            } elseif ($all['user_id'] == '' && $all['from_date'] != '') {
+            } elseif (!isset($all['user_id'] , $all['from_date']) || $all['user_id'] == '' && $all['from_date'] != '') {
                 $leaves = array('conditions' => array('Permission.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date']))), $permission_query, $approve_query), 'order' => array('Permission.created' => 'DESC'));
-            } elseif ($all['user_id'] != '' && $all['from_date'] != '') {
+            } elseif (!isset($all['user_id'] , $all['from_date']) || $all['user_id'] != '' && $all['from_date'] != '') {
                 $leaves = array('conditions' => array('Permission.user_id' => $all['user_id'], 'Permission.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date']))), $permission_query, $approve_query), 'order' => array('Permission.created' => 'DESC'));
             }
         } else {
