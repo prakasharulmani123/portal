@@ -137,7 +137,7 @@ $marray[19]='active';
         </a>
         <ul>
             <li class="<?php echo $marray[6];?> li_check_access" >
-                <a class="check-access"  href="<?php echo  $this->base?>/admin/leave">
+                <a class="check-access"  href="<?php echo  $this->base?>/admin/leave?approved=0">
                     <span class="icon-tasks"></span><span class="text">Leave Requests</span>
                 </a>                  
             </li>          
@@ -160,7 +160,7 @@ $marray[19]='active';
         </a>
         <ul>
             <li class="<?php echo $marray[8];?> li_check_access" >
-                <a class="check-access"  href="<?php echo  $this->base?>/admin/permission">
+                <a class="check-access"  href="<?php echo  $this->base?>/admin/permission?approved=0">
                     <span class="icon-tasks"></span><span class="text">Permission Requests</span>
                 </a>                  
             </li>          
