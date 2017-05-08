@@ -412,7 +412,7 @@ class LeaveController extends AppController {
         $this->loadModel('Compensation');
         $sum = $this->Compensation->find('first', array(
             'conditions' => array(
-                'Compensation.user_id' => $this->Session->read('User.id'), 'Compensation.status' => 0),
+                'Compensation.user_id' => $this->Session->read('User.id'), 'Compensation.status' => 0,'Compensation.type' => 'L'),
             'fields' => array('sum(Compensation.days) as total_sum'
             )
                 )
