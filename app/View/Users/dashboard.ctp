@@ -92,7 +92,7 @@
                  <?php $comp_count = $this->requestAction('leave/user_get_compensation_counts'); ?>
                 <?php if ($comp_count > 0) { ?>
                     <div class="bb green bb2">
-                          <a class="bb_caption" href="<?php echo $this->base ?>/leave/leaveform" title="Compensation Leave">
+                          <a class="bb_caption" href="<?php echo $this->base ?>/leave/leaveform?status=1" title="Compensation Leave">
                             <span>Compensation </br> Leave</span><br />
                             <span class="number"><?php echo $comp_count; ?></span>   
                         </a>

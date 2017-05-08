@@ -103,11 +103,22 @@ function validSubmit(){
         </div>
 
 
-<?php if($lists>0){?>
+<?php if($lists>0){
+    ?>
         <div class="row-form" id="checkbox_disable">
           <div class="span3">Do you want to take compensation leave:</div>
           <div class="span2">
-            <?php echo $this->Form->input('status', array('type' => 'checkbox', 'label'=>false)); ?>
+            <?php 
+            $request_path = $_SERVER['REQUEST_URI'];
+            $exp = explode('/', $request_path);
+             $ex=$exp[2];
+               if($ex=="leaveform")
+               {
+                    $checked= '';
+               }else{
+                    $checked= 'checked';
+               }
+            echo $this->Form->input('status', array('type' => 'checkbox', 'label'=>false,$checked)); ?>
           </div>
           <div class="clear"></div>
         </div>

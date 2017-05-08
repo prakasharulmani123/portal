@@ -405,7 +405,7 @@ class LeaveController extends AppController {
 
     public function user_get_leave_requests_count() {
         return $this->Leave->find('count', array('conditions' => array('Leave.user_id' => $this->Session->read('User.id'), 'Leave.approved' => 0)));
-    }
+            }
 
 ///////////////////////////////////////////////////////////////////////////////
     public function user_get_compensation_counts() {
