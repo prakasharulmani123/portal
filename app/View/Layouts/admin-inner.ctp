@@ -92,15 +92,17 @@
                         }
                         var array = href.split('/admin/');
                         var id = <?php echo $encodelist; ?>;
-                              console.log(id);
+//                              console.log(id);
                         var list = "";
                         if (typeof (array[1]) !== "undefined" && array[1] !== null) {
                             var array_2 = array[1].split('/');
-                            var list = array_2[0];
+                            a2 = array_2[0].split('?');
+                            var list = a2[0];
                             if (typeof (array_2[1]) !== "undefined" && array_2[1] !== null) {
                                 var list = list + '/' + array_2[1];
                             }
                         }
+                        console.log(list);
     //                    console.log(list);
     //                    console.log(id);
     //                    console.log($.inArray(list, id) === -1);
