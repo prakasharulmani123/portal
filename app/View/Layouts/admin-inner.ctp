@@ -92,7 +92,6 @@
                         }
                         var array = href.split('/admin/');
                         var id = <?php echo $encodelist; ?>;
-//                              console.log(id);
                         var list = "";
                         if (typeof (array[1]) !== "undefined" && array[1] !== null) {
                             var array_2 = array[1].split('/');

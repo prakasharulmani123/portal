@@ -91,18 +91,17 @@ class AppController extends Controller {
             $this->loadModel('Module');
             if ($this->Session->read('User.super_user') == 1 && $this->Session->read('User.role') == 'user') {
                 $demodule = json_decode($this->Session->read('User.access'));
-             
+               
                 $request_path = $_SERVER['REQUEST_URI'];
                 $exp = explode('/admin', $request_path);
                 $path = explode('/', substr($exp[1], 1));
-                $module = $path[0];
+                 $req = explode('?', substr($path[0], 0));
+                $module = $req[0];
                 if (isset($path[1])) {
                     $module .= '/' . $path[1];
                 }
                 $roles = $this->Module->find('first', array('conditions' => array('Module.url' => $module))); //we get the authors from the database       
                 if (is_array($roles) && $roles) {
-//                    echo 'hkj';exit;
-//                    print_r($demodule);exit;
                     return in_array($roles['Module']['id'], $demodule);
                 } else {
                     return false;
