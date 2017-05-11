@@ -596,6 +596,8 @@
             
             
             /* block widget */
+          
+                                                 
                 .wBlock{float: left; position: relative; width: 100%; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; margin-bottom: 20px;
                         color: #FFF;                        
                         background: #416C9B;
@@ -609,8 +611,9 @@
                         -moz-box-shadow: 0 1px 1px #222, 0px 1px 0 #7797ba inset;
                         -webkit-box-shadow: 0 1px 1px #222, 0px 1px 0 #7797ba inset;
                         box-shadow: 0 1px 1px #222, 0px 1px 0 #7797ba inset;                           
-                }                                
-                
+                }          
+                  .space{margin-bottom: 0px; }
+                                                  
                     .wBlock .wSpace{background-color: #FFF; padding: 0px 5px; margin: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;
                                     -moz-box-shadow: 0px 0px 2px #999 inset; -webkit-box-shadow: 0px 0px 2px #999 inset; box-shadow: 0px 0px 2px #999 inset;}
                     .wBlock .dSpace{ margin: 0px 5px 5px; margin-top: 5px; background-color: #365B85; padding: 3px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; float: left;
@@ -623,7 +626,7 @@
                     .wBlock.auto{ width: auto; margin-right: 20px;}
                         .wBlock.auto .dSpace,
                         .wBlock.auto .rSpace{width: auto;}                                        
-                    
+                       
                         .wBlock .dSpace h3,
                         .wBlock .rSpace h3{margin: 2px 0px; padding: 0px; font-size: 12px; text-align: center; color: #c7e3fc; font-weight: normal; line-height: 14px;
                                            -moz-text-shadow: 0 1px 0 #333; -webkit-text-shadow: 0 1px 0 #333; text-shadow: 0 1px 0 #333;}

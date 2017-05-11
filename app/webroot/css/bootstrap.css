@@ -335,6 +335,9 @@ a:hover {
   line-height: 0;
   content: "";
 }
+.editcss {
+    margin-bottom: 0px;
+}
 
 .row-fluid:after {
   clear: both;
@@ -379,6 +382,9 @@ a:hover {
 .row-fluid .span8 {
   width: 65.95744680851064%;
   *width: 65.90425531914893%;
+}
+.border{
+    height:40%!important;
 }
 
 .row-fluid .span7 {

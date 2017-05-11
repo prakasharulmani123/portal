@@ -84,12 +84,12 @@ if ($all['user_id'] == 'all') {
                 <thead style=" width:70; color: white;font-size:16px;  background-color:#486B91;">
                 <th width="20%">Employee Name</th>
                 <th width="50%">Details</th>
-                <th width="10%">view</th>
+                <th width="10%">Action</th>
                 </thead>
                 <tbody>
                     <?php foreach ($all_user as $key => $all_use) { ?>
                         <tr>
-                            <td><span style="font-size:14px;padding:45px;"><?php echo $all_use; ?></span></td>
+                            <td><span style="font-size:14px;line-height: 14px; padding:45px"><?php echo $all_use; ?></span></td>
 
 
                             <td>
@@ -105,29 +105,29 @@ if ($all['user_id'] == 'all') {
                                 ?>
 
                                 <div class="workplace">
-                                    <div class="row-fluid">
-                                        <div class="wBlock auto">
+                                    <div class="row-fluid editcss">
+                                        <div class="wBlock auto space">
                                             <div class="dSpace">
                                                 <h3>Casual Leave Days <br /><?php echo date('F', strtotime($month)) ?></h3>
                                                 <span class="number"><?php echo $casual_leave_per_month; ?></span>                                                
                                             </div>
                                         </div>
 
-                                        <div class="wBlock red auto">
+                                        <div class="wBlock red auto space">
                                             <div class="dSpace">
                                                 <h3>Paid Leave Days <br /><?php echo date('F', strtotime($month)) ?></h3>
                                                 <span class="number"><?php echo $paid_leave_per_month ?></span>                                                  
                                             </div>
                                         </div>                    
 
-                                        <div class="wBlock green auto">
+                                        <div class="wBlock green auto space">
                                             <div class="dSpace">
                                                 <h3>Current <br />Leave Days</h3>
                                                 <span class="number"><?php echo $leave_count; ?></span>                                                  
                                             </div>
                                         </div>
 
-                                        <div class="wBlock blue auto">
+                                        <div class="wBlock blue auto space">
                                             <div class="dSpace">
                                                 <h3>Remaining <br />Casual Days</h3>
                                                 <span class="number"><?php echo ($user_casual_leave - $casual_leave_per_year) <= 0 ? 0 : $user_casual_leave - $casual_leave_per_year; ?></span>                                                  

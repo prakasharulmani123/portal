@@ -219,30 +219,31 @@ if (empty($all['month'])) {
                     <table border="1" style=" width:100; align:left;  " >
                         <thead style=" width:70; color: white; font-size:17px;  background-color:#486B91;">
                         <th width="20%">Employee Name</th>
-                        <th width="50%">Sunday &nbsp&nbsp Official Leave &nbsp&nbsp Leave  &nbsp&nbsp Half Day &nbsp&nbsp Permission &nbsp&nbsp No Record
-                        </th>
-                        <th width="10%">view</th>
+                        <th width="50%"> </th>
+                        <th width="10%">Action</th>
                         </thead>
                         <tbody>
-                            <?php foreach ($all_user as $key => $all_use) {
-//                                    print_r($key);exit;?>
+                            <?php
+                            foreach ($all_user as $key => $all_use) {
+//                                    print_r($key);exit;
+                                ?>
                                 <tr>
                                     <td><span style="font-size:14px;padding:45px;"><?php echo $all_use; ?></span></td>
                                     <?php
                                     $employee = $this->requestAction('users/get_user', array('pass' => array($key)));
-        $leaves_month = $this->requestAction('leave/get_current_month_leave_approved/' . $key . '/' . $all['month'] . '/' . $all['year']);
-        $holidays_month = $this->requestAction('holidays/get_holidays_per_month/' . $all['month'] . '/' . $all['year']);
-        $leaves = $leaves_month;
-        $check_sun_day = false;
-        $holidays = array();
+                                    $leaves_month = $this->requestAction('leave/get_current_month_leave_approved/' . $key . '/' . $all['month'] . '/' . $all['year']);
+                                    $holidays_month = $this->requestAction('holidays/get_holidays_per_month/' . $all['month'] . '/' . $all['year']);
+                                    $leaves = $leaves_month;
+                                    $check_sun_day = false;
+                                    $holidays = array();
 
-        foreach ($holidays_month as $holiday_month) {
-            $holidays[$holiday_month['Holiday']['name'] . ',' . $holiday_month['Holiday']['date']] = $holiday_month['Holiday']['date'];
-        }
+                                    foreach ($holidays_month as $holiday_month) {
+                                        $holidays[$holiday_month['Holiday']['name'] . ',' . $holiday_month['Holiday']['date']] = $holiday_month['Holiday']['date'];
+                                    }
 
-        $permissions = $this->requestAction('permission/get_permission_approved_per_month/' . $key . '/' . $all['month'] . '/' . $all['year']);
-                                    
-                                    
+                                    $permissions = $this->requestAction('permission/get_permission_approved_per_month/' . $key . '/' . $all['month'] . '/' . $all['year']);
+
+
                                     $row = 1;
 
                                     $half_day = '';
@@ -461,21 +462,22 @@ if (empty($all['month'])) {
 
                                     <td>
                                         <div class="workplace">
-                                            <div align="left" class="span8" style="margin-bottom:10px;">
+                                            <div align="left" class="span8 border" style="margin-bottom:10px;">
                                                 <table>
+                                                    <td width="15">&nbsp;</td> <th>Sunday</th> <td width="15">&nbsp;</td> <th>Official&nbsp;Leave</th> <td width="15">&nbsp;</td>  <th>Leave</th> <td width="15">&nbsp;</td> <th>Half Day</th> <td width="15">&nbsp;</td> <th>Permission</th> <td width="15">&nbsp;</td><th>No&nbsp;Record</th>
                                                     <tr>
                                                         <td width="10">&nbsp;</td>
-                                                        <td width="50" height="70"style="background-color:#B4FF80; border:1px solid grey;"align="center"><span style="font-size:18px;"><?php echo $sunday_count; ?></span></td>
+                                                        <td width="50" style="background-color:#B4FF80; border:1px solid grey;"align="center"><span style="font-size:16px;"><?php echo $sunday_count; ?></span></td>
                                                         <td width="70">&nbsp;</td>
-                                                        <td width="50" height="70"style="background-color:#FCEB77; border:1px solid grey;" align="center"><span style="font-size:18px;"><?php echo $official_leave_count; ?> </span></td>
+                                                        <td width="50" style="background-color:#FCEB77; border:1px solid grey;" align="center"><span style="font-size:16px;"><?php echo $official_leave_count; ?> </span></td>
                                                         <td width="70">&nbsp;</td>
-                                                        <td width="50" height="70" style="background-color:#F84848; border:1px solid grey;" align="center"><span style="font-size:18px;"><?php echo $leave_count ?> </span></td>
+                                                        <td width="50" style="background-color:#F84848; border:1px solid grey;" align="center"><span style="font-size:16px;"><?php echo $leave_count ?> </span></td>
                                                         <td width="70">&nbsp;</td>
-                                                        <td width="50" height="70" style="background-color:#E47296; border:1px solid grey;"align="center"><span style="font-size:18px;"><?php echo $half_day_count ?> </span></td>
+                                                        <td width="50" style="background-color:#E47296; border:1px solid grey;"align="center"><span style="font-size:16px;"><?php echo $half_day_count ?> </span></td>
                                                         <td width="70">&nbsp;</td>
-                                                        <td width="50" height="70"" style="background-color:#FFC0CB; border:1px solid grey;"  align="center"><span style="font-size:18px;"><?php echo $permission_count ?> </span></td>
+                                                        <td width="50"  style="background-color:#FFC0CB; border:1px solid grey;"  align="center"><span style="font-size:16px;"><?php echo $permission_count ?> </span></td>
                                                         <td width="70">&nbsp;</td>
-                                                        <td width="50" height="70" style="background-color:#D1C0A6; border:1px solid grey;" align="center"><span style="font-size:18px;"><?php echo $no_record_count ?> </span></td>
+                                                        <td width="50" style="background-color:#D1C0A6; border:1px solid grey;" align="center"><span style="font-size:16px;"><?php echo $no_record_count ?> </span></td>
                                                         <td width="10">&nbsp;</td>
                                                     </tr>
                                                 </table>
