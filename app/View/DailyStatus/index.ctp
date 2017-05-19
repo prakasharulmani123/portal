@@ -49,11 +49,23 @@ background-image: none;
 }
 }
 
-.ui-autocomplete .ui-state-hover {
-	padding:0px !important;
-	text-decoration:none;
-	cursor:pointer;
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus,
+.ui-button:hover,
+.ui-button:focus {
+    padding:0px !important;
+    text-decoration:none;
+    cursor:pointer;
+    border: 1px solid #cccccc;
+    background: #ededed;
+    font-weight: normal;
+    color: #2b2b2b;
 }
+
 </style>
 <?php
 
