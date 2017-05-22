@@ -162,17 +162,24 @@ $user_casual_leave = $this->Session->read('User.casual_leave');
 <?php $comp_leave= $leave['Leave']['compensation_id']; 
 $string = unserialize($comp_leave);
  $records = array();
+ $tdays="";
+ $days=0;
 if (is_array($string)||is_object($string))
 {
 foreach($string as $key=>$value){
-  $blogs = $this->requestAction('Compensations/get_id', array('pass' => array('Compensation.id' =>$value)));
+      $tdays = 0;
+      $blogs = $this->requestAction('Compensations/get_id', array('pass' => array('Compensation.id' =>$value)));
+  $cdays=$blogs['Compensation']['days'];
 $records[]=date('d-m-Y', strtotime($blogs['Compensation']['date'])); 
+ $tdays = $days + $cdays;
+  $days = $tdays;
  }
+ 
 }
+//print_r($cdays);exit;
   $imp_rec= implode(" & ",(array)$records);
-
 ?>
- <td><?php echo h($imp_rec)?> </td>
+ <td><?php echo h($imp_rec)?> <?php echo h( ($tdays > 0) ? '('.$tdays.' days)' : "-")?></td>
 			  <td><?php echo h($leave['Leave']['reason'])?></td>
               <td><p>
 			  <?php

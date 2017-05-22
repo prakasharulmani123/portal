@@ -151,6 +151,7 @@ class LeaveController extends AppController {
         $this->set('lists', $lists);
 
         if ($this->request->is('post') || $this->request->is('put')) {
+
             $this->request->data['Leave']['date'] = date('Y-m-d', strtotime($this->data['Leave']['date']));
             $this->request->data['Leave']['user_id'] = $this->Session->read('User.id');
             $check_leave = $this->Leave->findByUserIdAndDate($this->Session->read('User.id'), date('Y-m-d', strtotime($this->data['Leave']['date'])));
@@ -159,6 +160,7 @@ class LeaveController extends AppController {
                 $check_sun_day = false;
                 $leave_count = $this->user_get_all_leave_count_per_year($this->Session->read('User.id'), date('Y', strtotime($this->data['Leave']['date'])));
 //$leave_count = $this->user_get_all_leave_count_per_year($this->Session->read('User.id'),date('Y'));
+
                 $insert_data = $this->request->data;
                 $status = $insert_data['Leave']['status'];
                 $leave_days = $insert_data['Leave']['days'];
@@ -185,12 +187,10 @@ class LeaveController extends AppController {
                     if ($remaining_days == 0) {
                         $string = serialize($records);
                         $insert_data['Leave']['compensation_id'] = $string;
-                        $insert_data['Leave']['days'] = 0.00;
                     }
                     if ($remaining_days > 0) {
                         $string = serialize($records);
                         $insert_data['Leave']['compensation_id'] = $string;
-                        $insert_data['Leave']['days'] = $remaining_days;
                     }
                     if ($remaining_days < 0) {
                         $this->Compensation->create();
@@ -211,7 +211,6 @@ class LeaveController extends AppController {
 
                         $this->Compensation->saveAll($com_data);
                         $insert_data['Leave']['compensation_id'] = $string;
-                        $insert_data['Leave']['days'] = 0.00;
                     }
                 }
                 $days = $insert_data['Leave']['days'];
@@ -405,14 +404,14 @@ class LeaveController extends AppController {
 
     public function user_get_leave_requests_count() {
         return $this->Leave->find('count', array('conditions' => array('Leave.user_id' => $this->Session->read('User.id'), 'Leave.approved' => 0)));
-            }
+    }
 
 ///////////////////////////////////////////////////////////////////////////////
     public function user_get_compensation_counts() {
         $this->loadModel('Compensation');
         $sum = $this->Compensation->find('first', array(
             'conditions' => array(
-                'Compensation.user_id' => $this->Session->read('User.id'), 'Compensation.status' => 0,'Compensation.type' => 'L'),
+                'Compensation.user_id' => $this->Session->read('User.id'), 'Compensation.status' => 0, 'Compensation.type' => 'L'),
             'fields' => array('sum(Compensation.days) as total_sum'
             )
                 )

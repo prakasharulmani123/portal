@@ -110,10 +110,10 @@
     foreach ($users as $user) {
         $all_user[$user['User']['id']] = $user['User']['employee_name'];
     }
-     if (isset($all['to_date'] , $all['from_date'])){
-    $from_date = $all['from_date'];
-    $to_date = $all['to_date'];
-     }
+    if (isset($all['to_date'], $all['from_date'])) {
+        $from_date = $all['from_date'];
+        $to_date = $all['to_date'];
+    }
     if (empty($from_date)) {
         $from_date = "";
     } else {
@@ -125,9 +125,8 @@
     } else {
         $to_date = date('d-m-Y', strtotime($to_date));
     }
-
     ?>
-    <?php $name = isset($all['user_id']) ? $all['user_id'] : null;?>
+    <?php $name = isset($all['user_id']) ? $all['user_id'] : null; ?>
     <b><?php echo " Employee : " ?></b>
     <?php echo $this->Form->input('user_id', array('label' => false, 'div' => false, 'class' => 'form-control', 'empty' => 'All', 'options' => array($all_user), 'selected' => $name, 'style' => 'width:140px; margin-top:6px;')); ?>
     <b><?php echo " From : " ?></b>
@@ -138,7 +137,7 @@
     <?php echo $this->Form->input('approved', array('label' => false, 'div' => false, 'class' => 'form-control', 'empty' => 'All', 'options' => array('0' => 'Pending', '1' => 'Approved', '2' => 'Declined'), 'selected' => $all['approved'], 'style' => 'width:100px; margin-top:6px;')); ?>
     <?php echo $this->Form->button('Search', array('class' => 'btn btn-default')); ?>
     <?php echo $this->Html->link('Reset', array('controller' => 'leave', 'action' => 'reset', 'admin' => true), array('class' => 'btn btn-danger')); ?>
-<?php echo $this->Form->end(); ?>
+    <?php echo $this->Form->end(); ?>
     <div class="clear"></div>
 </div>
 
@@ -219,19 +218,25 @@
                                             break;
                                     }
                                     ?></td>
-                                <?php
+                                    <?php
                                 $comp_leave = $leave['Leave']['compensation_id'];
                                 $string = unserialize($comp_leave);
                                 $records = array();
+                                $tdays = "";
+                                $days = 0;
                                 if (is_array($string) || is_object($string)) {
                                     foreach ($string as $key => $value) {
+                                        $tdays = 0;
                                         $blogs = $this->requestAction('Compensations/get_id', array('pass' => array('Compensation.id' => $value)));
+                                        $cdays=$blogs['Compensation']['days'];
                                         $records[] = date('d-m-Y', strtotime($blogs['Compensation']['date']));
+                                        $tdays = $days + $cdays;
+                                        $days = $tdays;
                                     }
                                 }
                                 $imp_rec = implode(" & ", (array) $records);
                                 ?>
-                                <td><?php echo h($imp_rec) ?> </td>
+                                <td><?php echo h($imp_rec) ?> <?php echo h(($tdays > 0) ? '(' . $tdays . ' days)' : "-") ?></td>
                                 <td><?php echo h($leave['Leave']['reason']) ?></td>
                                 <td>
                                     <?php
@@ -262,8 +267,9 @@
                                 </td>	  <td><span id="remarks_<?php echo $leave['Leave']['id'] ?>"><?php echo h($leave['Leave']['remarks']) ?></span></td>
 
                             </tr>
-    <?php $i++;
-endforeach; ?>
+                            <?php $i++;
+                        endforeach;
+                        ?>
                     </tbody>
                 </table>
                 <div class="clear"></div>
