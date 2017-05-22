@@ -194,21 +194,19 @@
                                 <td><?php echo h($leave_date) ?></td>
                                 <td>
                                     <?php
-                                     $comp_leave= $leave['Leave']['compensation_id']; 
-$string = unserialize($comp_leave);
- $tdays="";
- $days=$leave['Leave']['days'];
-if (is_array($string)||is_object($string))
-{
-foreach($string as $key=>$value){
-      $tdays = 0;
-      $blogs = $this->requestAction('Compensations/get_id', array('pass' => array('Compensation.id' =>$value)));
-  $cdays=$blogs['Compensation']['days'];
- $tdays = $days + $cdays;
-  $days = $tdays;
- }
- 
-}
+                                    $comp_leave = $leave['Leave']['compensation_id'];
+                                    $string = unserialize($comp_leave);
+                                    $tdays = "";
+                                    $days = $leave['Leave']['days'];
+                                    if (is_array($string) || is_object($string)) {
+                                        foreach ($string as $key => $value) {
+                                            $tdays = 0;
+                                            $blogs = $this->requestAction('Compensations/get_id', array('pass' => array('Compensation.id' => $value)));
+                                            $cdays = $blogs['Compensation']['days'];
+                                            $tdays = $days + $cdays;
+                                            $days = $tdays;
+                                        }
+                                    }
                                     switch ($days) {
                                         case 0:
                                             echo '_';
@@ -233,17 +231,14 @@ foreach($string as $key=>$value){
                                             break;
                                     }
                                     ?></td>
-                                    <?php
-                                $comp_leave = $leave['Leave']['compensation_id'];
-                                $string = unserialize($comp_leave);
+                                <?php
                                 $records = array();
-                                $tdays = "";
                                 $days = 0;
                                 if (is_array($string) || is_object($string)) {
                                     foreach ($string as $key => $value) {
                                         $tdays = 0;
                                         $blogs = $this->requestAction('Compensations/get_id', array('pass' => array('Compensation.id' => $value)));
-                                        $cdays=$blogs['Compensation']['days'];
+                                        $cdays = $blogs['Compensation']['days'];
                                         $records[] = date('d-m-Y', strtotime($blogs['Compensation']['date']));
                                         $tdays = $days + $cdays;
                                         $days = $tdays;
@@ -282,7 +277,8 @@ foreach($string as $key=>$value){
                                 </td>	  <td><span id="remarks_<?php echo $leave['Leave']['id'] ?>"><?php echo h($leave['Leave']['remarks']) ?></span></td>
 
                             </tr>
-                            <?php $i++;
+                            <?php
+                            $i++;
                         endforeach;
                         ?>
                     </tbody>
