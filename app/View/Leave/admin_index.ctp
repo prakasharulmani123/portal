@@ -194,7 +194,22 @@
                                 <td><?php echo h($leave_date) ?></td>
                                 <td>
                                     <?php
-                                    switch ($leave['Leave']['days']) {
+                                     $comp_leave= $leave['Leave']['compensation_id']; 
+$string = unserialize($comp_leave);
+ $tdays="";
+ $days=$leave['Leave']['days'];
+if (is_array($string)||is_object($string))
+{
+foreach($string as $key=>$value){
+      $tdays = 0;
+      $blogs = $this->requestAction('Compensations/get_id', array('pass' => array('Compensation.id' =>$value)));
+  $cdays=$blogs['Compensation']['days'];
+ $tdays = $days + $cdays;
+  $days = $tdays;
+ }
+ 
+}
+                                    switch ($days) {
                                         case 0:
                                             echo '_';
                                             break;
