@@ -540,7 +540,7 @@ class DailystatusController extends AppController {
         $this->layout = "user-inner";
 
         $dailyreport = $this->DailyStatus->find('first', array('conditions' => array('DailyStatus.id' => $id)));
-        $date = $dailyreport['DailyStatus']['date'];
+        $date = @$dailyreport['DailyStatus']['date'];
 
         $this->set('user_id', $this->Session->read('User.id'));
         $this->set('date', $date);

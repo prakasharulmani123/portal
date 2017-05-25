@@ -77,6 +77,8 @@ background-image: none;
 <script type="text/javascript">
 
     $(document).ready(function () {
+        copyToClipboard();
+
         $.ajax({
 		url: BaseURL+"/projects/find/",
 		beforeSend: function(){
@@ -459,6 +461,7 @@ background-image: none;
                 $('#DailyStatusComments').val('');
 
                 $('#send_div').show();
+                copyToClipboard();
             }
         });
     }
@@ -533,6 +536,7 @@ background-image: none;
         $("#save").val("Edit");
 
         $("html, body").animate({scrollTop: 0}, 1500);
+        copyToClipboard();
     }
 
     function delete_row(id)
@@ -565,6 +569,7 @@ background-image: none;
                 $('#DailyStatusEndHours').val(end_hours);
                 $('#DailyStatusEndMinutes').val(end_minutes);
                 $('#DailyStatusEndMer').val(end_meridian);
+                copyToClipboard();
             }
         });
     }
@@ -592,6 +597,37 @@ background-image: none;
         $("html, body").animate({scrollTop: 0}, 1500);
     }
 
+    function copyToClipboard() {
+        new Clipboard('#copy_clip', {
+            text: function() {
+                return document.querySelector('#smart_report').value;
+            }
+        });
+
+        var reports = {};
+        $('.table tbody tr').each(function(){
+            var proj = $(this).find('td:nth(1)').html();
+            var work = $(this).find('td:nth(3)').html();
+            if(proj){
+                if(typeof reports[proj] == 'undefined'){
+                    reports[proj] = [];
+                }
+                if ($.inArray(work, reports[proj]) == -1)
+                    reports[proj].push(work);
+            }
+        });
+
+        var html = '';
+        $.each(reports, function (k, v) {
+            html += k + ':' + '\n';
+            $.each(v, function (k2, v2) {
+                var rk = k2 + 1;
+                html += rk +') ' + v2 + '\n';
+            });
+        });
+
+        $('#smart_report').val(html);
+    }
 </script>
 
 <?php
@@ -600,7 +636,7 @@ $minutes = array('00' => '00', '05' => '05', '10' => '10', '15' => '15', '20' =>
 $mer = array('am' => 'am', 'pm' => 'pm');
 ?>
 
-<div class="dialog" id="b_popup_3" style="display: none;" title="Report Confirmation">                                
+<div class="dialog" id="b_popup_3" style="display: none;" title="Report Confirmation">
     <div class="block">
         <p align="center">Are you sure to send daily status report ?</p>
         <p align="center">
@@ -918,11 +954,20 @@ $mer = array('am' => 'am', 'pm' => 'pm');
                     </div>
                 </div>
 
+                <textarea id="smart_report" class="hide"></textarea>
+
+
                 <div id="added_reports">
 
                     <?php if (!empty($reports)) {
                                                 ?>
-                    <div><h4 align="center">Your Daily Status Report</h4></div>
+
+                        <div><h4 align="center">
+                                Your Daily Status Report
+                                &nbsp;&nbsp;
+                                <a id="copy_clip" href="javascript:void(0)" style="font-size: 15px;">(Copy to clipboard)</a>
+                            </h4>
+                        </div>
                         <?php
                         $worked_hours = $total_hours = 0;
 
