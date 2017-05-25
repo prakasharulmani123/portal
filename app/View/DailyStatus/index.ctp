@@ -624,6 +624,7 @@ background-image: none;
                 var rk = k2 + 1;
                 html += rk +') ' + v2 + '\n';
             });
+            html += '\n';
         });
 
         $('#smart_report').val(html);
