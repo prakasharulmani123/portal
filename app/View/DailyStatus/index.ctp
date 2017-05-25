@@ -85,6 +85,16 @@ background-image: none;
 <script type="text/javascript">
 
     $(document).ready(function () {
+        var clipboard = new Clipboard('#copy_clip', {
+            text: function() {
+                return document.querySelector('#smart_report').value;
+            }
+        });
+
+        clipboard.on('success', function(e) {
+            alert('Report Copied !!!');
+        });
+
         copyToClipboard();
 
         $.ajax({
@@ -606,12 +616,6 @@ background-image: none;
     }
 
     function copyToClipboard() {
-        new Clipboard('#copy_clip', {
-            text: function() {
-                return document.querySelector('#smart_report').value;
-            }
-        });
-
         var reports = {};
         $('.table tbody tr').each(function(){
             var proj = $(this).find('td:nth(1)').html();
