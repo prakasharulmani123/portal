@@ -1,4 +1,12 @@
 <style>
+    .blink_me {
+        animation: blinker 1s linear infinite;
+    }
+
+    @keyframes blinker {
+        50% { opacity: 0; }
+    }
+
 .ui-autocomplete {
 position: absolute;
 top: 100%;
@@ -966,7 +974,7 @@ $mer = array('am' => 'am', 'pm' => 'pm');
                         <div><h4 align="center">
                                 Your Daily Status Report
                                 &nbsp;&nbsp;
-                                <a id="copy_clip" href="javascript:void(0)" style="font-size: 15px;">(Copy to clipboard)</a>
+                                <a id="copy_clip" href="javascript:void(0)" style="font-size: 15px;">(Copy to clipboard) <span class="blink_me" style="color: red">*</span></a>
                             </h4>
                         </div>
                         <?php

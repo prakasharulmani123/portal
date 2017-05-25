@@ -1,7 +1,7 @@
 <?php if (!empty($reports)) { ?>
     <div><h4 align="center">Your Daily Status Report
         &nbsp;&nbsp;
-        <a id="copy_clip" href="javascript:void(0)" style="font-size: 15px;">(Copy to clipboard)</a>
+        <a id="copy_clip" href="javascript:void(0)" style="font-size: 15px;">(Copy to clipboard) <span class="blink_me" style="color: red">*</span></a>
         </h4>
     </div>
     <?php
