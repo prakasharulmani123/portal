@@ -639,6 +639,8 @@ background-image: none;
             html += '\n';
         });
 
+        html = html.slice(0, -2);
+
         $('#smart_report').val(html);
     }
 </script>
