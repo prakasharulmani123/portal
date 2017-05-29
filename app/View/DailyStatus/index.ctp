@@ -629,7 +629,7 @@ background-image: none;
             }
         });
 
-        var html = '';
+        var html = "Work Status for the Day: \n";
         $.each(reports, function (k, v) {
             html += k + ':' + '\n';
             $.each(v, function (k2, v2) {
