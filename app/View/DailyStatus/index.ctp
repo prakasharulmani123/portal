@@ -619,7 +619,7 @@ background-image: none;
         var reports = {};
         $('.table tbody tr').each(function(){
             var proj = $(this).find('td:nth(1)').html();
-            var work = $(this).find('td:nth(3)').html() + ' - ' + $(this).find('td:nth(6)').html();
+            var work = $(this).find('td:nth(3)').html(); //+ ' - ' + $(this).find('td:nth(6)').html();
             if(proj){
                 if(typeof reports[proj] == 'undefined'){
                     reports[proj] = [];
