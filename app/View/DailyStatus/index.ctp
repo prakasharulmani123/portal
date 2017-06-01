@@ -1170,7 +1170,7 @@ $mer = array('am' => 'am', 'pm' => 'pm');
                         <input type="button" id="send-report" value="Send" class="btn" style="display:none;" onclick="location.href = '<?php echo $this->base; ?>/dailystatus/add_daily_report'"/>
                         <a href="<?php echo $this->base; ?>/dailystatus/cancel" title="cancel" onclick="return confirm('Are you sure to cancel the daily report ?')" class="btn btn-small">Cancel</a>
                         <a id="copy_clip" href="javascript:void(0)" style="font-size: 15px; text-decoration: none">&nbsp;&nbsp;(Copy to clipboard) <span class="blink_me" style="color: red">*</span>
-                        <b class="text-success hide" id="copy_success" style="font-size: 16px;">Text Copied !!!!</b>
+                        <b class="text-success hide" id="copy_success" style="font-size: 16px;">Report Copied !!!!</b>
 
                     </div>
                 </div>
