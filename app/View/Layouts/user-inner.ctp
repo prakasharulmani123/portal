@@ -21,7 +21,7 @@ echo $this->Html->css(array('fullcalendar.print'),'stylesheet',array('media' => 
 <?php
 echo $this->Html->script(array('plugins/jquery/jquery.mousewheel.min','plugins/cookie/jquery.cookies.2.2.0.min','plugins/bootstrap.min','plugins/charts/excanvas.min','plugins/charts/jquery.flot','plugins/charts/jquery.flot.stack','plugins/charts/jquery.flot.pie','plugins/charts/jquery.flot.resize','plugins/sparklines/jquery.sparkline.min','plugins/fullcalendar/fullcalendar.min','plugins/select2/select2.min','plugins/uniform/uniform','plugins/maskedinput/jquery.maskedinput-1.3.min','plugins/validation/languages/jquery.validationEngine-en','plugins/validation/jquery.validationEngine','plugins/mcustomscrollbar/jquery.mCustomScrollbar.min','plugins/animatedprogressbar/animated_progressbar','plugins/qtip/jquery.qtip-1.0.0-rc3.min','plugins/cleditor/jquery.cleditor','plugins/dataTables/jquery.dataTables.min',/*'plugins/dataTables/jquery.dataTables.columnFilter',*/'plugins/fancybox/jquery.fancybox.pack', 'jquery/moment'));
 
-echo $this->Html->script(array('cookies','actions','charts','plugins', 'clipboard.min.js'/*, 'sliding.form'*/));
+echo $this->Html->script(array('cookies','actions','charts','plugins', 'clipboard.min.js', 'jquery.nicescroll.js'/*, 'sliding.form'*/));
 ?>
 <?php 
 //echo $this->Html->image('favicon.ico');
@@ -44,6 +44,17 @@ echo $this->fetch('meta');
 echo $this->Session->flash();
 echo $this->fetch('content');
 ?>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("html").niceScroll({
+            spacebarenabled: false,
+            enablekeyboard: false,
+            emulatetouch: true,
+            cursordragontouch: true,
+            cursorcolor: '#365B85',
+        });
+    });
+</script>
 </div>
 </body>
 </html>
