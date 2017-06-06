@@ -46,13 +46,13 @@ echo $this->fetch('content');
 ?>
 <script type="text/javascript">
     $(document).ready(function () {
-        $("html").niceScroll({
-            spacebarenabled: false,
-            enablekeyboard: false,
-            emulatetouch: true,
-            cursordragontouch: true,
-            cursorcolor: '#365B85',
-        });
+//        $("html").niceScroll({
+//            spacebarenabled: false,
+//            enablekeyboard: false,
+//            emulatetouch: true,
+//            cursordragontouch: true,
+//            cursorcolor: '#365B85',
+//        });
     });
 </script>
 </div>
