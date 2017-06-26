@@ -124,8 +124,8 @@ $(document).ready(function() {
           </div>
           <div class="span3">
               <textarea id="smart_report" style="display: none"></textarea>
-              <a id="copy_clip" href="javascript:void(0)" style="font-size: 15px; text-decoration: none">&nbsp;&nbsp;(Copy to clipboard) <span class="blink_me" style="color: red">*</span>
-                  <b class="text-success hide" id="copy_success" style="font-size: 16px;">Report Copied !!!!</b>
+              <a id="copy_clip" href="javascript:void(0)" style="font-size: 15px; text-decoration: none">&nbsp;&nbsp;(Copy to clipboard) <span class="blink_me" style="color: red">*</span></a>
+              <b class="text-success hide" id="copy_success" style="font-size: 16px;">Report Copied !!!!</b>
           </div>
           <div class="clear"></div>
         </div>
