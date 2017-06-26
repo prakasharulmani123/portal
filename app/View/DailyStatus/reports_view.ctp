@@ -9,7 +9,53 @@ $(document).ready(function() {
 		"bInfo": false,
 		"bPaginate": false
 	});
-	
+
+    copyToClipboard();
+
+    var clipboard = new Clipboard('#copy_clip', {
+        text: function() {
+            return document.querySelector('#smart_report').value;
+        }
+    });
+
+    clipboard.on('success', function(e) {
+        $('#copy_success').fadeIn();
+
+        setTimeout(function () {
+            $('#copy_success').fadeOut();
+        }, 5000);
+    });
+
+    function copyToClipboard() {
+        var reports = {};
+        $('.table tbody tr').each(function(){
+            var proj = $(this).find('td:nth(1)').html();
+            var work = $(this).find('td:nth(3)').html(); //+ ' - ' + $(this).find('td:nth(6)').html();
+            if(proj){
+                if(typeof reports[proj] == 'undefined'){
+                    reports[proj] = [];
+                }
+                if ($.inArray(work, reports[proj]) == -1)
+                    reports[proj].push(work);
+            }
+        });
+
+        var html = "Work Status for the Day: \n";
+        $.each(reports, function (k, v) {
+            html += k + ':' + '\n';
+            $.each(v, function (k2, v2) {
+                var rk = k2 + 1;
+                html += rk +') ' + v2 + '\n';
+            });
+            html += '\n';
+        });
+
+        html = html.slice(0, -2);
+
+        console.log(html);
+
+        $('#smart_report').val(html);
+    }
 });
 </script>
 
@@ -73,8 +119,13 @@ $(document).ready(function() {
         
         <div class="row-form">
           <div class="span3">Worked Hours:</div>
-          <div class="span9">
+          <div class="span1">
 		  <?php echo '<b>'.gmdate("H:i", ($worked_hours* 60)).'</b>'?>
+          </div>
+          <div class="span3">
+              <textarea id="smart_report" style="display: none"></textarea>
+              <a id="copy_clip" href="javascript:void(0)" style="font-size: 15px; text-decoration: none">&nbsp;&nbsp;(Copy to clipboard) <span class="blink_me" style="color: red">*</span>
+                  <b class="text-success hide" id="copy_success" style="font-size: 16px;">Report Copied !!!!</b>
           </div>
           <div class="clear"></div>
         </div>
@@ -147,6 +198,6 @@ $(document).ready(function() {
     </div>
   </div>
   <div class="dr"><span></span></div>
-  
+
 </div>
 
