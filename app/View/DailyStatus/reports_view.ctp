@@ -122,7 +122,7 @@ $(document).ready(function() {
           <div class="span1">
 		  <?php echo '<b>'.gmdate("H:i", ($worked_hours* 60)).'</b>'?>
           </div>
-          <div class="span3">
+          <div class="span8">
               <textarea id="smart_report" style="display: none"></textarea>
               <a id="copy_clip" href="javascript:void(0)" style="font-size: 15px; text-decoration: none">&nbsp;&nbsp;(Copy to clipboard) <span class="blink_me" style="color: red">*</span></a>
               <b class="text-success hide" id="copy_success" style="font-size: 16px;">Report Copied !!!!</b>
