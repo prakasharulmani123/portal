@@ -209,10 +209,10 @@ class LateEntriesController extends AppController {
             $message .= 'So this is considered as <span style="color:red">Half a day Leave</span>';
         } elseif ($permission_cum_leave == 1) {
             $message = 'Late more than 1 Hour consider as a permission<br>';
-            $message .= 'You already take 3 permissions. <br>';
+            $message .= 'You already take '.Permission::MAX_PERMISSION.' permissions. <br>';
             $message .= 'So this is considered as <span style="color:red">Half a day Leave</span>';
         } elseif ($permission_cum_leave == 2) {
-            $message = 'You already take 3 permissions. <br>';
+            $message = 'You already take '.Permission::MAX_PERMISSION.' permissions. <br>';
             $message .= 'So this is considered as <span style="color:red">Half a day Leave</span>';
         }
 
@@ -225,7 +225,7 @@ class LateEntriesController extends AppController {
     public function add_permission($date = NULL, $type = 1) {
         $permission_count = $this->requestAction('permission/user_get_current_month_permission_new');
 
-        if ($permission_count >= 3) {
+        if ($permission_count >= Permission::MAX_PERMISSION) {
             $message = $this->add_half_day_leave($date, $type);
         } else {
             $this->loadModel('Permission');

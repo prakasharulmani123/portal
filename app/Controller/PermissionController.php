@@ -204,7 +204,7 @@ class PermissionController extends AppController {
                 $this->loadModel('Compensation');
                 $cm_count = $this->Compensation->find('count', array('conditions' => array('AND' => array('Compensation.user_id=' . $this->Session->read('User.id')), array('Compensation.status' => 0), array('Compensation.type' => 'P'))));
 
-                if ($pr_count >= 3 && $cm_count > 0) {
+                if ($pr_count >= Permission::MAX_PERMISSION && $cm_count > 0) {
                     $cm_userid = $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('AND' => array('Compensation.user_id' => $this->Session->read('User.id')), array('Compensation.status' => 0), array('Compensation.type' => 'P'))));
                     $cm_id = $cm_userid['Compensation']['id'];
                     $data1_com = array('Compensation' => array('id' => $cm_id, 'status' => true));

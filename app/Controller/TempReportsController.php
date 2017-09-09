@@ -264,7 +264,7 @@ class TempReportsController extends AppController {
             if (empty($permission_exists) && strtotime($worked_hours) < strtotime($grace_hours)) {
                 $permission_count = $this->requestAction('permission/user_get_current_month_permission_new');
 
-                if ($permission_count >= 3) {
+                if ($permission_count >= Permission::MAX_PERMISSION) {
                     $this->add_half_day_leave($date, $worked_hours, 1);
                 } else {
                     //worked less than 06:00 hours
@@ -409,7 +409,7 @@ class TempReportsController extends AppController {
 
             $remarks = 'Your worked hours (' . $worked_hours . ') on ' . $date . ' is less than '.$timings['office_hours'].' hours.';
             if ($type == 1) {
-                $remarks .= 'You already take 3 permission on ' . date('F', strtotime($date)) . '.';
+                $remarks .= 'You already take '.Permission::MAX_PERMISSION.' permission on ' . date('F', strtotime($date)) . '.';
             }
             $remarks .= ' So this is considered as a half a day leave';
 
@@ -560,7 +560,7 @@ class TempReportsController extends AppController {
     public function add_permission_entry($date = NULL, $worked_hours = NULL, $time_interval = NULL) {
         $permission_count = $this->requestAction('permission/user_get_current_month_permission_new');
 
-        if ($permission_count >= 3) {
+        if ($permission_count >= Permission::MAX_PERMISSION) {
             $this->add_half_day_leave($date, $worked_hours, 1);
         } else {
             $timings = $this->requestAction('entries/office_times');
