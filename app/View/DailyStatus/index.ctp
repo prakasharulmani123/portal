@@ -997,7 +997,10 @@ $mer = array('am' => 'am', 'pm' => 'pm');
                             }
                         }
                         $time_ob_1 = new DateTime($reports[0]['TempReport']['start_time']);
-                        $time_ob_1->add(new DateInterval('PT' . 9 . 'H' . 30 . 'M'));
+
+                        $tot_h = date('H', strtotime($timings['total_hours_in_office']));
+                        $tot_m = date('i', strtotime($timings['total_hours_in_office']));
+                        $time_ob_1->add(new DateInterval('PT' . $tot_h . 'H' . $tot_m . 'M'));
                         $end_time = $time_ob_1->format('h:i A');
                         $validate_end_time = $time_ob_1->format('Y-m-d H:i:s');
 

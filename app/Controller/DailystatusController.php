@@ -70,7 +70,9 @@ class DailystatusController extends AppController {
                 'Leave.date' => date('Y-m-d')
         )));
 
-        $this->set(compact('reports', 'entry_id', 'meetings', 'report_send', 'late_entry', 'office_times', 'permission_exists', 'leave'));
+        $timings = $this->requestAction('entries/office_times');
+
+        $this->set(compact('reports', 'entry_id', 'meetings', 'report_send', 'late_entry', 'office_times', 'permission_exists', 'leave', 'timings'));
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1064,7 +1066,10 @@ class DailystatusController extends AppController {
                 'Leave.days' => '0.50',
                 'Leave.date' => date('Y-m-d')
         )));
-        $this->set(compact('reports', 'late_entry', 'office_times', 'permission_exists', 'leave'));
+
+        $timings = $this->requestAction('entries/office_times');
+
+        $this->set(compact('reports', 'late_entry', 'office_times', 'permission_exists', 'leave', 'timings'));
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1077,7 +1082,9 @@ class DailystatusController extends AppController {
 
         $reports = $this->TempReport->find('all', array('conditions' => array('TempReport.user_id' => $this->Session->read('User.id'), 'TempReport.date' => date('Y-m-d')), 'order' => array('TempReport.start_time ASC')));
 
-        $this->set(compact('reports'));
+        $timings = $this->requestAction('entries/office_times');
+
+        $this->set(compact('reports', 'timings'));
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
