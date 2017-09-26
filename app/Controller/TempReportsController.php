@@ -473,6 +473,16 @@ class TempReportsController extends AppController {
         $total_worked_hours = gmdate("H:i:s", ($worked_hours * 60));
         $timings = $this->requestAction('entries/office_times');
         
+        $current_day = date('d');
+        $current_month = date('F Y');
+        $offical_permissions[] = date('d', strtotime("second sat of {$current_month}"));
+        $offical_permissions[]= date('d', strtotime("fourth sat of {$current_month}"));
+
+        // for 2nd and 4th sat
+        if(in_array($current_day, $offical_permissions)){
+            exit;
+        }
+
         //Eg (08:00:00 < 09:30:00)
         if($total_office_hours < $timings['total_hours_in_office']){
             $this->loadModel('Permission');
