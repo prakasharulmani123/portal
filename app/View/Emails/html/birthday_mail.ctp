@@ -15,7 +15,7 @@
                 <td width="61"><a href= "<?php $this->base;?>/admin/users" target="">
                 </a></td>
                 <td width="144"><a href= "http://arkinfotec.com/" target="_blank">
-				<img src="<?php echo 'http://'.$_SERVER['HTTP_HOST']?>/portal/app/webroot/img/logo.png" height="76" width="144" alt="ARK Infotec"/>
+				<img src="<?php echo 'http://'.$_SERVER['HTTP_HOST']?>/app/webroot/img/logo.png" height="76" width="144" alt="ARK Infotec"/>
                 <td width="393"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td height="46" align="right" valign="middle"><table width="100%" border="0" cellspacing="0" cellpadding="0">
