@@ -48,7 +48,7 @@ function toggle_leave(status, id)
 			$('#loader_'+id).hide();
 			$('#span_'+id).html(msg.result);
 			
-			status == 'C' ? $('#td_span_'+id).html(msg.date+' : <b class="text-info">Casual</b>') : $('#td_span_'+id).html(msg.date+' : <b class="text-error">Paid</b>');
+			status == 'C' ? $('#td_span_'+id).html(msg.date+' : <b class="text-info">Casual</b>') : $('#td_span_'+id).html(msg.date+' : <b class="text-error">Loss of Pay(LOP)</b>');
 			setTimeout(function(){$('#span_'+id).html('')}, 2000);
 		},
 		error: function(err){
@@ -74,7 +74,7 @@ function toggle(id)
 }
 </script>
 
-<div class="dialog b_popup_4" style="display: none;" title="Paid / Casual Toggle">                                
+<div class="dialog b_popup_4" style="display: none;" title="Loss of Pay(LOP) / Casual Toggle">                                
   <div class="block">
         <span>Name:</span>
         <p id="p_user_name"></p>
@@ -129,7 +129,7 @@ function toggle(id)
     <div class="span12">
       <div class="head">
         <div class="isw-target"></div>
-        <h1>Casual / Paid Toggle</h1>
+        <h1>Casual / Loss of Pay(LOP) Toggle</h1>
         <div class="clear"></div>
       </div>
       <div class="block-fluid table-sorting">
@@ -140,7 +140,7 @@ function toggle(id)
               <th width="10%">Name</th>
               <th width="10%">Days</th>
               <th width="20%">Reason</th>
-              <th width="20%">Paid / Casual Days</th>
+              <th width="20%">Loss of Pay(LOP) / Casual Days</th>
               <th width="15%" style="text-align:center">Toggle</th>
               <th width="15%">Remarks</th>
             </tr>
@@ -188,7 +188,7 @@ function toggle(id)
 				<?php if($leave['Leave']['approved'] == 1){
 					foreach($leave['SubLeave'] as $subleave){ ?>
                     	<span id="td_span_<?php echo $subleave['id']?>">
-							<?php echo date('d-m-Y', strtotime($subleave['date']))?> : <?php echo $subleave['status'] == 'C' ? '<b class="text-info">Casual</b>' : '<b class="text-error">Paid</b>';?>
+							<?php echo date('d-m-Y', strtotime($subleave['date']))?> : <?php echo $subleave['status'] == 'C' ? '<b class="text-info">Casual</b>' : '<b class="text-error">Loss of Pay(LOP)</b>';?>
                         </span><br />
 					<?php }
 					}

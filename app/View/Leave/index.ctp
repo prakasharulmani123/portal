@@ -48,7 +48,7 @@
 
     <div class="wBlock red auto">
         <div class="dSpace">
-            <h3>Paid <br />Leave Days</h3>
+            <h3>Loss of Pay(LOP) <br />Leave Days</h3>
             <span class="number"><?php echo $paid_leave_per_year ?></span>                                                  
         </div>
     </div>                    
@@ -105,7 +105,7 @@
                             <th width="15%">Reason</th>
                             <th width="5%">Status</th>
                             <th width="10%">Remarks</th>
-                            <th width="15%">Casual / Paid</th>
+                            <th width="15%">Casual / Loss of Pay(LOP)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -210,7 +210,7 @@
                                         foreach ($leave['SubLeave'] as $subleave) {
                                             ?>
                                             <span id="td_span_<?php echo $subleave['id'] ?>">
-                                                <?php echo date('d-m-Y', strtotime($subleave['date'])) ?> : <?php echo $subleave['status'] == 'C' ? '<b class="text-info">Casual</b>' : '<b class="text-error">Paid</b>'; ?>
+                                                <?php echo date('d-m-Y', strtotime($subleave['date'])) ?> : <?php echo $subleave['status'] == 'C' ? '<b class="text-info">Casual</b>' : '<b class="text-error">Loss of Pay(LOP)</b>'; ?>
                                             </span><br />
                                             <?php
                                         }

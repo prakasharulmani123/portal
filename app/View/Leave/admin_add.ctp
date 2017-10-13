@@ -103,7 +103,7 @@ function validSubmit(){
         </div>
         
         <div class="row-form">
-          <div class="span3">Paid:</div>
+          <div class="span3">Loss of Pay(LOP):</div>
           <div class="span9">
            <?php echo $this->Form->input('paid', array('type' => 'checkbox', 'value'=>'P', 'label'=>false)); ?>
           </div>

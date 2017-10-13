@@ -143,7 +143,7 @@ $marray[19]='active';
             </li>          
             <li class="<?php echo $marray[6];?> li_check_access" >
                 <a class="check-access"  href="<?php echo  $this->base?>/admin/leave/customize_leave">
-                    <span class="icon-tasks"></span><span class="text" style="padding-left:1px;">Casual / Paid Toggle</span>
+                    <span class="icon-tasks"></span><span class="text" style="padding-left:1px;">Casual / Loss of Pay(LOP) Toggle</span>
                 </a>                  
             </li>                     
             <li class="<?php echo $marray[6];?> li_check_access">
