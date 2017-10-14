@@ -168,7 +168,7 @@ background-image: none;
                                     $.ajax({
                                         url: BaseURL + "/temp_reports/check_report_entries/" + "<?php echo $this->Session->read('User.id') ?>" + "/" + "<?php echo date('Y-m-d') ?>",
                                         success: function (msg) {
-//                                            $("#send-report").trigger("click");
+                                            $("#send-report").trigger("click");
                                         },
                                         error: function () {
                                             $("#b_popup_3").dialog("close");
