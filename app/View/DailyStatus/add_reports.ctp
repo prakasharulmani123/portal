@@ -28,6 +28,12 @@
     <div style="margin-left:20px; color:#00C;"><h6 align="left">Worked Hours : <?php echo gmdate("H:i", ($worked_hours * 60)); ?></h6></div>
     <div style="margin-left:20px; color:#00C;"><h6 align="left">Total Hours : <?php echo gmdate("H:i", ($total_hours * 60)); ?></h6></div>
         <?php if(empty($leave)){?>
+        <?php
+        $check_permission = $this->requestAction('entries/check_permission_saturday');
+        if($check_permission){
+            $end_time = date('h:i A', strtotime($end_time.' -2 hours'));
+        }
+        ?>
     <div style="margin-right:20px; color:#00C; float: right"><h6 align="left">Your Office End Time  : <?php echo $end_time; ?></h6></div>
                            <span id="office_end_time" style="display: none;"><?php echo $validate_end_time; ?></span>
         <?php }?>

@@ -229,6 +229,16 @@ class EntriesController extends AppController {
         return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
     }
 
+    public function check_permission_saturday()
+    {
+        $current_day = date('d');
+        $current_month = date('F Y');
+        $offical_permissions[] = date('d', strtotime("second sat of {$current_month}"));
+        $offical_permissions[]= date('d', strtotime("fourth sat of {$current_month}"));
+
+        // for 2nd and 4th sat
+        return in_array($current_day, $offical_permissions);
+    }
 }
 
 ?>
