@@ -15,7 +15,7 @@
                 <td width="61"><a href= "<?php $this->base;?>/admin/users" target="">
                 </a></td>
                 <td width="144"><a href= "http://arkinfotec.com/" target="_blank">
-                <img src="<?php echo 'http://'.$_SERVER['HTTP_HOST']?>/app/webroot/img/logo.png" height="76" width="144" alt="ARK Infotec"/>
+                <img src="<?php echo 'http://'.$_SERVER['HTTP_HOST']?>/app/webroot/img/logo.png" height="76" width="144" alt="Sumanas Tech"/>
                 <td width="393"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td height="46" align="right" valign="middle"><table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -81,7 +81,7 @@
             Regards,<br />
             <?php echo $user['User']['employee_name']?>,<br />
             <?php echo $user['User']['designation']?>,<br />
-            ARK Infotec || <a href= "http://arkinfotec.com/" target="_blank">www.arkinfotec.com</a><br />
+            Sumanas Tech || <a href= "http://arkinfotec.com/" target="_blank">www.arkinfotec.com</a><br />
             Email:<a href= "mailto:<?php echo $user['User']['email']?>" target="_blank"><?php echo $user['User']['email']?></a><br />
             Skype:<a href= "<?php echo $user['User']['skype']?>" target="_blank"><?php echo $user['User']['skype']?></a><br />
             </td>

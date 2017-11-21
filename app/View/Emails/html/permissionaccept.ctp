@@ -15,7 +15,7 @@
                 <td width="61"><a href= "<?php $this->base;?>/admin/users" target="">
                 </a></td>
                 <td width="144"><a href= "http://arkinfotec.com/" target="_blank">
-                <img src="<?php echo 'http://'.$_SERVER['HTTP_HOST']?>/app/webroot/img/logo.png" height="76" width="144" alt="ARK Infotec"/>
+                <img src="<?php echo 'http://'.$_SERVER['HTTP_HOST']?>/app/webroot/img/logo.png" height="76" width="144" alt="Sumanas Tech"/>
                 <td width="393"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td height="46" align="right" valign="middle"><table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -63,7 +63,7 @@
 -- <br />
 Regards,<br />
 <?php echo $this->Session->read('User.email')?> , <br />
-ARK Infotec || <a href= "http://arkinfotec.com/" target="_blank">www.arkinfotec.com</a><br />
+Sumanas Tech || <a href= "http://arkinfotec.com/" target="_blank">www.arkinfotec.com</a><br />
 </font></td>
                 <td width="10%">&nbsp;</td>
               </tr>
