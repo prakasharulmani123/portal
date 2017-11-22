@@ -1,5 +1,6 @@
 <?php
 class Meeting extends AppModel {
+    public $test = 'Arivu';
 	public $name = 'Meeting';
 	
 //	public $belongsTo = "Category";
