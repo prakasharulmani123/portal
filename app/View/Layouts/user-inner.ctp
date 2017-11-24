@@ -63,9 +63,10 @@ echo $this->fetch('content');
     bottom: 20px;
     right: 20px;
     display:none;
+    padding: 0px 10px 0px 0px;
 }
 </style>
-<a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button" title="Click to return on the top page" data-toggle="tooltip" data-placement="left"><span class="ibw-up_circle"></span></a>
+<a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button" title="Click to return on the top page" data-toggle="tooltip" data-placement="left"><span class="isw-up_circle"></span></a>
 <script type="text/javascript">
 $(document).ready(function(){
      $(window).scroll(function () {
