@@ -26,7 +26,7 @@ echo $this->Html->script(array('cookies','actions','charts','plugins'/*, 'slidin
 </head>
 
 <body>
-<div class="header"> <?php echo $this->Html->image('logo.png', array('alt'=>'Sumanas Tech', 'title'=>'Sumanas Tech')); ?>
+<div class="header"> <?php echo $this->Html->image('logo.png', array('alt'=>'Sumanas Technologies', 'title'=>'Sumanas Technologies')); ?>
 <?php //echo $this->element('user/header'); ?> </div>
 <div class="menu"> 
 <div class="breadLine">

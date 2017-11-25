@@ -1,7 +1,7 @@
 <div class="loginBox">        
     <div class="loginHead">
-    <div style="margin:-1px 15px 2px 0px;"><font style="font-family: 'Times New Roman', Times, serif; color:#010101; font-size:24px; color:white;">Sumanas Tech
-	<?php //echo $this->Html->image('logo.png', array('width' => '500', 'height' => '70', 'alt'=>'Sumanas Tech', 'title'=>'Sumanas Tech')); ?>
+    <div style="margin:-1px 15px 2px 0px;"><font style="font-family: 'Times New Roman', Times, serif; color:#010101; font-size:21px; color:white;">SUMANAS TECHNOLOGIES
+	<?php //echo $this->Html->image('logo.png', array('width' => '500', 'height' => '70', 'alt'=>'Sumanas Technologies', 'title'=>'Sumanas Technologies')); ?>
     </font>
     </div>
     </div>

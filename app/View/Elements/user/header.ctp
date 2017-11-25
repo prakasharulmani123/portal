@@ -7,7 +7,7 @@ if($this->Session->read('User.role') == 'admin'){
 	exit;
 }
 ?>
-<a class="logo" href="<?php echo $this->base?>/dailystatus"><?php echo $this->Html->image('logo.png', array('alt'=>'Sumanas Tech', 'title'=>'Sumanas Tech - Admin Panel')); ?>
+<a class="logo" href="<?php echo $this->base?>/dailystatus"><?php echo $this->Html->image('logo.png', array('alt'=>'Sumanas Technologies', 'title'=>'Sumanas Technologies - Admin Panel', 'width' => 200, 'height' => 50)); ?>
 </a>
 <ul class="header_menu">
     <li class="list_icon"><a href="#">&nbsp;</a></li>

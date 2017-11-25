@@ -15,7 +15,7 @@
                 <td width="61"><a href= "<?php $this->base;?>/admin/users" target="">
                 </a></td>
                 <td width="144"><a href= "http://arkinfotec.com/" target="_blank">
-                <img src="<?php echo 'http://'.$_SERVER['HTTP_HOST']?>/app/webroot/img/logo.png" height="76" width="144" alt="Sumanas Tech"/>
+                <img src="<?php echo 'http://'.$_SERVER['HTTP_HOST']?>/app/webroot/img/logo.png" height="76" width="144" alt="Sumanas Technologies"/>
                 <td width="393"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td height="46" align="right" valign="middle"><table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -45,7 +45,7 @@
                 <td width="10%">&nbsp;</td>
                 <td width="80%" align="left" valign="top"><font style="font-family: Georgia, 'Times New Roman', Times, serif; color:#010101; font-size:24px"><strong><em>Dear <?php echo $user['User']['employee_name']?>,</em></strong></font><br /><br />
                   <font style="font-family: Verdana, Geneva, sans-serif; color:#666766; font-size:13px; line-height:21px">
-Welcome to our Ark Portal ,  
+Welcome to our Sumanas Technologies Portal ,
 <br /><br />Please check below your Login credentials.
 <br /><br /> URL: <a href="<?php echo $this->html->url('/', true)?>" title="Portal" target="_blank"><?php echo $this->html->url('/', true)?></a>
 <br /> User id  : <u><?php echo $user['User']['email']; ?></u>
@@ -57,7 +57,7 @@ Thanks.<br />
 -- <br />
 Regards,<br />
 <?php echo $this->Session->read('User.email')?> , <br />
-Sumanas Tech || <a href= "http://arkinfotec.com/" target="_blank">www.arkinfotec.com</a><br />
+Sumanas Technologies || <a href= "http://arkinfotec.com/" target="_blank">www.arkinfotec.com</a><br />
 </font></td>
                 <td width="10%">&nbsp;</td>
               </tr>

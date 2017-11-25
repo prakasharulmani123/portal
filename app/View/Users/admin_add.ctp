@@ -81,7 +81,14 @@ function get_cities(id)
           </div>
           <div class="clear"></div>
         </div>
-        
+          <div class="row-form">
+              <div class="span3">Employee type*:</div>
+              <div class="span9">
+                  <?php echo $this->Form->input('employee_type', array('type'=>'select', 'options'=> array('P'=>'Permanent', 'T'=>'Trainee'), 'label'=>false, 'empty'=>'Select', 'value' => isset($_GET['employee_type']) ? $_GET['employee_type'] : 'P')); ?>
+              </div>
+              <div class="clear"></div>
+          </div>
+
         <div class="row-form">
           <div class="span3">Sex:</div>
           <div class="span9">

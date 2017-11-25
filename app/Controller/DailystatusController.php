@@ -16,7 +16,9 @@ class DailystatusController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function index() {
-
+        if ($this->Session->read('User.employee_type') == 'T') {
+            return $this->redirect('/users/dashboard');
+        }
 // public function getWeek($date){
 //$date1 = date('Y-m-d H:i:a',strtotime($report['TempReport']['date']));
         $this->layout = "user-inner";

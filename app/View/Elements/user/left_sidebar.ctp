@@ -97,6 +97,7 @@ $marray[16]='active';
 </div>
 
 <ul class="navigation">
+    <?php if($this->Session->read('User.employee_type') == 'P'){ ?>
     <li class="<?php echo $marray[4];?>"> <a href="<?php  echo  $this->base?>/users/dashboard"> <span class="isw-grid"></span><span class="text">DashBoard</span> </a> </li>
     <li class="<?php echo $marray[0];?>"> <a href="<?php  echo  $this->base?>/dailystatus"> <span class="isw-empty_document"></span><span class="text">Daily Status Report</span> </a> </li>
     <li class="<?php echo $marray[1];?>"> <a href="<?php  echo  $this->base?>/dailystatus/reports"> <span class="isw-text_document"></span><span class="text">My Reports</span> </a> </li>
@@ -110,7 +111,9 @@ $marray[16]='active';
     <li class="<?php echo $marray[2];?>"> <a href="<?php  echo  $this->base?>/leave"> <span class="isw-target"></span><span class="text">Leave Request</span> </a> </li>
     <li class="<?php echo $marray[5];?>"> <a href="<?php  echo  $this->base?>/permission"> <span class="isw-list"></span><span class="text">Permission Request</span> </a> 
 </li>
+    <?php } ?>
     <li class="<?php echo $marray[3];?>"> <a href="<?php  echo  $this->base?>/entries"> <span class="isw-time"></span><span class="text">Time In / Time Out</span> </a> </li>
+    <?php if($this->Session->read('User.employee_type') == 'P'){ ?>
     <li class="openable<?php echo " ".$open;?>">
         <a href="#"><span class="isw-calendar"></span><span class="text">Monthly Reports</span></a>
         <ul>
@@ -132,6 +135,7 @@ $marray[16]='active';
     <li class="<?php echo $marray[16];?>"> <a href="<?php  echo  $this->base?>/user_attendances"> <span class="isw-time"></span><span class="text">My Attendance</span> </a> </li>
     <?php if($this->Session->read('User.super_user') == 1 || in_array($this->Session->read('User.id'), array(26))){ ?>
     <li class="<?php echo $marray[15];?>"> <a href="<?php  echo  $this->base?>/user_attendances/import_attendance"> <span class="isw-cloud"></span><span class="text">Import Attendance</span> </a> </li>
+    <?php } ?>
     <?php } ?>
 </ul>
 

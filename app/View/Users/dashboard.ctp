@@ -31,6 +31,7 @@
         text-decoration: none !important;
     }
 </style>
+<?php if($this->Session->read('User.employee_type') == 'P'){ ?>
 <div class="workplace">
 
     <div class="dialog b_popup_3"  id="b_popup_3" style="display: none;" title="Notification">
@@ -368,3 +369,50 @@
 
     <div class="dr"><span></span></div> 
 </div>
+<?php }else{ ?>
+    <div class="workplace">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="head">
+                <div class="isw-documents"></div>
+                <h1>Trainee Info</h1>
+                <div class="clear"></div>
+            </div>
+
+            <div class="block-fluid">
+                <div class="row-form" style="padding: 8px 16px;">
+                    <div class="span3">Trainee Name:</div>
+                    <div class="span9">
+                        <b><?php echo $user['User']['employee_name']; ?></b>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="row-form" style="padding: 8px 16px;">
+                    <div class="span3">ID No:</div>
+                    <div class="span9">
+                        <?php echo $user['User']['trainee_id']; ?>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="row-form" style="padding: 8px 16px;">
+                    <div class="span3">Email:</div>
+                    <div class="span9">
+                        <?php echo $user['User']['email']; ?>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="row-form" style="padding: 8px 16px;">
+                    <div class="span3">Joined on:</div>
+                    <div class="span9">
+                        <?php echo $user['User']['joined_on']; ?>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+<?php } ?>

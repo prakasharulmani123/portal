@@ -61,7 +61,7 @@ $marray[19]='active';
   <div class="image"> 
   <?php
   if($this->Session->check('User.photo')==false){ 
-  	echo $this->Html->image('admin/users/logo.png',array('class'=>'img-polaroid')); 
+  	echo $this->Html->image('admin/users/logo.png',array('class'=>'img-polaroid'));
   }
   else{
 	echo $this->Html->image('/img/users/'.$this->Session->read('User.photo'),array('class'=>'img-polaroid', 'alt'=>'profile-image'));

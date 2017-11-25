@@ -32,6 +32,8 @@ class UsersController extends AppController {
                         $this->Session->write('User.casual_leave', $user['User']['casual_leave']);
                         $this->Session->write('User.super_user', $user['User']['super_user']);
                         $this->Session->write('User.timings', $user['User']['timings']);
+                        $this->Session->write('User.employee_type', $user['User']['employee_type']);
+                        $this->Session->write('User.trainee_id', $user['User']['trainee_id']);
 //			$this->requestAction('pendingreports/check_belated_pending_reports');
                         $this->redirect('/users/dashboard');
                     } else {
@@ -103,6 +105,7 @@ class UsersController extends AppController {
         $this->set('leaves', $this->requestAction('leave/user_get_current_month_leave'));
         $this->set('permissions', $this->requestAction('permission/user_get_current_month_all_permission'));
         $this->set('holidays', $this->requestAction('holidays/get_holiday_per_month'));
+        $this->set('user', $this->User->findById($this->Session->read('User.id')));
 
         if ($this->Session->check('LateEntry')) {
             $this->set('late_entry', $this->Session->read('LateEntry'));
@@ -167,13 +170,15 @@ class UsersController extends AppController {
         $this->layout = "admin-inner";
         $this->set('cpage', 'employee');
         if ($this->request->is('post') || $this->request->is('put')) {
+            $employee_type = $this->request->data['User']['employee_type'];
+            $emply_number_col = $employee_type == 'T' ? 'trainee_id' : 'employee_id';
             $user = $this->get_all_users();
+
             if (empty($user)) {
-                $this->request->data['User']['employee_id'] = '001';
+                $this->request->data['User'][$emply_number_col] = '001';
             } else {
-                $user = $this->get_last_added_user();
-                $emp_id = $this->get_next_employee_id($user['User']['employee_id']);
-                $this->request->data['User']['employee_id'] = $emp_id;
+                $user = $this->get_last_added_user($emply_number_col);
+                $this->request->data['User'][$emply_number_col] = $this->get_next_employee_id($user['User'][$emply_number_col]);
             }
 
             //casual leave set
@@ -229,6 +234,21 @@ class UsersController extends AppController {
         $this->User->id = $id;
         $this->set('cpage', 'employee');
         if ($this->request->is('put') || $this->request->is('post')) {
+            $old_data = $this->User->find('first', array('conditions' => array('User.id' => $id)));
+            $old_employee_type = $old_data['User']['employee_type'];
+            $new_employee_type = $this->request->data['User']['employee_type'];
+
+            if($old_employee_type != $new_employee_type){
+                if($new_employee_type == 'T' && !$old_data['User']['trainee_id']){
+                    $user = $this->get_last_added_user('trainee_id');
+                    $emp_id = $this->get_next_employee_id($user['User']['trainee_id']);
+                    $this->request->data['User']['trainee_id'] = $emp_id;
+                }else if($new_employee_type == 'P' && !$old_data['User']['employee_id']){
+                    $user = $this->get_last_added_user('employee_id');
+                    $emp_id = $this->get_next_employee_id($user['User']['employee_id']);
+                    $this->request->data['User']['employee_id'] = $emp_id;
+                }
+            }
 
             //check and upload images
             $this->Img = $this->Components->load('Img');
@@ -392,8 +412,8 @@ class UsersController extends AppController {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-    public function get_last_added_user() {
-        return $this->User->find('first', array('conditions' => array('User.role' => 'user'), 'order' => array('User.id' => 'DESC')));
+    public function get_last_added_user($order_col = 'employee_id') {
+        return $this->User->find('first', array('conditions' => array('User.role' => 'user'), 'order' => array("User.{$order_col}" => 'DESC')));
     }
 
 ///////////////////////////////////////////////////////////////////////////////
