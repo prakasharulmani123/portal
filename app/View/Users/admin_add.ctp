@@ -241,7 +241,7 @@ function get_cities(id)
   <div class="row-fluid">                
     <div align="center" class="span12">
       <input type="submit" name="save" id="save" value="Add" class="btn" />
-      <input type="button" name="back" id="back" value="Back" class="btn" onclick="location.href='<?php echo $this->base; ?>/admin/users/employee'" />          
+      <input type="button" name="back" id="back" value="Back" class="btn" onclick="location.href='<?php echo $this->base; ?>/admin/users/employee/1'" />
     </div>
   </div>
   <?php echo $this->Form->end(); ?>
