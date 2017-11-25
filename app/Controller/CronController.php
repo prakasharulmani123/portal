@@ -53,7 +53,7 @@ class CronController extends AppController {
 //        $this->Email->send('test');
 
         $this->loadModel('User');
-        $users = $this->User->find('all', array('conditions' => array('User.role' => 'user', 'User.active' => 1)));
+        $users = $this->User->find('all', array('conditions' => array('User.role' => 'user', 'User.active' => 1, 'User.employee_type' => 'P')));
 
         $email_users = array();
         $birthday_users = array();
@@ -156,6 +156,9 @@ class CronController extends AppController {
         $users = $this->requestAction('users/get_all_users');
 
         foreach ($users as $user):
+            if($user->employee_type == 'T'){
+                continue;
+            }
             $pending_reports = $this->PendingReport->find('first', array('conditions' => array('PendingReport.user_id' => $user['User']['id'], 'PendingReport.date' => $check_date, 'PendingReport.status' => 1)));
 
             if (!empty($pending_reports)) {
@@ -213,6 +216,9 @@ class CronController extends AppController {
             $users = $this->User->findAllByRoleAndActiveAndSuperUser('user', 1, 0);
 
             foreach ($users as $user):
+                if($user->employee_type == 'T'){
+                    continue;
+                }
                 $check_report_exists = $this->DailyStatus->findByUserIdAndDate($user['User']['id'], $check_day);
 
                 if (empty($check_report_exists)):
