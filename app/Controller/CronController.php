@@ -156,7 +156,7 @@ class CronController extends AppController {
         $users = $this->requestAction('users/get_all_users');
 
         foreach ($users as $user):
-            if($user->employee_type == 'T'){
+            if(@$user['User']['employee_type'] == 'T'){
                 continue;
             }
             $pending_reports = $this->PendingReport->find('first', array('conditions' => array('PendingReport.user_id' => $user['User']['id'], 'PendingReport.date' => $check_date, 'PendingReport.status' => 1)));
@@ -216,7 +216,7 @@ class CronController extends AppController {
             $users = $this->User->findAllByRoleAndActiveAndSuperUser('user', 1, 0);
 
             foreach ($users as $user):
-                if($user->employee_type == 'T'){
+                if(@$user['User']['employee_type'] == 'T'){
                     continue;
                 }
                 $check_report_exists = $this->DailyStatus->findByUserIdAndDate($user['User']['id'], $check_day);
