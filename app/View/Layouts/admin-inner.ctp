@@ -6,7 +6,7 @@
         ////echo $this->Html->image('favicon.ico');
         //echo $this->Html->meta('icon');
 
-        echo $this->Html->meta('favicon.ico', 'http://www.arkinfotec.com/wp-content/themes/ark/images/favicon.ico', array(
+        echo $this->Html->meta('favicon.ico', '/app/webroot/favicon.ico', array(
             'type' => 'icon'
         ));
         echo $this->Html->css(array('stylesheets'));
