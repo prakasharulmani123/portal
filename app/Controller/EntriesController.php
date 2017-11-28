@@ -40,17 +40,17 @@ class EntriesController extends AppController {
             $all = $this->Session->read('Entry');
 
             if ($all['user_id'] == '' && $all['from_date'] == '') {
-                $entries = array('order' => array('Entry.time_in DESC'));
+                $entries = array('order' => array('Entry.time_in' => 'DESC'));
             } elseif ($all['user_id'] != '' && $all['from_date'] == '') {
-                $entries = array('conditions' => array('Entry.user_id' => $all['user_id']), 'order' => array('Entry.time_in DESC'));
+                $entries = array('conditions' => array('Entry.user_id' => $all['user_id']), 'order' => array('Entry.time_in' => 'DESC'));
             } elseif ($all['user_id'] == '' && $all['from_date'] != '') {
-                $entries = array('conditions' => array('Entry.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Entry.time_in DESC'));
+                $entries = array('conditions' => array('Entry.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Entry.time_in' => 'DESC'));
             } elseif ($all['user_id'] != '' && $all['from_date'] != '') {
-                $entries = array('conditions' => array('Entry.user_id' => $all['user_id'], 'Entry.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Entry.time_in DESC'));
+                $entries = array('conditions' => array('Entry.user_id' => $all['user_id'], 'Entry.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Entry.time_in' => 'DESC'));
             }
         } else {
             $all = array('user_id' => '', 'from_date' => '', 'to_date' => '');
-            $entries = array('order' => array('Entry.time_in DESC'));
+            $entries = array('order' => array('Entry.time_in' => 'DESC'));
         }
 
         $entries = array_merge($entries, array('limit' => 25));
@@ -197,13 +197,13 @@ class EntriesController extends AppController {
             $all = $this->Session->read('UserEntry');
 
             if ($all['from_date'] == '') {
-                $entries = array('conditions' => array('Entry.user_id' => $this->Session->read('User.id')), 'order' => array('Entry.time_in DESC'));
+                $entries = array('conditions' => array('Entry.user_id' => $this->Session->read('User.id')), 'order' => array('Entry.time_in' => 'DESC'));
             } elseif ($all['from_date'] != '') {
-                $entries = array('conditions' => array('Entry.user_id' => $this->Session->read('User.id'), 'Entry.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Entry.time_in DESC'));
+                $entries = array('conditions' => array('Entry.user_id' => $this->Session->read('User.id'), 'Entry.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Entry.time_in' => 'DESC'));
             }
         } else {
             $all = array('from_date' => '', 'to_date' => '');
-            $entries = array('conditions' => array('Entry.user_id' => $this->Session->read('User.id')), 'order' => array('Entry.time_in DESC'));
+            $entries = array('conditions' => array('Entry.user_id' => $this->Session->read('User.id')), 'order' => array('Entry.time_in' => 'DESC'));
         }
         $entries = array_merge($entries, array('limit' => 25));
         $this->Paginator->settings = $entries;
