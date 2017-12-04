@@ -64,7 +64,9 @@ class CronController extends AppController {
 
                 $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
 
-                $birthday_users[$user['User']['id']] = $user['User']['employee_name'] . ',' . ($age);
+                if($age > 17){
+                    $birthday_users[$user['User']['id']] = $user['User']['employee_name'] . ',' . ($age);
+                }
             } else {
                 $email_users[$user['User']['id']] = $user['User']['email'];
             }
