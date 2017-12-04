@@ -109,21 +109,27 @@ class CronController extends AppController {
         if ($birthday_users) {
             foreach ($birthday_users as $key => $birthday_user) {
                 $user = $this->User->find('first', array('conditions' => array('User.id' => $key)));
+                $birthDate = date('d/m/Y', strtotime($user['User']['date_of_birth']));
+                $birthDate = explode("/", $birthDate);
 
-                $quote = $this->birth_day_quote();
-//				$this->Email->to = array('prakash.paramanandam@arkinfotec.com');
-                $this->Email->to = $user['User']['email'];
-                $this->Email->subject = 'Happy Birthday : ' . $user['User']['employee_name'];
-                $this->Email->replyTo = 'admin@arkinfotec.com';
-                $this->Email->from = 'admin@arkinfotec.com';
-                $this->Email->template = 'birthday_mail';
-                $this->Email->sendAs = 'html';
-                $this->set('birthday_user', $birthday_user);
-                $this->set('user', $user);
-                $this->set('quote', $quote);
-                $this->Email->send();
+                $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
 
-//				echo 'Happy Birthday - '.$birthday_user.'-'.date('Y-m-d H-:i:s').'<br>';
+                if($age > 17){
+                    $quote = $this->birth_day_quote();
+//				    $this->Email->to = array('prakash.paramanandam@arkinfotec.com');
+                    $this->Email->to = $user['User']['email'];
+                    $this->Email->subject = 'Happy Birthday : ' . $user['User']['employee_name'];
+                    $this->Email->replyTo = 'admin@arkinfotec.com';
+                    $this->Email->from = 'admin@arkinfotec.com';
+                    $this->Email->template = 'birthday_mail';
+                    $this->Email->sendAs = 'html';
+                    $this->set('birthday_user', $birthday_user);
+                    $this->set('user', $user);
+                    $this->set('quote', $quote);
+                    $this->Email->send();
+
+//				    echo 'Happy Birthday - '.$birthday_user.'-'.date('Y-m-d H-:i:s').'<br>';
+                }
             }
         }
 
