@@ -62,7 +62,7 @@
             $day = ($key == 0) ? 'second' : 'fourth';
             ?>
             <div class="center" style="text-align: center; color: red;">
-                <h4 class="blink_me">Notification! Today is <?= $day ?> Saturday !!!</h4>
+                <h4 class="blink_me">Hurrah! Today is <?= $day ?> Saturday !!!</h4>
             </div>
         <?php } ?>
         <div class="span12">
