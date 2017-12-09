@@ -30,6 +30,15 @@
         padding: 0 5px !important;
         text-decoration: none !important;
     }
+
+    .blink_me {
+        animation: blinker 1s linear infinite;
+    }
+
+    @keyframes blinker {
+        50% { opacity: 0; }
+    }
+
 </style>
 <?php if($this->Session->read('User.employee_type') == 'P'){ ?>
 <div class="workplace">
@@ -40,6 +49,22 @@
     <a id="popup_3" style="display:none;">pop up</a>
 
     <div class="row-fluid">
+        <?php
+        $is_permission_saturday = $this->requestAction('entries/check_permission_saturday');
+        if($is_permission_saturday){
+            $current_day = date('d');
+            $current_month = date('F Y');
+            $offical_permissions[] = date('d', strtotime("second sat of {$current_month}"));
+            $offical_permissions[]= date('d', strtotime("fourth sat of {$current_month}"));
+
+            $key = array_search ($current_day, $offical_permissions);
+
+            $day = ($key == 0) ? 'second' : 'fourth';
+            ?>
+            <div class="center" style="text-align: center; color: red;">
+                <h4 class="blink_me">Notification! Today is <?= $day ?> Saturday !!!</h4>
+            </div>
+        <?php } ?>
         <div class="span12">
             <?php //echo $this->request->clientIp();?>
             <!---------------------- Buttons --------------------------------->
