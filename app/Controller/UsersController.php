@@ -209,7 +209,7 @@ class UsersController extends AppController {
             $this->request->data['User']['password'] = md5($password);
             $this->request->data['User']['date_of_birth'] = date('Y-m-d', strtotime($this->data['User']['date_of_birth']));
             $this->request->data['User']['joined_on'] = date('Y-m-d', strtotime($this->data['User']['joined_on']));
-            $this->request->data['User']['timings'] = '{"office_start_time":"09:30:00","office_end_time":"19:00:00","late_entry_end_time":"19:30:00","excuse_time":"10:05:00","permission_start_time":"10:30:00","permission_max_time":"11:30:00","half_day_excuse_time":"11:45:00","half_day_grace_time":"00:15:00","permission_hours":"02:00:00","office_hours":"08:00:00","total_hours_in_office":"09:30:00","report_send_grace_time":"00:10:00","permission_back_time":"06:00:00"}';
+            $this->request->data['User']['timings'] = '{"office_hours":"08:10:00","total_hours_in_office":"09:40:00","office_start_time":"09:30:00","office_end_time":"19:10:00","excuse_time":"10:05:00","permission_start_time":"10:30:00","permission_max_time":"11:30:00","half_day_excuse_time":"11:45:00","half_day_grace_time":"00:15:00","late_entry_end_time":"19:40:00","permission_hours":"02:00:00","report_send_grace_time":"00:10:00","permission_back_time":"06:10:00"}';
             if ($this->User->save($this->request->data)) {
                 $this->user_account_activation_mail($this->User->getLastInsertId(), $password);
                 $this->Session->setFlash('Employee Added Sucessfully', 'flash_success');
