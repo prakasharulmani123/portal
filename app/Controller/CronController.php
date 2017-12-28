@@ -64,7 +64,7 @@ class CronController extends AppController {
 
                 $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
 
-                if($age > 17){
+                if ($age > 17) {
                     $birthday_users[$user['User']['id']] = $user['User']['employee_name'] . ',' . ($age);
                 }
             } else {
@@ -114,7 +114,7 @@ class CronController extends AppController {
 
                 $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
 
-                if($age > 17){
+                if ($age > 17) {
                     $quote = $this->birth_day_quote();
 //				    $this->Email->to = array('prakash.paramanandam@arkinfotec.com');
                     $this->Email->to = $user['User']['email'];
@@ -135,6 +135,8 @@ class CronController extends AppController {
 
         //create pending reports
         $this->add_pending_report_automatically();
+
+        $this->settings_update();
 
         //checks wrong ip address entry.
         $this->ip_checking();
@@ -164,7 +166,7 @@ class CronController extends AppController {
         $users = $this->requestAction('users/get_all_users');
 
         foreach ($users as $user):
-            if(@$user['User']['employee_type'] == 'T'){
+            if (@$user['User']['employee_type'] == 'T') {
                 continue;
             }
             $pending_reports = $this->PendingReport->find('first', array('conditions' => array('PendingReport.user_id' => $user['User']['id'], 'PendingReport.date' => $check_date, 'PendingReport.status' => 1)));
@@ -224,7 +226,7 @@ class CronController extends AppController {
             $users = $this->User->findAllByRoleAndActiveAndSuperUser('user', 1, 0);
 
             foreach ($users as $user):
-                if(@$user['User']['employee_type'] == 'T'){
+                if (@$user['User']['employee_type'] == 'T') {
                     continue;
                 }
                 $check_report_exists = $this->DailyStatus->findByUserIdAndDate($user['User']['id'], $check_day);
@@ -548,6 +550,15 @@ class CronController extends AppController {
         }
     }
 
-}
+    public function settings_update() {
+        $firstDay = date('d');
+        if ($firstDay == '01') {
+            $this->loadModel('Settings');
+            $this->Settings->updateAll(
+                    array('Settings.value' => 1), array('Settings.key_value' => ['2nd SAT','4th SAT'])
+            );
+        }
+    }
 
+}
 ?>

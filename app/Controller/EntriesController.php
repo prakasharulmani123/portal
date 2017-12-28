@@ -229,16 +229,26 @@ class EntriesController extends AppController {
         return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
     }
 
-    public function check_permission_saturday()
-    {
+    public function check_permission_saturday() {
+        $active_saturday = '';
         $current_day = date('d');
         $current_month = date('F Y');
-        $offical_permissions[] = date('d', strtotime("second sat of {$current_month}"));
-        $offical_permissions[]= date('d', strtotime("fourth sat of {$current_month}"));
+        $this->loadModel('Settings');
+        $offical_permission = date('d', strtotime("second sat of {$current_month}"));
+        if ($current_day == $offical_permission) {
+            $second_sat = '2nd SAT';
+            $active_saturday = $this->Settings->query("SELECT value from settings WHERE key_value ='$second_sat' AND value = 1");
+        } else {
+            $offical_permission = date('d', strtotime("fourth sat of {$current_month}"));
 
-        // for 2nd and 4th sat
-        return in_array($current_day, $offical_permissions);
+            if ($current_day == $offical_permission) {
+                $fourth_sat = '4th SAT';
+                $active_saturday = $this->Settings->query("SELECT value from settings WHERE key_value ='$fourth_sat'AND value = 1");
+            }
+        }
+        return $active_saturday;
     }
+
 }
 
 ?>
