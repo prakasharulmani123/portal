@@ -80,7 +80,7 @@ if(!empty($all['month'])){
 	$paid_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/'.$this->Session->read('User.id').'/'.date('m', strtotime($month)).'/'.date('Y', strtotime($month)).'/'.'P');
 	
 	$leave_count = $this->requestAction('leave/user_get_all_leave_count'); 
-	$casual_leave_per_year = $this->requestAction('leave/user_get_all_leave_count_by_user_id_and_status/'.$this->Session->read('User.id').'/C/'.date('Y'));
+	$casual_leave_per_year = $this->requestAction('leave/user_get_all_leave_count_by_user_id_and_status/'.$this->Session->read('User.id').'/C/'.$year);
 	
 	$user_casual_leave = $this->Session->read('User.casual_leave');
 ?>

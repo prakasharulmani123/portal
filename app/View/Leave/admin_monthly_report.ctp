@@ -99,7 +99,7 @@ if ($all['user_id'] == 'all') {
 
                                 $leave_count = $this->requestAction('leave/get_all_leave_count/' . $key);
 
-                                $casual_leave_per_year = $this->requestAction('leave/user_get_all_leave_count_by_user_id_and_status/' . $key . '/C/' . date('Y'));
+                                $casual_leave_per_year = $this->requestAction('leave/user_get_all_leave_count_by_user_id_and_status/' . $key . '/C/' . $year);
                                 $sel_user = $this->requestAction('users/get_user/' . $key);
                                 $user_casual_leave = $sel_user['User']['casual_leave'];
                                 ?>
@@ -161,7 +161,7 @@ if ($all['user_id'] == 'all') {
 
         $leave_count = $this->requestAction('leave/get_all_leave_count/' . $all['user_id']);
 
-        $casual_leave_per_year = $this->requestAction('leave/user_get_all_leave_count_by_user_id_and_status/' . $all['user_id'] . '/C/' . date('Y'));
+        $casual_leave_per_year = $this->requestAction('leave/user_get_all_leave_count_by_user_id_and_status/' . $all['user_id'] . '/C/' . $year);
 
         $sel_user = $this->requestAction('users/get_user/' . $all['user_id']);
         $user_casual_leave = $sel_user['User']['casual_leave'];
