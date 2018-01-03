@@ -10,7 +10,7 @@
 echo $this->Html->meta('favicon.ico', '/app/webroot/favicon.ico', array (
     'type' => 'icon' 
 ));
-echo $this->Html->css(array('stylesheets'));
+echo $this->Html->css(array('stylesheets', 'styling'));
 echo $this->Html->css(array('fullcalendar.print'),'stylesheet',array('media' => 'print'));
 ?>
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -35,11 +35,12 @@ echo $this->fetch('meta');
 
 </head>
 
-<body>
+<body class="cube">
+<div class="wrapper purple">
 <div class="header"> <?php echo $this->element('user/header'); ?> </div>
 <div class="menu"> <?php echo $this->element('user/left_sidebar'); ?> </div>
 <div class="content">
-<?php 
+<?php
 //echo $this->element('admin/bread_line');
 echo $this->Session->flash();
 echo $this->fetch('content');
@@ -55,6 +56,7 @@ echo $this->fetch('content');
 //        });
     });
 </script>
+</div>
 </div>
 <style type="text/css">
 .back-to-top {
