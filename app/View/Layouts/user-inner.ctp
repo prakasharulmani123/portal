@@ -36,7 +36,7 @@ echo $this->fetch('meta');
 </head>
 
 <body class="cube">
-<div class="wrapper purple">
+<div class="wrapper">
 <div class="header"> <?php echo $this->element('user/header'); ?> </div>
 <div class="menu"> <?php echo $this->element('user/left_sidebar'); ?> </div>
 <div class="content">
