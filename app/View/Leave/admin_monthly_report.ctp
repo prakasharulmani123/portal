@@ -75,6 +75,10 @@ if (empty($all['month'])) {
 </div>
 
 <?php
+$current_year = date('Y');
+$find_year = date('Y', strtotime($month));
+$find_month = date('m', strtotime($month));
+
 if ($all['user_id'] == 'all') {
     ?>
     <div class="workplace">
@@ -94,14 +98,20 @@ if ($all['user_id'] == 'all') {
 
                             <td>
                                 <?php
-                                $casual_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $key . '/' . date('m', strtotime($month)) . '/' . date('Y', strtotime($month)) . '/' . 'C');
-                                $paid_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $key . '/' . date('m', strtotime($month)) . '/' . date('Y', strtotime($month)) . '/' . 'P');
+                                $casual_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $key . '/' . $find_month . '/' . $find_year . '/' . 'C');
+                                $paid_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $key . '/' . $find_month . '/' . $find_year . '/' . 'P');
 
                                 $leave_count = $this->requestAction('leave/get_all_leave_count/' . $key);
 
                                 $casual_leave_per_year = $this->requestAction('leave/user_get_all_leave_count_by_user_id_and_status/' . $key . '/C/' . $year);
                                 $sel_user = $this->requestAction('users/get_user/' . $key);
-                                $user_casual_leave = $sel_user['User']['casual_leave'];
+
+                                if($current_year == $find_year){
+                                    $user_casual_leave = $sel_user['User']['casual_leave'];
+                                }else{
+                                    $old_casual = json_decode($sel_user['User']['old_casual_leave'], true);
+                                    $user_casual_leave = @$old_casual[$find_year] ?: 12;
+                                }
                                 ?>
 
                                 <div class="workplace">
@@ -155,16 +165,22 @@ if ($all['user_id'] == 'all') {
     ?>
     <?php
     if (!empty($all['month'])) {
-        $casual_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $all['user_id'] . '/' . date('m', strtotime($month)) . '/' . date('Y', strtotime($month)) . '/' . 'C');
+        $casual_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $all['user_id'] . '/' . $find_month . '/' . $find_year . '/' . 'C');
 
-        $paid_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $all['user_id'] . '/' . date('m', strtotime($month)) . '/' . date('Y', strtotime($month)) . '/' . 'P');
+        $paid_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $all['user_id'] . '/' . $find_month . '/' . $find_year . '/' . 'P');
 
         $leave_count = $this->requestAction('leave/get_all_leave_count/' . $all['user_id']);
 
         $casual_leave_per_year = $this->requestAction('leave/user_get_all_leave_count_by_user_id_and_status/' . $all['user_id'] . '/C/' . $year);
 
         $sel_user = $this->requestAction('users/get_user/' . $all['user_id']);
-        $user_casual_leave = $sel_user['User']['casual_leave'];
+
+        if($current_year == $find_year){
+            $user_casual_leave = $sel_user['User']['casual_leave'];
+        }else{
+            $old_casual = json_decode($sel_user['User']['old_casual_leave'], true);
+            $user_casual_leave = @$old_casual[$find_year] ?: 12;
+        }
         ?>
 
         <div class="workplace">

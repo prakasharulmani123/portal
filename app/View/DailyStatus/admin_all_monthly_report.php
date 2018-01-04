@@ -1,6 +1,3 @@
-<?php
-echo  'hkjhkjkj';
-?>
 <style>
 /*
 .ui-datepicker-calendar {

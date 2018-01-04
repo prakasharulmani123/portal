@@ -146,9 +146,34 @@ class CronController extends AppController {
             $users = $this->User->find('all', array('conditions' => array('User.active' => 1, 'User.role' => 'user')));
 
             foreach ($users as $user) {
+                $old_casual = json_decode($user['User']['old_casual_leave'], true) ?: [];
+                $old_casual[date('Y') - 1] = $user['User']['casual_leave'];
                 $this->User->id = $user['User']['id'];
                 $this->User->saveField('casual_leave', 12);
+                $this->User->saveField('old_casual_leave', json_encode($old_casual));
             }
+        }
+    }
+
+    public function update_user_casual_leave()
+    {
+        $this->loadModel('User');
+        $users = $this->User->find('all', array('conditions' => array('User.active' => 1, 'User.role' => 'user')));
+
+        $prev_year = date('Y') - 1;
+
+        echo '<pre>';
+        foreach ($users as $user) {
+            $old_casual = json_decode($user['User']['old_casual_leave'], true) ?: [];
+            if(date('Y', strtotime($user['User']['joined_on'])) == $prev_year){
+                $old_casual[$prev_year] = date('d', strtotime($user['User']['joined_on'])) > 15 ? 12 - date('m', strtotime($user['User']['joined_on'])) : 12 - (date('m', strtotime($user['User']['joined_on'])) - 1);
+            }else{
+                $old_casual[$prev_year] = 12;
+            }
+            print_r($user['User']['employee_name']);
+            print_r($old_casual);
+            $this->User->id = $user['User']['id'];
+            $this->User->saveField('old_casual_leave', json_encode($old_casual));
         }
     }
 
