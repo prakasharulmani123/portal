@@ -81,6 +81,11 @@ $find_month = date('m', strtotime($month));
 
 if ($all['user_id'] == 'all') {
     ?>
+    <style type="text/css">
+        table td{
+            background-color: #F2F2F2;
+        }
+    </style>
     <div class="workplace">
 
         <div class="block-fluid table-sorting">
