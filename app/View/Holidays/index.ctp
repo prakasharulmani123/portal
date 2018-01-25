@@ -13,9 +13,13 @@ $(document).ready(function(){
 <div class="workplace">
   <div class="row-fluid">
     <div class="span12">
+    <div style="text-align: center">
+        <a href="/holidays?y=<?= $year - 1 ?>" class="btn btn-primary btn-xs"><< Prev</a>
+        <a href="/holidays?y=<?= $year + 1 ?>" class="btn btn-danger btn-xs <?= ($year >= date('Y')) ? 'hide' : '' ?>">Next >></a>
+    </div>
       <div class="head">
         <div class="isw-bookmark"></div>
-        <h1>Offical Holidays <?php echo date('Y')?></h1>
+        <h1>Offical Holidays <?php echo $year?></h1>
         <div class="clear"></div>
       </div>
       <div class="block-fluid table-sorting">

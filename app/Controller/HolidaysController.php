@@ -76,9 +76,10 @@ class HolidaysController extends AppController {
 
 	public function index(){
 		$this->layout = 'user-inner';
-		$holidays = $this->Holiday->find('all', array('conditions'=>array('YEAR(Holiday.date)'=>date('Y')),'order'=>array('Holiday.date ASC')));
+		$year = $this->request->query('y') ?: date('Y');
+		$holidays = $this->Holiday->find('all', array('conditions'=>array('YEAR(Holiday.date)'=>$year),'order'=>array('Holiday.date ASC')));
 		
-		$this->set(compact('holidays'));
+		$this->set(compact('holidays', 'year'));
 	}
 
 /////////////////////////////////////////////////////////////////////////	
