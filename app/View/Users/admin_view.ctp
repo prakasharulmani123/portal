@@ -149,6 +149,30 @@
         </div>
         
         <div class="row-form">
+          <div class="span3">Pancard No. :</div>
+          <div class="span9">
+           <?php echo $this->data['User']['pancard']; ?>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="row-form">
+          <div class="span3">Aadhaar Card Number :</div>
+          <div class="span9">
+           <?php echo $this->data['User']['aadharid']; ?>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="row-form">
+          <div class="span3">Emergency Contact Number :</div>
+          <div class="span9">
+           <?php echo $this->data['User']['emergency_contact']; ?>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="row-form">
           <div class="span3">Designation :</div>
           <div class="span9">
             <?php echo $this->data['User']['designation']; ?>

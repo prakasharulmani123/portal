@@ -200,7 +200,31 @@ function get_cities(id)
           </div>
           <div class="clear"></div>
         </div>
-        
+
+          <div class="row-form">
+              <div class="span3">Pancard No.:</div>
+              <div class="span9">
+                  <?php echo $this->Form->input('pancard', array('type'=>'text', 'label'=>false)); ?>
+              </div>
+              <div class="clear"></div>
+          </div>
+
+          <div class="row-form">
+              <div class="span3">Aadhaar Card Number:</div>
+              <div class="span9">
+                  <?php echo $this->Form->input('aadharid', array('type'=>'text', 'label'=>false)); ?>
+              </div>
+              <div class="clear"></div>
+          </div>
+
+          <div class="row-form">
+              <div class="span3">Emergency Contact Number:</div>
+              <div class="span9">
+                  <?php echo $this->Form->input('emergency_contact', array('type'=>'text', 'label'=>false)); ?>
+              </div>
+              <div class="clear"></div>
+          </div>
+
         <div class="row-form">
           <div class="span3">Designation*:</div>
           <div class="span9">
