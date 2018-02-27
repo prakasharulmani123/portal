@@ -65,12 +65,12 @@ class DATABASE_CONFIG {
     public $default = array(
         'datasource' => 'Database/Mysql',
         'persistent' => false,
-        'host' => 'localhost',
-        'login' => 'root',
-        'password' => '',
-        'database' => 'portal',
+        'host' => DB_HOSTNAME,
+        'login' => DB_USERNAME,
+        'password' => DB_PASSWORD,
+        'database' => DB_DATABASE,
         'prefix' => '',
-//            'encoding' => 'utf8',
+            //'encoding' => 'utf8',
     );
     public $test = array(
         'datasource' => 'Database/Mysql',
