@@ -88,6 +88,7 @@ if ($all['user_id'] == 'all') {
     </style>
     <div class="workplace">
 
+
         <div class="block-fluid table-sorting">
             <table border="1" width="100%">
                 <thead style=" width:70; color: white;font-size:16px;  background-color:#486B91;">
@@ -117,8 +118,10 @@ if ($all['user_id'] == 'all') {
                                     $old_casual = json_decode($sel_user['User']['old_casual_leave'], true);
                                     $user_casual_leave = @$old_casual[$find_year] ?: 12;
                                 }
+                                 $comp_count = $this->requestAction('leave/user_get_compensation_counts/' . $key. '/' . $year ); 
                                 ?>
 
+                               
                                 <div class="workplace">
                                     <div class="row-fluid editcss">
                                         <div class="wBlock auto space">
@@ -147,7 +150,20 @@ if ($all['user_id'] == 'all') {
                                                 <h3>Remaining <br />Casual Days</h3>
                                                 <span class="number"><?php echo ($user_casual_leave - $casual_leave_per_year) <= 0 ? 0 : $user_casual_leave - $casual_leave_per_year; ?></span>                                                  
                                             </div>
+
                                         </div>
+                                            <div class="wBlock green auto space">
+                                            <div class="dSpace">
+                                                
+                                                <h3>Compensation <br />Leave</h3>
+                                                <span class="number"><?php echo $comp_count; ?></span>                                                
+                                            </div>
+                                        </div>
+
+
+                                        
+                    
+                                        
                                     </div>
 
                             </td>
@@ -186,6 +202,8 @@ if ($all['user_id'] == 'all') {
             $old_casual = json_decode($sel_user['User']['old_casual_leave'], true);
             $user_casual_leave = @$old_casual[$find_year] ?: 12;
         }
+
+         $comp_count = $this->requestAction('leave/user_get_compensation_counts/' .$all['user_id']); 
         ?>
 
         <div class="workplace">
@@ -217,6 +235,14 @@ if ($all['user_id'] == 'all') {
                         <span class="number"><?php echo ($user_casual_leave - $casual_leave_per_year) <= 0 ? 0 : $user_casual_leave - $casual_leave_per_year; ?></span>                                                  
                     </div>
                 </div>
+                <div class="wBlock green auto space">
+                     <div class="dSpace">
+                                                
+                      <h3>Compensation <br />Leave</h3>
+                      <span class="number"><?php echo $comp_count; ?></span>                                                
+                      </div>
+                </div>
+
             </div>
 
             <div class="row-fluid">

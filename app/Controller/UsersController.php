@@ -83,6 +83,8 @@ class UsersController extends AppController {
 
     public function admin_index() {
         $this->layout = "admin-inner";
+//        print_r('Haii');
+////        exit;
         $this->set('cpage', 'dashboard');
         $this->set('entries', $this->requestAction('admin/entries/get_today_user_time_in_out'));
         $this->set('reports', $this->requestAction('admin/dailystatus/get_recent_reports'));
@@ -124,6 +126,7 @@ class UsersController extends AppController {
 
     public function admin_employee($status = NULL) {
         $this->layout = "admin-inner";
+//       
         $this->set('users', $this->User->find('all', array('conditions' => array('User.role' => 'user', 'User.active' => $status))));
         $admins = $this->User->find('first', array('conditions' => array('User.role' => 'admin', 'User.active' => $status)));
         $super_users = $this->User->find('list', array('conditions' => array('User.super_user' => 1, 'User.active' => $status)));

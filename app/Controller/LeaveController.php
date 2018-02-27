@@ -4,7 +4,7 @@ class LeaveController extends AppController {
 
     public $name = 'Leave';
     public $helpers = array('Html', 'Form', 'Js', 'Paginator');
-    public $components = array('Session', 'Cookie', 'Email', 'RequestHandler');
+    public $components = array('Session', 'Cookie', 'Email', 'RequestHandler');                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -12,7 +12,7 @@ class LeaveController extends AppController {
         parent::beforefilter();
         $this->__validateLoginStatus();
         $this->loadModel('Compensation');
-        $all_messages = $this->Compensation->find('all'); //or whatever you need to do to get the data
+        $all_messages = $this->Compensation->find('all');//or whatever you need to do to get the data
         $this->set('all_messages', $all_messages);
     }
 
@@ -28,7 +28,7 @@ class LeaveController extends AppController {
             $this->Session->write('LeaveForm.from_date', '');
             $this->Session->write('LeaveForm.to_date', '');
             $this->Session->write('LeaveForm.approved', '');
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
             if (!empty($this->request->data['Leave']['from_date']) && !empty($this->request->data['Leave']['to_date'])) {
                 $this->Session->write('LeaveForm.from_date', date('Y-m-d', strtotime($this->request->data['Leave']['from_date'])));
                 $this->Session->write('LeaveForm.to_date', date('Y-m-d', strtotime($this->request->data['Leave']['to_date'])));
@@ -45,7 +45,7 @@ class LeaveController extends AppController {
 // $this->set(compact('comday'));
             if ($all['from_date'] != '') {
                 if ($all['approved'] == '') {
-                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $this->Session->read('User.id'), 'Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Leave.created DESC')));
+                    $leaves = $this->Leave->find('all', array('conditions' => array('Leaveid' => $this->Session->read('User.id'), 'Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Leave.created DESC')));
                 } else {
                     $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $this->Session->read('User.id'), 'Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date']))), 'Leave.approved' => $all['approved']), 'order' => array('Leave.created DESC')));
                 }
@@ -137,6 +137,89 @@ class LeaveController extends AppController {
         $this->set(compact('all'));
         $this->set('users', $this->requestAction('users/get_all_users'));
         $this->set(compact('leaves'));
+    }
+
+///////////////////////////////////////////////////////////////////////////////
+    
+    
+    public function admin_compensation_leave() {
+        echo 'haii';
+        exit;
+        $this->layout = "admin-inner";
+        
+        $this->set('cpage', 'compensation');
+        
+        $compensation = $this->Compensation->find('all',array('fields'=>array('Compensation.id','Compensation.comments'),'conditions'=>array('Compensation.status'=>1)));
+
+        //set products data and pass to the view 
+        $this->set('compensations',$compensation);
+//
+////        if ($this->request->is('post') || $this->request->is('put')) {
+////            $this->Session->write('Leave.user_id', '');
+////            $this->Session->write('Leave.from_date', '');
+////            $this->Session->write('Leave.to_date', '');
+////            $this->Session->write('Leave.approved', '');
+////
+////            if ($this->request->data['Leave']['user_id'] != '') {
+////                $this->Session->write('Leave.user_id', $this->request->data['Leave']['user_id']);
+////            }
+////
+////            if (!empty($this->request->data['Leave']['from_date']) && !empty($this->request->data['Leave']['to_date'])) {
+////                $this->Session->write('Leave.from_date', date('Y-m-d', strtotime($this->request->data['Leave']['from_date'])));
+////                $this->Session->write('Leave.to_date', date('Y-m-d', strtotime($this->request->data['Leave']['to_date'])));
+////            }
+////
+////            if ($this->request->data['Leave']['approved'] != '') {
+////                $this->Session->write('Leave.approved', $this->request->data['Leave']['approved']);
+////            }
+////            return $this->redirect(array('action' => 'admin_index'));
+////        }
+////
+////        if (isset($_GET['approved'])) {
+////            $this->Session->write('Leave.approved', $_GET['approved']);
+////            return $this->redirect(array('action' => 'admin_index'));
+////        }
+////        if ($this->Session->check('Leave')) {
+////            $all = $this->Session->read('Leave');
+////
+////            if (!isset($all['user_id'], $all['from_date']) || $all['user_id'] == '' && $all['from_date'] == '') {
+////                if ($all['approved'] == '') {
+////                    $leaves = $this->Leave->find('all', array('order' => array('Leave.created DESC')));
+////                } else {
+////                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.approved' => $all['approved']), 'order' => array('Leave.created DESC')));
+////                }
+////            } elseif (!isset($all['user_id'], $all['from_date']) || $all['user_id'] != '' && $all['from_date'] == '') {
+////
+////                if ($all['approved'] == '') {
+////                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $all['user_id']), 'order' => array('Leave.created DESC')));
+////                } else {
+////                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $all['user_id'], 'Leave.approved' => $all['approved']), 'order' => array('Leave.created DESC')));
+//////                print_r($leaves);exit;
+////                }
+////            } elseif (!isset($all['user_id'], $all['from_date']) || $all['user_id'] == '' && $all['from_date'] != '') {
+////
+////                if ($all['approved'] == '') {
+////                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Leave.created DESC')));
+////                } else {
+////                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date']))), 'Leave.approved' => $all['approved']), 'order' => array('Leave.created DESC')));
+////                }
+////            } elseif (!isset($all['user_id'], $all['from_date']) || $all['user_id'] != '' && $all['from_date'] != '') {
+////
+////                if ($all['approved'] == '') {
+////                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $all['user_id'], 'Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Leave.created DESC')));
+////                } else {
+////                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $all['user_id'], 'Leave.approved' => $all['approved'], 'Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Leave.created DESC')));
+////                }
+////            }
+////        } else {
+////
+////            $all = array('user_id' => '', 'from_date' => '', 'to_date' => '', 'approved' => '');
+////            $leaves = $this->Leave->find('all', array('order' => array('Leave.created DESC')));
+////        }
+//        $this->set('compensations', $this->Compensation->find('all', array('order' => array('Leave.created DESC'))));
+//        $this->set(compact('all'));
+//        $this->set('users', $this->requestAction('users/get_all_users'));
+//        $this->set(compact('compensations'));
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -408,11 +491,18 @@ class LeaveController extends AppController {
             }
 
 ///////////////////////////////////////////////////////////////////////////////
-    public function user_get_compensation_counts() {
-        $this->loadModel('Compensation');
+    public function user_get_compensation_counts($id = null, $year = null) {
+        $this->loadModel('Compensation');     
+        if ($id) {
+            $userid = $id;
+        } else {
+            $userid = $this->Session->read('User.id');
+        }
+
+
         $sum = $this->Compensation->find('first', array(
             'conditions' => array(
-                'Compensation.user_id' => $this->Session->read('User.id'), 'Compensation.status' => 0,'Compensation.type' => 'L'),
+                'Compensation.user_id' => $userid,'Compensation.status' => 0,'YEAR(Compensation.date)' =>$year,'Compensation.type' => 'L'),
             'fields' => array('sum(Compensation.days) as total_sum'
             )
                 )
@@ -616,6 +706,7 @@ class LeaveController extends AppController {
     public function monthly_report() {
         $this->set('cpage', 'leave_month_report');
         $this->layout = 'user-inner';
+       
         $this->loadModel('SubLeave');
         if ($this->request->is('post') || $this->request->is('put')) {
             $this->Session->write('Leave.month', '');
@@ -625,6 +716,7 @@ class LeaveController extends AppController {
                 $this->Session->write('Leave.month', date('m', strtotime($this->request->data['Leave']['month'])));
                 $this->Session->write('Leave.year', date('Y', strtotime($this->request->data['Leave']['month'])));
             }
+            
 
             return $this->redirect(array('action' => 'monthly_report'));
         }
@@ -758,10 +850,14 @@ class LeaveController extends AppController {
 
     public function admin_monthly_report() {
         $this->layout = "admin-inner";
+//        echo 'haiii';
+//        exit;
         $this->set('cpage', 'leave_month_report');
         $this->loadModel('SubLeave');
 
         if ($this->request->is('post') || $this->request->is('put')) {
+//            print_r($this->request->is('post'));
+//            exit;
             $this->Session->write('LeaveMonth.user_id', '');
             $this->Session->write('LeaveMonth.month', '');
             $this->Session->write('LeaveMonth.year', '');
@@ -774,6 +870,8 @@ class LeaveController extends AppController {
                 $this->Session->write('LeaveMonth.month', date('m', strtotime($this->request->data['Leave']['month'])));
                 $this->Session->write('LeaveMonth.year', date('Y', strtotime($this->request->data['Leave']['month'])));
             }
+            
+            
 
             return $this->redirect(array('action' => 'admin_monthly_report'));
         }

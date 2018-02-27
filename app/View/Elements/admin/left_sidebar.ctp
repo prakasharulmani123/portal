@@ -1,6 +1,6 @@
 <?php 
-$marray= array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20);//define number of main menus
-$open = $open1 = $open2 = $open3 = $open4 = $open5 = "";
+$marray= array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21);//define number of main menus
+$open = $open1 = $open2 = $open3 = $open4 = $open5 = $open6 = "";
 if($cpage=='dashboard')
 $marray[0]='active';
 if($cpage=='employee'){
@@ -52,6 +52,9 @@ if($cpage=='mycomplaints')
 $marray[19]='active';
 if($cpage=='settings')
 $marray[20]='active';
+if($cpage=='compensation'){
+$marray[21]='active';
+$open6 = 'active';}
 ?>
 
 <div class="breadLine">
@@ -149,6 +152,28 @@ $marray[20]='active';
                 </a>                  
             </li>                     
             <li class="<?php echo $marray[6];?> li_check_access">
+                <a class="check-access"   href="<?php echo  $this->base?>/admin/leave/add">
+                    <span class="icon-tasks"></span><span class="text" style="padding-left:1px;">Add Leave</span>
+                </a>                  
+            </li>                     
+        </ul>                
+   </li>
+   <li class="openable <?php echo " ".$open6?> li_check_access">
+        <a class="" href="#">
+            <span class="isw-target"></span><span class="text">Compensation Leave</span>
+        </a>
+        <ul>
+            <li class="<?php echo $marray[21];?> li_check_access" >
+                <a class="check-access"  href="<?php echo  $this->base?>/admin/leave/admin_compensation_leave">
+                    <span class="icon-tasks"></span><span class="text">Compensation Leave Requests</span>
+                </a>                  
+            </li>          
+            <li class="<?php echo $marray[21];?> li_check_access" >
+                <a class="check-access"  href="<?php echo  $this->base?>/admin/leave/customize_leave">
+                    <span class="icon-tasks"></span><span class="text" style="padding-left:1px;">Casual / Loss of Pay(LOP) Toggle</span>
+                </a>                  
+            </li>                     
+            <li class="<?php echo $marray[21];?> li_check_access">
                 <a class="check-access"   href="<?php echo  $this->base?>/admin/leave/add">
                     <span class="icon-tasks"></span><span class="text" style="padding-left:1px;">Add Leave</span>
                 </a>                  
