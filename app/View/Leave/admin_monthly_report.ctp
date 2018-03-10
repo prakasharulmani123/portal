@@ -119,6 +119,7 @@ if ($all['user_id'] == 'all') {
                                     $user_casual_leave = @$old_casual[$find_year] ?: 12;
                                 }
                                  $comp_count = $this->requestAction('leave/user_get_compensation_counts/' . $key. '/' . $year ); 
+                                 $perms_count = $this->requestAction('leave/user_get_compensation_permission_counts/' . $key. '/' . $year ); 
                                 ?>
 
                                
@@ -152,12 +153,18 @@ if ($all['user_id'] == 'all') {
                                             </div>
 
                                         </div>
-                                            <div class="wBlock green auto space">
+                                        <div class="wBlock green auto space">
                                             <div class="dSpace">
                                                 
                                                 <h3>Compensation <br />Leave</h3>
                                                 <span class="number"><?php echo $comp_count; ?></span>                                                
                                             </div>
+                                        </div>
+                                        <div class="wBlock yellow auto space">
+                                             <div class="dSpace">
+                                             <h3>Compensation <br />Permission</h3>
+                                             <span class="number"><?php echo $perms_count; ?></span>
+                                             </div>
                                         </div>
 
 
@@ -203,7 +210,8 @@ if ($all['user_id'] == 'all') {
             $user_casual_leave = @$old_casual[$find_year] ?: 12;
         }
 
-         $comp_count = $this->requestAction('leave/user_get_compensation_counts/' .$all['user_id']); 
+         $comp_count = $this->requestAction('leave/user_get_compensation_counts/' .$all['user_id'] . '/' . $year ); 
+         $perms_count = $this->requestAction('leave/user_get_compensation_permission_counts/' .$all['user_id'] . '/' . $year );
         ?>
 
         <div class="workplace">
@@ -241,6 +249,12 @@ if ($all['user_id'] == 'all') {
                       <h3>Compensation <br />Leave</h3>
                       <span class="number"><?php echo $comp_count; ?></span>                                                
                       </div>
+                </div>
+                 <div class="wBlock yellow auto space">
+                         <div class="dSpace">
+                         <h3>Compensation <br />Permission</h3>
+                         <span class="number"><?php echo $perms_count; ?></span>
+                         </div>
                 </div>
 
             </div>

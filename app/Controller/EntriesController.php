@@ -63,6 +63,8 @@ class EntriesController extends AppController {
             $this->render('admin_index', 'ajaxpagination'); // View, Layout
         }
     }
+    
+    
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -119,8 +121,9 @@ class EntriesController extends AppController {
                     }
                 }
             } elseif ($id != 0) {
+                
                 $this->Entry->id = $id;
-
+                
                 $this->request->data['Entry']['time_out'] = date("Y-m-d H:i:s");
                 $this->request->data['Entry']['time_out_ip'] = $ip;
                 $this->request->data['Entry']['on_off'] = 0;
@@ -192,7 +195,6 @@ class EntriesController extends AppController {
 
             return $this->redirect(array('action' => 'index'));
         }
-
         if ($this->Session->check('UserEntry')) {
             $all = $this->Session->read('UserEntry');
 

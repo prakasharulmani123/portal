@@ -61,6 +61,7 @@
 
 <?php if (!$this->request->is('ajax')) { ?>
     <div class="workplace">
+        
         <div class="row-fluid">
             <div class="span12">
                 <div class="head">
@@ -83,6 +84,7 @@
                         </tr>
                     </thead>
                     <tbody>
+               
                         <?php
                         $page = $this->params['paging']['Entry']['page'];
                         $limit = $this->params['paging']['Entry']['limit'];

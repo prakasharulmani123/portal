@@ -16,6 +16,7 @@ class DailystatusController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function index() {
+       
         if ($this->Session->read('User.employee_type') == 'T') {
             return $this->redirect('/users/dashboard');
         }
@@ -283,13 +284,16 @@ class DailystatusController extends AppController {
         $this->loadModel('TempReport');
         $this->loadModel('PendingReport');
         $temp_reports = $this->TempReport->findAllByUserIdAndDate($this->Session->read('User.id'), date('Y-m-d'));
+        
         $pending_report = $this->PendingReport->findByUserIdAndDate($this->Session->read('User.id'), date('Y-m-d'));
         $reports = array();
         foreach ($temp_reports as $key => $temp_report):
             $reports[$key]['DailyStatus'] = $temp_report['TempReport'];
+            
             unset($reports[$key]['DailyStatus']['id']);
         endforeach;
         if ($reports) {
+           
 
             ///////Adding Projects Name:
             $records = array();
@@ -360,16 +364,16 @@ class DailystatusController extends AppController {
                             'User.compensation_leave' => 'User.compensation_leave + 1'), array('User.id' => $user_id));
                     }
                 }
-
                 foreach ($temp_reports as $temp_report):
-                    $this->TempReport->delete($temp_report['TempReport']['id']);
+//                    $this->TempReport->delete($temp_report['TempReport']['id']);
                 endforeach;
                 if (!empty($pending_report)) {
                     $this->PendingReport->delete($pending_report['PendingReport']['id']);
                 }
             };
-            $this->daily_status_mail();
+//            $this->daily_status_mail();
             $this->send_mom();
+            $this->timer_auto_off();
             $this->Session->write('report_send', 1);
             $this->Session->setFlash('Your report has been sent suceesfully', 'flash_success');
             return $this->redirect('/dailystatus');
@@ -378,8 +382,21 @@ class DailystatusController extends AppController {
             return $this->redirect('/dailystatus');
         }
     }
+    
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    public function timer_auto_off() {
+        $this->loadModel('Entry');
+        $entry = $this->Entry->find('first', array('conditions' => array('user_id' => $this->Session->read('User.id'), 'date' => date('Y-m-d'))));
+        $this->Entry->save(['Entry' => [
+            'id' => $entry['Entry']['id'],
+            'time_out' => date('Y-m-d H:i:s'),
+            'time_out_ip' => $this->request->clientIp(), 
+            'on_off' => 0
+        ]]);
+    }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function send_mom() {
         $this->loadModel('Meeting');

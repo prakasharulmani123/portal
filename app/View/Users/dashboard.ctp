@@ -115,7 +115,7 @@
                         <?php } ?>
                     </div>
                 <?php endif; ?>
-                 <?php $comp_count = $this->requestAction('leave/user_get_compensation_counts'); ?>
+                 <?php $comp_count = $this->requestAction('leave/user_get_compensation_counts/0/'.date('Y') ); ?>
                 <?php if ($comp_count > 0) { ?>
                     <div class="bb green bb2">
                           <a class="bb_caption" href="<?php echo $this->base ?>/leave/leaveform?status=1" title="Compensation Leave">
@@ -124,7 +124,7 @@
                         </a>
                     </div> 
                 <?php } ?>
-                <?php $perms_count = $this->requestAction('leave/user_get_compensation_permission_counts'); ?>
+                <?php $perms_count = $this->requestAction('leave/user_get_compensation_permission_counts/0/'.date('Y')); ?>
                 <?php if ($perms_count > 0) { ?>
                     <div class="bb yellow bb2">
                         <a class="bb_caption" href="<?php echo $this->base ?>/permission/permission_add" title="Compensation Permission">

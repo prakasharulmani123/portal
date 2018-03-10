@@ -83,8 +83,7 @@ class UsersController extends AppController {
 
     public function admin_index() {
         $this->layout = "admin-inner";
-//        print_r('Haii');
-////        exit;
+
         $this->set('cpage', 'dashboard');
         $this->set('entries', $this->requestAction('admin/entries/get_today_user_time_in_out'));
         $this->set('reports', $this->requestAction('admin/dailystatus/get_recent_reports'));

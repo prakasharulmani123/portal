@@ -140,89 +140,6 @@ class LeaveController extends AppController {
     }
 
 ///////////////////////////////////////////////////////////////////////////////
-    
-    
-    public function admin_compensation_leave() {
-        echo 'haii';
-        exit;
-        $this->layout = "admin-inner";
-        
-        $this->set('cpage', 'compensation');
-        
-        $compensation = $this->Compensation->find('all',array('fields'=>array('Compensation.id','Compensation.comments'),'conditions'=>array('Compensation.status'=>1)));
-
-        //set products data and pass to the view 
-        $this->set('compensations',$compensation);
-//
-////        if ($this->request->is('post') || $this->request->is('put')) {
-////            $this->Session->write('Leave.user_id', '');
-////            $this->Session->write('Leave.from_date', '');
-////            $this->Session->write('Leave.to_date', '');
-////            $this->Session->write('Leave.approved', '');
-////
-////            if ($this->request->data['Leave']['user_id'] != '') {
-////                $this->Session->write('Leave.user_id', $this->request->data['Leave']['user_id']);
-////            }
-////
-////            if (!empty($this->request->data['Leave']['from_date']) && !empty($this->request->data['Leave']['to_date'])) {
-////                $this->Session->write('Leave.from_date', date('Y-m-d', strtotime($this->request->data['Leave']['from_date'])));
-////                $this->Session->write('Leave.to_date', date('Y-m-d', strtotime($this->request->data['Leave']['to_date'])));
-////            }
-////
-////            if ($this->request->data['Leave']['approved'] != '') {
-////                $this->Session->write('Leave.approved', $this->request->data['Leave']['approved']);
-////            }
-////            return $this->redirect(array('action' => 'admin_index'));
-////        }
-////
-////        if (isset($_GET['approved'])) {
-////            $this->Session->write('Leave.approved', $_GET['approved']);
-////            return $this->redirect(array('action' => 'admin_index'));
-////        }
-////        if ($this->Session->check('Leave')) {
-////            $all = $this->Session->read('Leave');
-////
-////            if (!isset($all['user_id'], $all['from_date']) || $all['user_id'] == '' && $all['from_date'] == '') {
-////                if ($all['approved'] == '') {
-////                    $leaves = $this->Leave->find('all', array('order' => array('Leave.created DESC')));
-////                } else {
-////                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.approved' => $all['approved']), 'order' => array('Leave.created DESC')));
-////                }
-////            } elseif (!isset($all['user_id'], $all['from_date']) || $all['user_id'] != '' && $all['from_date'] == '') {
-////
-////                if ($all['approved'] == '') {
-////                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $all['user_id']), 'order' => array('Leave.created DESC')));
-////                } else {
-////                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $all['user_id'], 'Leave.approved' => $all['approved']), 'order' => array('Leave.created DESC')));
-//////                print_r($leaves);exit;
-////                }
-////            } elseif (!isset($all['user_id'], $all['from_date']) || $all['user_id'] == '' && $all['from_date'] != '') {
-////
-////                if ($all['approved'] == '') {
-////                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Leave.created DESC')));
-////                } else {
-////                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date']))), 'Leave.approved' => $all['approved']), 'order' => array('Leave.created DESC')));
-////                }
-////            } elseif (!isset($all['user_id'], $all['from_date']) || $all['user_id'] != '' && $all['from_date'] != '') {
-////
-////                if ($all['approved'] == '') {
-////                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $all['user_id'], 'Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Leave.created DESC')));
-////                } else {
-////                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $all['user_id'], 'Leave.approved' => $all['approved'], 'Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Leave.created DESC')));
-////                }
-////            }
-////        } else {
-////
-////            $all = array('user_id' => '', 'from_date' => '', 'to_date' => '', 'approved' => '');
-////            $leaves = $this->Leave->find('all', array('order' => array('Leave.created DESC')));
-////        }
-//        $this->set('compensations', $this->Compensation->find('all', array('order' => array('Leave.created DESC'))));
-//        $this->set(compact('all'));
-//        $this->set('users', $this->requestAction('users/get_all_users'));
-//        $this->set(compact('compensations'));
-    }
-
-///////////////////////////////////////////////////////////////////////////////
 
     public function leaveform($id = NULL) {
         $this->set('cpage', 'leave');
@@ -230,7 +147,7 @@ class LeaveController extends AppController {
         $u_id = $this->Session->read('User.id');
         $this->loadModel('Compensation');
         $this->loadModel('SubLeave');
-        $lists = $this->Compensation->find('count', array('conditions' => array('AND' => array('Compensation.user_id=' . $u_id), array('Compensation.status' => 0), array('Compensation.type' => 'L'))));
+        $lists = $this->Compensation->find('count', array('conditions' => array('AND' => array('Compensation.user_id=' . $u_id),array('Compensation.status' => 0), date('Y'), array('Compensation.type' => 'L'))));
         $this->set('lists', $lists);
 
         if ($this->request->is('post') || $this->request->is('put')) {
@@ -492,17 +409,17 @@ class LeaveController extends AppController {
 
 ///////////////////////////////////////////////////////////////////////////////
     public function user_get_compensation_counts($id = null, $year = null) {
-        $this->loadModel('Compensation');     
+        $this->loadModel('Compensation');
         if ($id) {
+
             $userid = $id;
         } else {
             $userid = $this->Session->read('User.id');
         }
 
-
         $sum = $this->Compensation->find('first', array(
             'conditions' => array(
-                'Compensation.user_id' => $userid,'Compensation.status' => 0,'YEAR(Compensation.date)' =>$year,'Compensation.type' => 'L'),
+                'Compensation.user_id' => $userid, 'Compensation.status' => 0, 'YEAR(Compensation.date)' => $year, 'Compensation.type' => 'L'),
             'fields' => array('sum(Compensation.days) as total_sum'
             )
                 )
@@ -511,10 +428,15 @@ class LeaveController extends AppController {
     }
 
 ///////////////////////////////////////////////////////////////////////////////
-    public function user_get_compensation_permission_counts() {
+    public function user_get_compensation_permission_counts($id=NULL,$year=NULL) {
         $this->loadModel('Compensation');
-        $u_id = $this->Session->read('User.id');
-        return $this->Compensation->find('count', array('recursive' => -1, 'conditions' => array('AND' => array('Compensation.user_id=' . $u_id), array('Compensation.status' => 0), array('Compensation.type' => 'P'))));
+        if ($id) {
+            $u_id = $id;
+        } else {
+            $u_id = $this->Session->read('User.id');
+        }
+
+        return $this->Compensation->find('count', array('recursive' => -1, 'conditions' => array('AND' => array('Compensation.user_id=' . $u_id), array('Compensation.status' => 0), array('YEAR(Compensation.date)' =>$year),array('Compensation.type' => 'P'))));
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -748,6 +670,7 @@ class LeaveController extends AppController {
     public function user_get_all_leave_count_per_month($month = NULL, $year = NULL) {
         $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $this->Session->read('User.id'), 'Leave.approved' => 1, 'MONTH(Leave.date)' => $month, 'YEAR(Leave.date)' => $year), 'order' => array('Leave.created DESC')));
 
+        
         if ($leaves) {
             $leave_count = 0;
             foreach ($leaves as $leave) {

@@ -146,10 +146,16 @@ class PendingReportsController extends AppController {
                 'remarks' => $this->data['remarks'],
             )
         );
+        $return = array();
+        $end_time = $this->get_date($this->data['end_hours'], $this->data['end_minutes'], $this->data['end_meridian']);
+        if ($this->data['date'] != date('Y-m-d')) {
+            $update['PendingReport']['end_time'] = $end_time;
+            $return['end_time'] = $update['PendingReport']['end_time'];
+        }
 
         if ($this->PendingReport->saveAll($update)) {
+            $date = $this->data['date'];
             $status = $this->data['status'];
-            $return = array();
 
             if ($status == 0) {
                 $return['class'] = 'btn btn-mini btn-danger dropdown-toggle';
@@ -164,7 +170,6 @@ class PendingReportsController extends AppController {
                 $return['status'] = 'Declined';
             }
             $return['remarks'] = $this->data['remarks'];
-
             echo json_encode($return);
         }
         exit;
@@ -385,7 +390,7 @@ class PendingReportsController extends AppController {
         $add_entry = array('Entry' => array('user_id' => $this->Session->read('User.id'),
                 'date' => $pending_report['PendingReport']['date'],
                 'time_in' => $pending_report['PendingReport']['start_time'],
-                'time_out' => $end_time,
+                'time_out' => NULL,
                 'on_off' => 0,
                 'time_in_ip' => $this->request->clientIp(),
                 'time_out_ip' => $this->request->clientIp()));
@@ -554,15 +559,14 @@ class PendingReportsController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function add_reports() {
-        $this->layout = '';
 
+        $this->layout = '';
 //		if($this->request->is('post') || $this->request->is('put')){
         $this->loadModel('TempReport');
         $insert = array();
-
         $start_time = $this->get_date($this->data['start_hours'], $this->data['start_minutes'], $this->data['start_meridian']);
-        $end_time = $this->get_date($this->data['end_hours'], $this->data['end_minutes'], $this->data['end_meridian']);
 
+        $end_time = $this->get_date($this->data['end_hours'], $this->data['end_minutes'], $this->data['end_meridian']);
         $insert['TempReport']['id'] = $this->data['id'];
         $insert['TempReport']['user_id'] = $this->data['user_id'];
         $insert['TempReport']['date'] = $this->data['date'];
@@ -575,6 +579,7 @@ class PendingReportsController extends AppController {
         $insert['TempReport']['start_time'] = $start_time;
         $insert['TempReport']['end_time'] = $end_time;
 
+
         $this->TempReport->save($insert);
 
         if (isset($this->data['id']) || $this->data['id'] != '') {
@@ -582,8 +587,8 @@ class PendingReportsController extends AppController {
         }
 //		}
 
-        $entry = $this->PendingReport->findById($this->data['pending_id']);
 
+        $entry = $this->PendingReport->findById($this->data['pending_id']);
         $reports = $this->TempReport->find('all', array(
             'conditions' => array(
                 'TempReport.user_id' => $this->Session->read('User.id'),

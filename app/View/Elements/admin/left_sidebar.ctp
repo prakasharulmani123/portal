@@ -164,20 +164,10 @@ $open6 = 'active';}
         </a>
         <ul>
             <li class="<?php echo $marray[21];?> li_check_access" >
-                <a class="check-access"  href="<?php echo  $this->base?>/admin/leave/admin_compensation_leave">
+                <a class="check-access"  href="<?php echo  $this->base?>/admin/compensations/index">
                     <span class="icon-tasks"></span><span class="text">Compensation Leave Requests</span>
                 </a>                  
-            </li>          
-            <li class="<?php echo $marray[21];?> li_check_access" >
-                <a class="check-access"  href="<?php echo  $this->base?>/admin/leave/customize_leave">
-                    <span class="icon-tasks"></span><span class="text" style="padding-left:1px;">Casual / Loss of Pay(LOP) Toggle</span>
-                </a>                  
-            </li>                     
-            <li class="<?php echo $marray[21];?> li_check_access">
-                <a class="check-access"   href="<?php echo  $this->base?>/admin/leave/add">
-                    <span class="icon-tasks"></span><span class="text" style="padding-left:1px;">Add Leave</span>
-                </a>                  
-            </li>                     
+            </li>                           
         </ul>                
    </li>
 

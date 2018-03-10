@@ -24,6 +24,7 @@ if($time){
 		$interval = $datetime1->diff($datetime2);
 		
 		$hours = $interval->format('%h');
+//                print_r($hours);exit;
 		$minutes = $interval->format('%i');
 		$seconds = $interval->format('%s');
 	}

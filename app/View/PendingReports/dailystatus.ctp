@@ -398,7 +398,6 @@ $mer = array('am'=>'am','pm'=>'pm');
 </div>            
 
 <div class="workplace">
-
   <div class="row-fluid">
     <div class="span12" align="right"><a href="<?php echo $this->base?>/pending_reports" title="back" class="btn btn-small">Back</a></div>
   </div>
@@ -728,7 +727,7 @@ $mer = array('am'=>'am','pm'=>'pm');
         </div>
         
         <?php $last_row = end($reports); ?>
-<span style="display:none" id="last_row_end_time"><?php echo date('h:i:a', strtotime($last_row['TempReport']['end_time']))?></span>
+<span style="display:none" id="last_row_end_time"><?php  echo date('h:i:a', strtotime($last_row['TempReport']['end_time']))?></span>
 
 		 <?php } ?>
  

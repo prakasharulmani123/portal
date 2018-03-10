@@ -106,6 +106,7 @@ function validSubmit(){
 <?php if($lists>0){
     ?>
         <div class="row-form" id="checkbox_disable">
+
           <div class="span3">Do you want to take compensation leave:</div>
           <div class="span2">
             <?php 

@@ -668,10 +668,6 @@ $mer = array('am' => 'am', 'pm' => 'pm');
     </div>
 </div>                                        
 
-<div class="dialog b_popup_2" id="b_popup_2" style="display: none;" title="Timer Alert">
-    <h4 align="center" style="color:#56799F;"><?php echo $this->Html->image('/img/clock.png', array('alt' => 'time')); ?> Turn Off Your Timer ?</h4>                
-</div>            
-
 <div class="dialog b_popup_4" id="b_popup_4" style="display: none;" title="Request for Enable Report">
     <?php echo $this->Form->create('PendingReport', array('id' => 'pending_validation', 'controller' => 'pending_reports', 'action' => 'send_request_on_timer')); ?>
     <div class="block">
@@ -702,6 +698,7 @@ $mer = array('am' => 'am', 'pm' => 'pm');
 </div>            
 
 <div class="workplace">
+
     <?php echo $this->Form->create('DailyStatus', array('id' => 'validation', 'onsubmit' => 'return validateForm()')); ?>
 
     <?php echo $this->Form->hidden('id'); ?>

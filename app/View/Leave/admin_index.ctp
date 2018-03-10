@@ -274,7 +274,8 @@
                                         </ul>
                                         <!--</div>-->
                                     </div>
-                                </td>	  <td><span id="remarks_<?php echo $leave['Leave']['id'] ?>"><?php echo h($leave['Leave']['remarks']) ?></span></td>
+                                </td>	  
+                                <td><span id="remarks_<?php echo $leave['Leave']['id'] ?>"><?php echo h($leave['Leave']['remarks']) ?></span></td>
 
                             </tr>
                             <?php
