@@ -365,13 +365,13 @@ class DailystatusController extends AppController {
                     }
                 }
                 foreach ($temp_reports as $temp_report):
-//                    $this->TempReport->delete($temp_report['TempReport']['id']);
+                    $this->TempReport->delete($temp_report['TempReport']['id']);
                 endforeach;
                 if (!empty($pending_report)) {
                     $this->PendingReport->delete($pending_report['PendingReport']['id']);
                 }
             };
-//            $this->daily_status_mail();
+            $this->daily_status_mail();
             $this->send_mom();
             $this->timer_auto_off();
             $this->Session->write('report_send', 1);

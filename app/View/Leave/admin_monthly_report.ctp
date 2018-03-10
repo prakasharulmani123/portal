@@ -85,6 +85,19 @@ if ($all['user_id'] == 'all') {
         table td{
             background-color: #F2F2F2;
         }
+
+        .wBlock{
+            margin-right: 5px !important;
+        }
+
+        .u_name span{
+            font-size:15px;
+            line-height: 14px;
+        }
+
+        .u_name{
+            text-align: center
+        }
     </style>
     <div class="workplace">
 
@@ -93,16 +106,14 @@ if ($all['user_id'] == 'all') {
             <table border="1" width="100%">
                 <thead style=" width:70; color: white;font-size:16px;  background-color:#486B91;">
                 <th width="20%">Employee Name</th>
-                <th width="50%">Details</th>
+                <th width="70%">Details</th>
                 <th width="10%">Action</th>
                 </thead>
                 <tbody>
                     <?php foreach ($all_user as $key => $all_use) { ?>
                         <tr>
-                            <td><span style="font-size:14px;line-height: 14px; padding:45px"><?php echo $all_use; ?></span></td>
-
-
-                            <td>
+                            <td class="u_name"><span style=""><?php echo $all_use; ?></span></td>
+                            <td class="text-center">
                                 <?php
                                 $casual_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $key . '/' . $find_month . '/' . $find_year . '/' . 'C');
                                 $paid_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $key . '/' . $find_month . '/' . $find_year . '/' . 'P');
@@ -121,8 +132,6 @@ if ($all['user_id'] == 'all') {
                                  $comp_count = $this->requestAction('leave/user_get_compensation_counts/' . $key. '/' . $year ); 
                                  $perms_count = $this->requestAction('leave/user_get_compensation_permission_counts/' . $key. '/' . $year ); 
                                 ?>
-
-                               
                                 <div class="workplace">
                                     <div class="row-fluid editcss">
                                         <div class="wBlock auto space">
@@ -134,7 +143,7 @@ if ($all['user_id'] == 'all') {
 
                                         <div class="wBlock red auto space">
                                             <div class="dSpace">
-                                                <h3>Loss of Pay(LOP) Leave Days <br /><?php echo date('F', strtotime($month)) ?></h3>
+                                                <h3>Loss of Pay(LOP) <br /><?php echo date('F', strtotime($month)) ?></h3>
                                                 <span class="number"><?php echo $paid_leave_per_month ?></span>                                                  
                                             </div>
                                         </div>                    
@@ -166,13 +175,7 @@ if ($all['user_id'] == 'all') {
                                              <span class="number"><?php echo $perms_count; ?></span>
                                              </div>
                                         </div>
-
-
-                                        
-                    
-                                        
                                     </div>
-
                             </td>
                             <td align="center">
                                 <?php echo $this->Form->create('Leave'); ?>

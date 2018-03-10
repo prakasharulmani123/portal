@@ -4,6 +4,14 @@
         display: none;
         }
     */
+    .u_name span{
+        font-size:15px;
+        line-height: 14px;
+    }
+
+    .u_name{
+        text-align: center
+    }
 </style>
 
 <script>
@@ -219,7 +227,7 @@ if (empty($all['month'])) {
                     <table border="1" style=" width:100; align:left;  " >
                         <thead style=" width:70; color: white; font-size:17px;  background-color:#486B91;">
                         <th width="20%">Employee Name</th>
-                        <th width="50%"> </th>
+                        <th width="70%"> </th>
                         <th width="10%">Action</th>
                         </thead>
                         <tbody>
@@ -228,7 +236,7 @@ if (empty($all['month'])) {
 //                                    print_r($key);exit;
                                 ?>
                                 <tr>
-                                    <td><span style="font-size:14px;padding:45px;"><?php echo $all_use; ?></span></td>
+                                    <td class="u_name text-center"><span style=""><?php echo $all_use; ?></span></td>
                                     <?php
                                     $employee = $this->requestAction('users/get_user', array('pass' => array($key)));
                                     $leaves_month = $this->requestAction('leave/get_current_month_leave_approved/' . $key . '/' . $all['month'] . '/' . $all['year']);
@@ -254,210 +262,212 @@ if (empty($all['month'])) {
                                     $permission_count = 0;
                                     $no_record_count = 0;
 
-                                    foreach ($dailyreports as $dailyreport):
-                                        $color = '';
-                                        $tooltip_color = '#4F7298';
+                                    if(@$dailyreports){
+                                        foreach ($dailyreports as $dailyreport):
+                                            $color = '';
+                                            $tooltip_color = '#4F7298';
 
-                                        $worked_hours = 0;
-                                        $projects = "";
-                                        $hours = 0;
-                                        $break_hours = 0;
+                                            $worked_hours = 0;
+                                            $projects = "";
+                                            $hours = 0;
+                                            $break_hours = 0;
 
-                                        $check_sunday = false;
-                                        $check_leave = false;
-                                        $check_holiday = false;
-                                        $check_working_day = false;
-                                        $check_permission = false;
-                                        $half_day_showed = false;
-                                        $permission_showed = false;
-                                        $no_record_hide = false;
+                                            $check_sunday = false;
+                                            $check_leave = false;
+                                            $check_holiday = false;
+                                            $check_working_day = false;
+                                            $check_permission = false;
+                                            $half_day_showed = false;
+                                            $permission_showed = false;
+                                            $no_record_hide = false;
 
-                                        date('D', strtotime($dailyreport)) == 'Sun' ? $check_sunday = true : $check_sunday = false;
+                                            date('D', strtotime($dailyreport)) == 'Sun' ? $check_sunday = true : $check_sunday = false;
 
-                                        if (!empty($leaves)) {
-                                            if (array_key_exists(date('Y-m-d', strtotime($dailyreport)), $leaves)) {
-                                                $days = array_search(date('Y-m-d', strtotime($dailyreport)), $leaves);
-                                                $check_leave = true;
-                                                $leave_row = $this->requestAction('leave/get_leave_by_userid_date/' . $key . '/' . $dailyreport);
-                                                if ($leave_row['SubLeave'][0]['day'] == 0.5) {
-                                                    $tooltip_color = '#E47296';
-                                                } else {
-                                                    $tooltip_color = '#F84848';
+                                            if (!empty($leaves)) {
+                                                if (array_key_exists(date('Y-m-d', strtotime($dailyreport)), $leaves)) {
+                                                    $days = array_search(date('Y-m-d', strtotime($dailyreport)), $leaves);
+                                                    $check_leave = true;
+                                                    $leave_row = $this->requestAction('leave/get_leave_by_userid_date/' . $key . '/' . $dailyreport);
+                                                    if ($leave_row['SubLeave'][0]['day'] == 0.5) {
+                                                        $tooltip_color = '#E47296';
+                                                    } else {
+                                                        $tooltip_color = '#F84848';
+                                                    }
                                                 }
                                             }
-                                        }
 
-                                        if (!empty($holidays)) {
-                                            if (in_array(date('Y-m-d', strtotime($dailyreport)), $holidays)) {
-                                                $holiday_name = str_replace(',' . $dailyreport, ' ', array_search(date('Y-m-d', strtotime($dailyreport)), $holidays));
-                                                $check_holiday = true;
-                                                $tooltip_color = 'yellow';
+                                            if (!empty($holidays)) {
+                                                if (in_array(date('Y-m-d', strtotime($dailyreport)), $holidays)) {
+                                                    $holiday_name = str_replace(',' . $dailyreport, ' ', array_search(date('Y-m-d', strtotime($dailyreport)), $holidays));
+                                                    $check_holiday = true;
+                                                    $tooltip_color = 'yellow';
+                                                }
                                             }
-                                        }
 
-                                        if (!empty($permissions)) {
-                                            if (in_array(date('Y-m-d', strtotime($dailyreport)), $permissions)) {
-                                                $check_permission = true;
-                                                $tooltip_color = 'pink';
+                                            if (!empty($permissions)) {
+                                                if (in_array(date('Y-m-d', strtotime($dailyreport)), $permissions)) {
+                                                    $check_permission = true;
+                                                    $tooltip_color = 'pink';
+                                                }
                                             }
-                                        }
 
-                                        if ($check_sunday == true) {
-                                            $tooltip_color = '#B4FF80';
-                                        }
+                                            if ($check_sunday == true) {
+                                                $tooltip_color = '#B4FF80';
+                                            }
 
-                                        $reports = $this->requestAction('daily_status/get_reports_by_id_and_date/' . $key . '/' . $dailyreport);
-                                        !empty($reports) ? $check_working_day = true : $check_working_day = false;
-                                        /* 				
-                                          if($check_working_day == true){
-                                          if($check_leave == true){
-                                          $tooltip_color = '#E47296';
-                                          }
-                                          }
-                                         */ if ($check_working_day == false && $check_sunday == false && $check_holiday == false && $check_leave == false) {
+                                            $reports = $this->requestAction('daily_status/get_reports_by_id_and_date/' . $key . '/' . $dailyreport);
+                                            !empty($reports) ? $check_working_day = true : $check_working_day = false;
+                                            /*
+                                              if($check_working_day == true){
+                                              if($check_leave == true){
+                                              $tooltip_color = '#E47296';
+                                              }
+                                              }
+                                             */ if ($check_working_day == false && $check_sunday == false && $check_holiday == false && $check_leave == false) {
                                             $tooltip_color = '#D1C0A6';
                                         }
 
-                                        foreach ($reports as $report):
+                                            foreach ($reports as $report):
 
-                                            $start_time = strtotime($report['DailyStatus']['start_time']);
-                                            $end_time = strtotime($report['DailyStatus']['end_time']);
+                                                $start_time = strtotime($report['DailyStatus']['start_time']);
+                                                $end_time = strtotime($report['DailyStatus']['end_time']);
 
-                                            $datetime1 = new DateTime($report['DailyStatus']['start_time']);
-                                            $datetime2 = new DateTime($report['DailyStatus']['end_time']);
-                                            $interval = $datetime1->diff($datetime2);
-                                            $elapsed = $interval->format('%h hour %i minute');
-                                            $hours += ($interval->format('%h') * 60) + ($interval->format('%i'));
+                                                $datetime1 = new DateTime($report['DailyStatus']['start_time']);
+                                                $datetime2 = new DateTime($report['DailyStatus']['end_time']);
+                                                $interval = $datetime1->diff($datetime2);
+                                                $elapsed = $interval->format('%h hour %i minute');
+                                                $hours += ($interval->format('%h') * 60) + ($interval->format('%i'));
 
-                                            if ($report['DailyStatus']['projectname']) {
-                                                $projects .= $report['DailyStatus']['projectname'] . ' , ';
+                                                if ($report['DailyStatus']['projectname']) {
+                                                    $projects .= $report['DailyStatus']['projectname'] . ' , ';
+                                                }
+
+                                                if ($report['DailyStatus']['category_id'] != 23 && $report['DailyStatus']['category_id'] != 22 && $report['DailyStatus']['category_id'] != 24) {
+                                                    $worked_hours += ($interval->format('%h') * 60) + ($interval->format('%i'));
+                                                } elseif ($report['DailyStatus']['category_id'] != 24) {
+                                                    $break_hours += ($interval->format('%h') * 60) + ($interval->format('%i'));
+                                                }
+
+                                            endforeach;
+
+                                            $day_num = date("j", strtotime($dailyreport));
+                                            $month_num = date("m", strtotime($dailyreport));
+                                            $year = date("Y", strtotime($dailyreport));
+
+                                            $date_today = getdate(mktime(0, 0, 0, $month_num, 1, $year));
+                                            $month_name = $date_today["month"];
+                                            $first_week_day = $date_today["wday"];
+
+                                            $cont = true;
+                                            $today = 27;
+                                            while (($today <= 32) && ($cont)) {
+                                                $date_today = getdate(mktime(0, 0, 0, $month_num, $today, $year));
+                                                if ($date_today["mon"] != $month_num) {
+                                                    $lastday = $today - 1;
+                                                    $cont = false;
+                                                }
+                                                $today++;
                                             }
 
-                                            if ($report['DailyStatus']['category_id'] != 23 && $report['DailyStatus']['category_id'] != 22 && $report['DailyStatus']['category_id'] != 24) {
-                                                $worked_hours += ($interval->format('%h') * 60) + ($interval->format('%i'));
-                                            } elseif ($report['DailyStatus']['category_id'] != 24) {
-                                                $break_hours += ($interval->format('%h') * 60) + ($interval->format('%i'));
-                                            }
-
-                                        endforeach;
-
-                                        $day_num = date("j", strtotime($dailyreport));
-                                        $month_num = date("m", strtotime($dailyreport));
-                                        $year = date("Y", strtotime($dailyreport));
-
-                                        $date_today = getdate(mktime(0, 0, 0, $month_num, 1, $year));
-                                        $month_name = $date_today["month"];
-                                        $first_week_day = $date_today["wday"];
-
-                                        $cont = true;
-                                        $today = 27;
-                                        while (($today <= 32) && ($cont)) {
-                                            $date_today = getdate(mktime(0, 0, 0, $month_num, $today, $year));
-                                            if ($date_today["mon"] != $month_num) {
-                                                $lastday = $today - 1;
-                                                $cont = false;
-                                            }
-                                            $today++;
-                                        }
-
-                                        $txt = "<table cellspacing=0 cellpadding=5 frame='all' rules='all' style='border:#808080 1px solid;'>
+                                            $txt = "<table cellspacing=0 cellpadding=5 frame='all' rules='all' style='border:#808080 1px solid;'>
 				<caption><b>$month_name $year</b></caption>
 				<tr align=left><th>Su</th><th>M</th><th>Tu</th><th>W</th><th>Th</th><th>F</th><th>Sa</th></tr>";
 
-                                        $day = 1;
-                                        $wday = $first_week_day;
-                                        $firstweek = true;
-                                        while ($day <= $lastday) {
-                                            if ($firstweek) {
-                                                $txt .= "<tr align=left>";
-                                                for ($i = 1; $i <= $first_week_day; $i++) {
-                                                    $txt .= "<td> </td>";
+                                            $day = 1;
+                                            $wday = $first_week_day;
+                                            $firstweek = true;
+                                            while ($day <= $lastday) {
+                                                if ($firstweek) {
+                                                    $txt .= "<tr align=left>";
+                                                    for ($i = 1; $i <= $first_week_day; $i++) {
+                                                        $txt .= "<td> </td>";
+                                                    }
+                                                    $firstweek = false;
                                                 }
-                                                $firstweek = false;
+
+                                                if ($wday == 0)
+                                                    $txt .= "<tr align=left>";
+                                                $txt .= "<td";
+                                                if ($day == $day_num)
+                                                    $txt .= " bgcolor='" . $tooltip_color . "'";
+                                                $txt .= ">$day</td>";
+                                                if ($wday == 6)
+                                                    $txt .= "</tr>";
+
+                                                $wday++;
+                                                $wday = $wday % 7;
+                                                $day++;
                                             }
 
-                                            if ($wday == 0)
-                                                $txt .= "<tr align=left>";
-                                            $txt .= "<td";
-                                            if ($day == $day_num)
-                                                $txt .= " bgcolor='" . $tooltip_color . "'";
-                                            $txt .= ">$day</td>";
-                                            if ($wday == 6)
-                                                $txt .= "</tr>";
+                                            while ($wday <= 6) {
+                                                $txt .= "<td> </td>";
+                                                $wday++;
+                                            }
+                                            $txt .= "</tr></table>";
 
-                                            $wday++;
-                                            $wday = $wday % 7;
-                                            $day++;
-                                        }
+                                            if ($check_working_day == true) {
+                                                if ($check_permission == true) {
+                                                    $permission_row = $this->requestAction('permission/get_permission_by_userid_date/' . $key . '/' . $dailyreport);
+                                                    $datetime1 = new DateTime($permission_row['Permission']['from_time']);
+                                                    $datetime2 = new DateTime($permission_row['Permission']['to_time']);
+                                                    $interval = $datetime1->diff($datetime2);
+                                                    $hours = ($interval->format('%h') * 60) + ($interval->format('%i'));
 
-                                        while ($wday <= 6) {
-                                            $txt .= "<td> </td>";
-                                            $wday++;
-                                        }
-                                        $txt .= "</tr></table>";
+                                                    $color = 'style="background-color:pink"';
+                                                    $permission_count++;
 
-                                        if ($check_working_day == true) {
-                                            if ($check_permission == true) {
+                                                    $permission_showed = true;
+                                                } else {
+                                                    $color = '';
+                                                }
+
+                                                if ($check_leave == true) {
+                                                    $leave_row = $this->requestAction('leave/get_leave_by_userid_date/' . $key . '/' . $dailyreport);
+                                                    if ($leave_row['SubLeave'][0]['day'] == 0.5) {
+
+                                                        $color = 'style="background-color:#E47296"';
+                                                        $half_day_count++;
+                                                        $half_day_showed = true;
+                                                    }
+                                                }
+                                                $check_leave == true ? $check_leave = false : '';
+                                            }
+
+                                            if ($check_permission == true && $permission_showed == false) {
                                                 $permission_row = $this->requestAction('permission/get_permission_by_userid_date/' . $key . '/' . $dailyreport);
                                                 $datetime1 = new DateTime($permission_row['Permission']['from_time']);
                                                 $datetime2 = new DateTime($permission_row['Permission']['to_time']);
                                                 $interval = $datetime1->diff($datetime2);
                                                 $hours = ($interval->format('%h') * 60) + ($interval->format('%i'));
-
-                                                $color = 'style="background-color:pink"';
+                                                $no_record_hide = true;
                                                 $permission_count++;
+                                                $no_record_count++;
+                                            }
 
-                                                $permission_showed = true;
-                                            } else {
-                                                $color = '';
+                                            if ($check_sunday == true) {
+
+                                                $sunday_count++;
+                                            }
+
+                                            if ($check_holiday == true) {
+
+                                                $official_leave_count++;
                                             }
 
                                             if ($check_leave == true) {
                                                 $leave_row = $this->requestAction('leave/get_leave_by_userid_date/' . $key . '/' . $dailyreport);
-                                                if ($leave_row['SubLeave'][0]['day'] == 0.5) {
-
-                                                    $color = 'style="background-color:#E47296"';
+                                                if ($leave_row['SubLeave'][0]['day'] == 1) {
+                                                    $leave_count++;
+                                                } elseif ($leave_row['SubLeave'][0]['day'] == 0.5 && $half_day_showed == false) {
                                                     $half_day_count++;
-                                                    $half_day_showed = true;
+                                                    $no_record_count++;
                                                 }
                                             }
-                                            $check_leave == true ? $check_leave = false : '';
-                                        }
-
-                                        if ($check_permission == true && $permission_showed == false) {
-                                            $permission_row = $this->requestAction('permission/get_permission_by_userid_date/' . $key . '/' . $dailyreport);
-                                            $datetime1 = new DateTime($permission_row['Permission']['from_time']);
-                                            $datetime2 = new DateTime($permission_row['Permission']['to_time']);
-                                            $interval = $datetime1->diff($datetime2);
-                                            $hours = ($interval->format('%h') * 60) + ($interval->format('%i'));
-                                            $no_record_hide = true;
-                                            $permission_count++;
-                                            $no_record_count++;
-                                        }
-
-                                        if ($check_sunday == true) {
-
-                                            $sunday_count++;
-                                        }
-
-                                        if ($check_holiday == true) {
-
-                                            $official_leave_count++;
-                                        }
-
-                                        if ($check_leave == true) {
-                                            $leave_row = $this->requestAction('leave/get_leave_by_userid_date/' . $key . '/' . $dailyreport);
-                                            if ($leave_row['SubLeave'][0]['day'] == 1) {
-                                                $leave_count++;
-                                            } elseif ($leave_row['SubLeave'][0]['day'] == 0.5 && $half_day_showed == false) {
-                                                $half_day_count++;
+                                            if ($check_working_day == false && $check_sunday == false && $check_holiday == false && $check_leave == false && $no_record_hide == false) {
                                                 $no_record_count++;
                                             }
-                                        }
-                                        if ($check_working_day == false && $check_sunday == false && $check_holiday == false && $check_leave == false && $no_record_hide == false) {
-                                            $no_record_count++;
-                                        }
-                                    endforeach;
+                                        endforeach;
+                                    }
                                     ?>
 
                                     <td>
