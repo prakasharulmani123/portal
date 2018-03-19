@@ -36,7 +36,6 @@ echo $this->fetch('meta');
 </head>
 
 <body class="cube">
-<div class="wrapper">
 <div class="header"> <?php echo $this->element('user/header'); ?> </div>
 <div class="menu"> <?php echo $this->element('user/left_sidebar'); ?> </div>
 <div class="content">
@@ -56,7 +55,6 @@ echo $this->fetch('content');
 //        });
     });
 </script>
-</div>
 </div>
 <style type="text/css">
 .back-to-top {
