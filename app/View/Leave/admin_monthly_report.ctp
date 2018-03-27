@@ -99,9 +99,7 @@ if ($all['user_id'] == 'all') {
             text-align: center
         }
     </style>
-    <div class="workplace">
-
-
+    <div class="workplace"> 
         <div class="block-fluid table-sorting">
             <table border="1" width="100%">
                 <thead style=" width:70; color: white;font-size:16px;  background-color:#486B91;">

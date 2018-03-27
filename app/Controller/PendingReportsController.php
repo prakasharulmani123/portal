@@ -148,9 +148,12 @@ class PendingReportsController extends AppController {
         );
         $return = array();
         $end_time = $this->get_date($this->data['end_hours'], $this->data['end_minutes'], $this->data['end_meridian']);
+        $time = date('H:i:s',strtotime($end_time));
+        $date = date('Y-m-d',strtotime($this->data['date']));
+        $end_time = $date.' '.$time;
         if ($this->data['date'] != date('Y-m-d')) {
             $update['PendingReport']['end_time'] = $end_time;
-            $return['end_time'] = $update['PendingReport']['end_time'];
+            $return['end_time'] = date('g:i A', strtotime($update['PendingReport']['end_time']));
         }
 
         if ($this->PendingReport->saveAll($update)) {
@@ -381,7 +384,6 @@ class PendingReportsController extends AppController {
         $this->loadModel('DailyStatus');
 
         $pending_report = $this->PendingReport->read(null, $id);
-
         $pending_reports = $this->DailyStatus->findAllByUserIdAndDate($this->Session->read('User.id'), date('Y-m-d', strtotime($pending_report['PendingReport']['date'])), '', array('start_time ASC'));
         $end_array = end($pending_reports);
         $end_time = $end_array['DailyStatus']['end_time'];
@@ -390,7 +392,7 @@ class PendingReportsController extends AppController {
         $add_entry = array('Entry' => array('user_id' => $this->Session->read('User.id'),
                 'date' => $pending_report['PendingReport']['date'],
                 'time_in' => $pending_report['PendingReport']['start_time'],
-                'time_out' => NULL,
+                'time_out' => ($pending_report['PendingReport']['end_time'] ? $pending_report['PendingReport']['end_time'] : date('Y-m-d h:i:s A')),
                 'on_off' => 0,
                 'time_in_ip' => $this->request->clientIp(),
                 'time_out_ip' => $this->request->clientIp()));

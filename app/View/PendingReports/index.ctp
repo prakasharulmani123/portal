@@ -104,7 +104,6 @@ $mer = array('am'=>'am','pm'=>'pm');
 </div>
 
 <div class="workplace">
-
   <div class="row-fluid">
     <div class="span12">
       <div class="head">
@@ -119,6 +118,7 @@ $mer = array('am'=>'am','pm'=>'pm');
               <th width="7%">No</th>
               <th width="12%">Date</th>
               <th width="12%">Start Time</th>
+              <th width="12%">End Time</th>
               <th width="22%">Reason</th>
               <th width="12%">Status</th>
               <th width="29%">Remarks</th>
@@ -129,11 +129,19 @@ $mer = array('am'=>'am','pm'=>'pm');
             <?php 
 			$i=1; 
 			foreach ($pending_reports as $pending_report): 
-			?>
+	    ?>
+            <?php
+                            if (($pending_report['PendingReport']['date'] == date('Y-m-d')) || ($pending_report['PendingReport']['end_time'] == '')) {
+                                $end_time = '00:00:00';
+                            } else {
+                                $end_time = date('g:i A', strtotime($pending_report['PendingReport']['end_time']));
+                            }
+           ?>
             <tr>
               <td><?php echo h($i); ?></td>
               <td><?php echo date('d-m-Y', strtotime($pending_report['PendingReport']['date'])) ?></td>
               <td><?php echo $pending_report['PendingReport']['start_time'] == '0000-00-00 00:00:00' ? '--' :date('h:i A', strtotime($pending_report['PendingReport']['start_time'])) ?></td>
+              <td id="end_time_<?php echo $pending_report['PendingReport']['id']?>"><?php echo $end_time;  ?></td>
               <td><?php echo $pending_report['PendingReport']['reason'] ?></td>
               <td>
               <?php if($pending_report['PendingReport']['start_time'] == '0000-00-00 00:00:00'){?>

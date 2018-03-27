@@ -146,6 +146,37 @@ class EntriesController extends AppController {
             }
         }
     }
+ 
+    public function admin_officetiming() {
+        $this->layout = "admin-inner";
+        $this->set('cpage', 'entry');
+        $this->layout = "admin-inner";
+        $this->loadModel('TempReport');
+        $reports = $this->TempReport->find('all', array('conditions' => array('TempReport.user_id' => $this->Session->read('User.id'), 'TempReport.date' => date('Y-m-d')), 'order' => array('TempReport.start_time ASC')));
+        $this->loadModel('LateEntry');
+        $late_entry = $this->LateEntry->find('list', array(
+            'fields' => array('LateEntry.user_id'),
+            'conditions' => array(
+                'DATE(LateEntry.date)' => date('Y-m-d'),
+            )
+        ));
+
+        $this->loadModel('Permission');
+        $permission_exists = $this->Permission->find('list', array('fields' => array('Permission.user_id'),
+            'conditions' => array('Permission.date' => date('Y-m-d'), 'Permission.approved !=' => 2)));
+
+        $this->loadModel('Leave');
+        $leave = $this->Leave->find('list', array('fields' => array('Leave.user_id'),
+            'conditions' => array(
+                'Leave.days' => '0.50',
+                'Leave.date' => date('Y-m-d')
+        )));
+
+        $this->set('users', $this->requestAction('users/get_user', array('pass' => array('User.id' => $this->Session->read('User.id')))));
+        $entries = $this->Entry->find('all', array('conditions' => array('Entry.Date' => date('Y-m-d')), 'order' => array('Entry.time_in' => 'DESC')));
+
+        $this->set(compact('reports', 'entries', 'late_entry', 'permission_exists', 'leave'));
+    }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -216,7 +247,7 @@ class EntriesController extends AppController {
             $this->render('admin_index', 'ajaxpagination'); // View, Layout
         }
     }
-
+    
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
     /* Office Timings - Carefull to handle */

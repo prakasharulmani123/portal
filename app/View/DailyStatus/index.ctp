@@ -698,7 +698,6 @@ $mer = array('am' => 'am', 'pm' => 'pm');
 </div>            
 
 <div class="workplace">
-
     <?php echo $this->Form->create('DailyStatus', array('id' => 'validation', 'onsubmit' => 'return validateForm()')); ?>
 
     <?php echo $this->Form->hidden('id'); ?>
@@ -787,12 +786,10 @@ $mer = array('am' => 'am', 'pm' => 'pm');
                 //edit not used
                 $edit = $this->Session->read('DailyReportEdit');
                 $entry = $this->requestAction('entries/check_time_in_out/' . $this->Session->read('User.id'));
-
                 if ($edit == NULL || $edit == "") {
                     if (empty($reports)) {
                         if ($entry) {
                             $time_in_hour = $time_out_hour = date('H', strtotime($entry['Entry']['time_in']));
-
                             if ($time_in_hour > 12) {
                                 $time_in_hour = $time_out_hour = ($time_in_hour - 12);
                             }

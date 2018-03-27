@@ -131,7 +131,6 @@ function delete_multiple()
 </script>
 
 <div class="workplace">
-
 <?php
 $hours = array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10', '11' => '11', '12' => '12');
 $minutes = array('00' => '00', '05' => '05', '10' => '10', '15' => '15', '20' => '20', '25' => '25', '30' => '30', '35' => '35', '40' => '40', '45' => '45', '50' => '50', '55' => '55');
@@ -199,13 +198,21 @@ $mer = array('am' => 'am', 'pm' => 'pm');
 			foreach ($pending_reports as $pending_report): 
 				$user = $this->requestAction('users/get_user',array('pass'=>array('User.id'=>$pending_report['PendingReport']['user_id'])));
 			?>
-            <tr id="<?php echo $pending_report['PendingReport']['id']?>">
+            <?php
+                            if (($pending_report['PendingReport']['date'] == date('Y-m-d')) || ($pending_report['PendingReport']['end_time']== '')) {
+                                $end_time = '00:00:00';
+                            } else {
+
+                                $end_time = date('g:i A', strtotime($pending_report['PendingReport']['end_time']));
+ }
+           ?>
+              <tr id="<?php echo $pending_report['PendingReport']['id']?>">
               <td><input id="checkbox<?php echo $pending_report['PendingReport']['id']?>" name="checkbox<?php echo $pending_report['PendingReport']['id']?>" type="checkbox" value="<?php echo $pending_report['PendingReport']['id']?>" /></td>
               <td><?php echo h($i); ?></td>
               <td><?php echo $user['User']['employee_name']?></td>
               <td id="date"><?php echo date('d-m-Y', strtotime($pending_report['PendingReport']['date'])) ?></td>
               <td><?php echo $pending_report['PendingReport']['start_time'] == '0000-00-00 00:00:00' ? '--' :date('h:i A', strtotime($pending_report['PendingReport']['start_time'])) ?></td>
-              <td id="end_time_<?php echo $pending_report['PendingReport']['id']?>"><?php echo $pending_report['PendingReport']['date'] == date('Y-m-d') ? '0000-00-00 00:00:00' :$pending_report['PendingReport']['end_time'] ?></td>
+              <td id="end_time_<?php echo $pending_report['PendingReport']['id']?>"><?php echo $end_time;  ?></td>
               <td><?php echo $pending_report['PendingReport']['reason'] ?></td>
               <td>
               <?php if($pending_report['PendingReport']['start_time'] == '0000-00-00 00:00:00'){?>

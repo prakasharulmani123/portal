@@ -16,7 +16,6 @@ class DailystatusController extends AppController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function index() {
-       
         if ($this->Session->read('User.employee_type') == 'T') {
             return $this->redirect('/users/dashboard');
         }
@@ -29,7 +28,6 @@ class DailystatusController extends AppController {
 
         $this->loadModel('TempReport');
         $reports = $this->TempReport->find('all', array('conditions' => array('TempReport.user_id' => $this->Session->read('User.id'), 'TempReport.date' => date('Y-m-d')), 'order' => array('TempReport.start_time ASC')));
-
         $check_time = $this->requestAction('entries/check_time_in_out');
         if (!empty($check_time)) {
             if ($check_time['Entry']['on_off'] == 0) {

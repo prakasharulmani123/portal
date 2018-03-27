@@ -59,12 +59,11 @@ class TempReportsController extends AppController {
             } else {
                 //check timer on time and report start time
                 $this->loadModel('Entry');
-                $entry_time = $this->Entry->findByUserIdAndDate($user_id, $date);
-
+                $entry_time =$exit_time= $this->Entry->findByUserIdAndDate($user_id, $date);
                 if (empty($entry_time)) {
                     $this->loadModel('PendingReport');
                     $entry_time = $this->PendingReport->findByUserIdAndDate($user_id, $date);
-
+                    
                     $datetime1 = new DateTime($entry_time['PendingReport']['start_time']);
                     $correct_time = $entry_time['PendingReport']['start_time'];
                 } else {
@@ -81,9 +80,28 @@ class TempReportsController extends AppController {
                     $success['correct_time'] = date('h:i:s A', strtotime($correct_time)) . ' diff time : ' . $diff_time;
                     $success['wrong_time'] = date('h:i:s A', strtotime($temp_reports[0]['TempReport']['start_time']));
                 }
-            }
-        endif;
+                if ($exit_time) {
+                    $this->loadModel('PendingReport');
+                    $exit_time = $this->PendingReport->findByUserIdAndDate($user_id, $date);
+                    if ($date != date('Y-m-d')) {
+                        $endtime = new DateTime($exit_time['PendingReport']['end_time']);
 
+                        $correct_endtime = $exit_time['PendingReport']['end_time'];
+                        foreach ($temp_reports as $temp_report) {
+                            $endtime2 = new DateTime($temp_report['TempReport']['end_time']);
+                        }
+                        $interval1 = $endtime->diff($endtime2);
+                        $diff_endtime = ($interval1->format('%h') * 60) + ($interval1->format('%i'));
+
+                        if ($diff_endtime > 0) {
+                            $success['success'] = -5;
+                            $success['correct_endtime'] = date('h:i:s A', strtotime($correct_endtime)) . ' diff endtime : ' . $diff_endtime;
+                            $success['wrong_endtime'] = date('h:i:s A', strtotime($temp_report['TempReport']['end_time']));
+                        }
+                    }
+                }
+            } 
+        endif;
         echo json_encode($success);
         exit;
     }

@@ -42,7 +42,6 @@
 </style>
 <?php if($this->Session->read('User.employee_type') == 'P'){ ?>
 <div class="workplace">
-
     <div class="dialog b_popup_3"  id="b_popup_3" style="display: none;" title="Notification">
         <p align="center" id="late_entry_details"></p>                
     </div>

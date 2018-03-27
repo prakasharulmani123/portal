@@ -41,6 +41,10 @@ $( document ).ready(function() {
 				  {
 					  alert("Please enter correct time. \n Timer Turn ON : " + msg.correct_time + "\n Your Report Start Time :" + msg.wrong_time);
 				  }
+                                  else if(msg.success == -5)
+				  {
+                                           alert("Please enter correct end time. \n Timer Turn OFF : " + msg.correct_endtime + "\n Your Report End Time :" + msg.wrong_endtime);
+				  }
 			  }
 		  }
 		});

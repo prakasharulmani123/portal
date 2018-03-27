@@ -532,7 +532,6 @@ if (empty($all['month'])) {
         $permissions = $this->requestAction('permission/get_permission_approved_per_month/' . $all['user_id'] . '/' . $all['month'] . '/' . $all['year']);
         ?>
         <div class="workplace">
-
             <div class="row-fluid">
                 <div align="left" class="span2">
                     <input type="button" name="export" id="export" value="Export" class="btn btn-primary" onclick="location.href = '<?php echo $this->base; ?>/admin/dailystatus/export_to_csv'" />
