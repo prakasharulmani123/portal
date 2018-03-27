@@ -1,5 +1,5 @@
 <?php 
-$marray= array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22);//define number of main menus
+$marray= array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23);//define number of main menus
 $open = $open1 = $open2 = $open3 = $open4 = $open5 = $open6 = $open7 = "";
 if($cpage=='dashboard')
 $marray[0]='active';
@@ -58,6 +58,9 @@ $open6 = 'active';}
 if($cpage=='entry'){
 $marray[22]='active';
 $open7 = 'active';}
+if($cpage=='leave_year_report'){
+    $marray[23]='active';
+}
 ?>
 
 <div class="breadLine">
@@ -202,22 +205,22 @@ $open7 = 'active';}
             <li class="<?php echo $marray[7];?> li_check_access" >
                 <a class="check-access"  href="<?php echo  $this->base?>/admin/entries">
                     <span class="icon-time"></span><span class="text">Time In / Out</span>
-                </a>                  
-            </li> 
+                </a>
+            </li>
             <li class="<?php echo $marray[22];?> li_check_access" >
                 <a class="check-access"  href="<?php echo  $this->base?>/admin/entries/officetiming">
                     <span class="icon-time"></span><span class="text">Employees Entry / Exit Time </span>
-                </a>                  
-            </li>          
-                    
-        </ul>                
-   </li>   
-   
-   
-   
-   
-   
-  
+                </a>
+            </li>
+
+        </ul>
+   </li>
+
+
+
+
+
+
     <li class="openable<?php echo " ".$open1;?> li_check_access">
         <a class=""  href="#"><span class="isw-calendar"></span><span class="text">Monthly Reports</span></a>
         <ul>
@@ -225,8 +228,9 @@ $open7 = 'active';}
             <li class="<?php echo $marray[11];?> li_check_access"><a class="check-access"  href="<?php  echo  $this->base?>/admin/leave/monthly_report"><span class="icon-calendar"></span><span class="text">Leave Reports</span></a></li>
         </ul>                
     </li>
-  <li class="<?php echo $marray[10]; ?> li_check_access" > <a class="check-access"  href="<?php echo  $this->base?>/admin/holidays"> <span class="isw-bookmark"></span><span class="text">Holidays</span> </a>	 
-  
+  <li class="<?php echo $marray[23]; ?> li_check_access" > <a class="check-access"  href="<?php echo  $this->base?>/admin/leave/yearly_report"> <span class="isw-target"></span><span class="text">Yearly Leave Report</span> </a>
+  <li class="<?php echo $marray[10]; ?> li_check_access" > <a class="check-access"  href="<?php echo  $this->base?>/admin/holidays"> <span class="isw-bookmark"></span><span class="text">Holidays</span> </a>
+
   <li class="<?php echo $marray[12]; ?> li_check_access" > <a class="check-access" href="<?php echo  $this->base?>/admin/static_pages"> <span class="isw-documents"></span><span class="text">Company Rules</span> </a> </li>
   
     <li class="<?php echo $marray[14]; ?> li_check_access"> <a class="check-access"  href="<?php echo  $this->base?>/admin/late_entries"> <span class="isw-archive"></span><span class="text">Late Entries</span> </a> </li>

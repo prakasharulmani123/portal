@@ -317,6 +317,13 @@ class LeaveController extends AppController {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+    public function admin_reset_yearly_leave_report() {
+        $this->Session->delete('Leave');
+        return $this->redirect(array('action' => 'yearly_report'));
+    }
+
+///////////////////////////////////////////////////////////////////////////////
+
     public function leave_request_mail($id = NULL) {
         $leave = $this->Leave->read(null, $id);
 
@@ -736,12 +743,21 @@ class LeaveController extends AppController {
     }
 
 ///////////////////////////////////////////////////////////////////////////////
-//changed on 22-02-2014
+    //changed on 22-02-2014
     public function get_all_leave_count_per_month_per_status($user_id = NULL, $month = NULL, $year = NULL, $status = NULL) {
         $this->loadModel('SubLeave');
-        $sub_leaves = $this->SubLeave->find('all', array('recursive' => 1, 'conditions' => array('YEAR(SubLeave.date)' => $year, 'MONTH(SubLeave.date)' => $month, 'SubLeave.status' => $status), 'order' => array('SubLeave.created DESC')));
 
-        $all_sub_leaves = $this->SubLeave->find('all', array('recursive' => 1, 'conditions' => array('YEAR(SubLeave.date)' => $year, 'MONTH(SubLeave.date)' => $month, 'SubLeave.status' => 'P'), 'order' => array('SubLeave.created DESC')));
+        $conditions = ['YEAR(SubLeave.date)' => $year, 'SubLeave.status' => $status];
+        if($month){
+            $conditions['MONTH(SubLeave.date)'] = $month;
+        }
+        $sub_leaves = $this->SubLeave->find('all', array('recursive' => 1, 'conditions' => $conditions, 'order' => array('SubLeave.created DESC')));
+
+        $conditions = ['YEAR(SubLeave.date)' => $year, 'SubLeave.status' => 'P'];
+        if($month){
+            $conditions['MONTH(SubLeave.date)'] = $month;
+        }
+        $all_sub_leaves = $this->SubLeave->find('all', array('recursive' => 1, 'conditions' => $conditions, 'order' => array('SubLeave.created DESC')));
 
         $paid_causual_this_day = 0;
 
@@ -773,14 +789,10 @@ class LeaveController extends AppController {
 
     public function admin_monthly_report() {
         $this->layout = "admin-inner";
-//        echo 'haiii';
-//        exit;
         $this->set('cpage', 'leave_month_report');
         $this->loadModel('SubLeave');
 
         if ($this->request->is('post') || $this->request->is('put')) {
-//            print_r($this->request->is('post'));
-//            exit;
             $this->Session->write('LeaveMonth.user_id', '');
             $this->Session->write('LeaveMonth.month', '');
             $this->Session->write('LeaveMonth.year', '');
@@ -804,6 +816,51 @@ class LeaveController extends AppController {
 
             if ($all['user_id'] != '' && $all['month'] != '' && $all['year'] != '') {
                 $sub_leaves = $this->SubLeave->find('all', array('recursive' => 1, 'conditions' => array('MONTH(SubLeave.date)' => $all['month'], 'YEAR(SubLeave.date)' => $all['year'])));
+                $leaves_id = array();
+                foreach ($sub_leaves as $key => $sub_leave) {
+                    if ($sub_leave['Leave']['user_id'] == $all['user_id']) {
+                        $leaves_id[$key] = $sub_leave['Leave']['id'] . ',';
+                    }
+                }
+                $leaves = $this->Leave->find('all', array('conditions' => array('Leave.id' => $leaves_id), 'order' => array('Leave.date ASC')));
+            }
+        } else {
+            $all = array('user_id' => '', 'month' => '', 'year' => '');
+        }
+        $this->set(compact('User'));
+        $this->set(compact('all'));
+        $this->set('users', $this->requestAction('users/get_all_users'));
+        $this->set(compact('leaves'));
+    }
+
+///////////////////////////////////////////////////////////////////////////////
+
+    public function admin_yearly_report() {
+        $this->layout = "admin-inner";
+        $this->set('cpage', 'leave_year_report');
+        $this->loadModel('SubLeave');
+
+        if ($this->request->is('post') || $this->request->is('put')) {
+            $this->Session->write('LeaveMonth1.user_id', '');
+            $this->Session->write('LeaveMonth1.year', '');
+            $this->Session->write('LeaveMonth1.year', '');
+
+            if ($this->request->data['Leave']['user_id'] != '') {
+                $this->Session->write('LeaveMonth1.user_id', $this->request->data['Leave']['user_id']);
+            }
+
+            if (!empty($this->request->data['Leave']['year'])) {
+                $this->Session->write('LeaveMonth1.year', $this->request->data['Leave']['year']);
+            }
+
+            return $this->redirect(array('action' => 'admin_yearly_report'));
+        }
+
+        if ($this->Session->check('LeaveMonth1')) {
+            $all = $this->Session->read('LeaveMonth1');
+
+            if ($all['user_id'] != '' && $all['year'] != '') {
+                $sub_leaves = $this->SubLeave->find('all', array('recursive' => 1, 'conditions' => array('YEAR(SubLeave.date)' => $all['year'])));
                 $leaves_id = array();
                 foreach ($sub_leaves as $key => $sub_leave) {
                     if ($sub_leave['Leave']['user_id'] == $all['user_id']) {

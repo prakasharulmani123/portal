@@ -26,11 +26,11 @@ if (empty($all['month'])) {
 }
 ?>
 
-        $('#LeaveMonth').datepicker({
+        $('#LeaveYear').datepicker({
             changeMonth: true,
             changeYear: true,
             showButtonPanel: true,
-            dateFormat: 'MM yy',
+            dateFormat: 'yy',
             defaultDate: new Date(<?php echo $year ?>, <?php echo $month ?>, 1),
             onClose: function (dateText, inst) {
                 var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
@@ -40,7 +40,7 @@ if (empty($all['month'])) {
             }
         });
 
-        $("#LeaveMonth").focus(function () {
+        $("#LeaveYear").focus(function () {
             $(".ui-datepicker-calendar").hide();
         });
     });
@@ -55,21 +55,21 @@ if (empty($all['month'])) {
         $all_user[$user['User']['id']] = $user['User']['employee_name'];
     }
 
-    if (empty($all['month'])) {
+    if (empty($all['year'])) {
         $month = date('d-m-Y');
 //			$value = date('F Y');
         $value = '';
     } else {
-        $month = '01-' . $all['month'] . '-' . $all['year'];
-        $value = date('F Y', strtotime($month));
+        $month = '01-01-' . $all['year'];
+        $value = date('Y', strtotime($month));
     }
     ?>
     <b><?php echo " Employee : " ?></b>
     <?php echo $this->Form->input('user_id', array('label' => false, 'div' => false, 'class' => 'form-control', 'options' => array('all' => 'All', '' => $all_user), 'selected' => $all['user_id'], 'style' => 'width:200px; margin-top:6px;')); ?>&nbsp;&nbsp;&nbsp;
-    <b><?php echo " Month : " ?></b>
-    <?php echo $this->Form->input('month', array('label' => false, 'div' => false, 'class' => 'form-control', 'value' => $value, 'style' => 'width:200px; margin-top:6px;')); ?>
+    <b><?php echo " Year : " ?></b>
+    <?php echo $this->Form->input('year', array('label' => false, 'div' => false, 'class' => 'form-control', 'value' => $value, 'style' => 'width:200px; margin-top:6px;')); ?>
     <?php echo $this->Form->button('Search', array('class' => 'btn btn-default')); ?></td>
-<?php echo $this->Html->link('Reset', array('controller' => 'leave', 'action' => 'reset_monthly_leave_report', 'admin' => true), array('class' => 'btn btn-danger')); ?>
+<?php echo $this->Html->link('Reset', array('controller' => 'leave', 'action' => 'reset_yearly_leave_report', 'admin' => true), array('class' => 'btn btn-danger')); ?>
 <?php echo $this->Form->end(); ?>
 <div class="clear"></div>
 </div>
@@ -99,13 +99,15 @@ if ($all['user_id'] == 'all') {
             text-align: center
         }
     </style>
-    <div class="workplace"> 
+    <div class="workplace">
+
+
         <div class="block-fluid table-sorting">
             <table border="1" width="100%">
                 <thead style=" width:70; color: white;font-size:16px;  background-color:#486B91;">
                 <th width="20%">Employee Name</th>
                 <th width="70%">Details</th>
-                <th width="10%">Action</th>
+<!--                <th width="10%">Action</th>-->
                 </thead>
                 <tbody>
                     <?php foreach ($all_user as $key => $all_use) { ?>
@@ -113,8 +115,8 @@ if ($all['user_id'] == 'all') {
                             <td class="u_name"><span style=""><?php echo $all_use; ?></span></td>
                             <td class="text-center">
                                 <?php
-                                $casual_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $key . '/' . $find_month . '/' . $find_year . '/' . 'C');
-                                $paid_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $key . '/' . $find_month . '/' . $find_year . '/' . 'P');
+                                $casual_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $key . '/0/' . $find_year . '/' . 'C');
+                                $paid_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $key . '/0/' . $find_year . '/' . 'P');
 
                                 $leave_count = $this->requestAction('leave/get_all_leave_count/' . $key);
 
@@ -134,14 +136,14 @@ if ($all['user_id'] == 'all') {
                                     <div class="row-fluid editcss">
                                         <div class="wBlock auto space">
                                             <div class="dSpace">
-                                                <h3>Casual Leave Days <br /><?php echo date('F', strtotime($month)) ?></h3>
+                                                <h3>Casual Leave <br />Days</h3>
                                                 <span class="number"><?php echo $casual_leave_per_month; ?></span>                                                
                                             </div>
                                         </div>
 
                                         <div class="wBlock red auto space">
                                             <div class="dSpace">
-                                                <h3>Loss of Pay(LOP) <br /><?php echo date('F', strtotime($month)) ?></h3>
+                                                <h3>Loss of Pay(LOP) <br />Days</h3>
                                                 <span class="number"><?php echo $paid_leave_per_month ?></span>                                                  
                                             </div>
                                         </div>                    
@@ -162,7 +164,7 @@ if ($all['user_id'] == 'all') {
                                         </div>
                                         <div class="wBlock green auto space">
                                             <div class="dSpace">
-                                                
+
                                                 <h3>Compensation <br />Leave</h3>
                                                 <span class="number"><?php echo $comp_count; ?></span>                                                
                                             </div>
@@ -175,12 +177,13 @@ if ($all['user_id'] == 'all') {
                                         </div>
                                     </div>
                             </td>
-                            <td align="center">
+                            <td align="center" style="display: none;">
                                 <?php echo $this->Form->create('Leave'); ?>
                                 <?php echo $this->Form->hidden('user_id', array('value' => $key)); ?>
                                 <?php echo $this->Form->hidden('month', array('value' => $value)); ?>
                                 <?php echo $this->Form->button('View', array('class' => 'btn btn-default')); ?></td>
-                            <?php echo $this->Form->end(); ?></td>
+                            <?php echo $this->Form->end(); ?>
+                            </td>
                         </tr>
                     <?php } ?>
 
