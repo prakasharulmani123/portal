@@ -54,10 +54,9 @@ if (empty($all['month'])) {
     foreach ($users as $user) {
         $all_user[$user['User']['id']] = $user['User']['employee_name'];
     }
-
     if (empty($all['month'])) {
         $month = date('d-m-Y');
-//			$value = date('F Y');
+//	$value = date('F Y');
         $value = '';
     } else {
         $month = '01-' . $all['month'] . '-' . $all['year'];
@@ -275,6 +274,7 @@ if ($all['user_id'] == 'all') {
                                     <th width="20%">Requisition</th>
                                     <th width="10%">Date</th>
                                     <th width="10%">Days</th>
+                                    <th width="10%">Compensation Days</th>
                                     <th width="15%">Reason</th>
                                     <th width="5%">Status</th>
                                     <th width="15%">Remarks</th>
@@ -307,7 +307,23 @@ if ($all['user_id'] == 'all') {
                                         <td><?php echo h($leave_date) ?></td>
                                         <td>
                                             <?php
-                                            switch ($leave['Leave']['days']) {
+                                            $comp_leave = $leave['Leave']['compensation_id'];
+                                            $string = unserialize($comp_leave);
+                                            $tdays = "";
+                                            $days = $leave['Leave']['days'];
+                                            if (is_array($string) || is_object($string)) {
+                                                foreach ($string as $key => $value) {
+                                                    $tdays = 0;
+                                                    $blogs = $this->requestAction('Compensations/get_id', array('pass' => array('Compensation.id' => $value)));
+                                                    $cdays = $blogs['Compensation']['days'];
+                                                    $tdays = $days + $cdays;
+                                                    $days = $tdays;
+                                                }
+                                            }
+                                            switch ($days) {
+                                                case 0:
+                                                    echo '_';
+                                                    break;
                                                 case 0.5:
                                                     echo 'Half a day';
                                                     break;
@@ -328,6 +344,22 @@ if ($all['user_id'] == 'all') {
                                                     break;
                                             }
                                             ?></td>
+                                        <?php
+                                        $records = array();
+                                        $days = 0;
+                                        if (is_array($string) || is_object($string)) {
+                                            foreach ($string as $key => $value) {
+                                                $tdays = 0;
+                                                $blogs = $this->requestAction('Compensations/get_id', array('pass' => array('Compensation.id' => $value)));
+                                                $cdays = $blogs['Compensation']['days'];
+                                                $records[] = date('d-m-Y', strtotime($blogs['Compensation']['date']));
+                                                $tdays = $days + $cdays;
+                                                $days = $tdays;
+                                            }
+                                        }
+                                        $imp_rec = implode(" & ", (array) $records);
+                                        ?>
+                                        <td><?php echo h($imp_rec) ?> <?php echo h(($tdays > 0) ? '(' . $tdays . ' days)' : "-") ?></td>
                                         <td><?php echo h($leave['Leave']['reason']) ?></td>
                                         <td><p>
                                                 <?php if ($leave['Leave']['approved'] == 0) { ?>

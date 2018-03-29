@@ -17,33 +17,34 @@
         });
 
 <?php
-if (empty($all['month'])) {
+if (empty($all['year'])) {
     $year = date('Y');
-    $month = date('m') - 1;
 } else {
     $year = $all['year'];
-    $month = $all['month'] - 1;
 }
 ?>
 
-        $('#LeaveYear').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            showButtonPanel: true,
-            dateFormat: 'yy',
-            defaultDate: new Date(<?php echo $year ?>, <?php echo $month ?>, 1),
-            onClose: function (dateText, inst) {
-                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).datepicker('setDate', new Date(year, month, 1));
-                $(".ui-datepicker-calendar").show();
-            }
-        });
+var min = 2012, max = new Date().getFullYear() + 10; 
+var select = $('<select>');
 
-        $("#LeaveYear").focus(function () {
-            $(".ui-datepicker-calendar").hide();
-        });
+for (var i = min; i <= max; i++) {
+    var year = i;
+   var ans = $('<option>', {value: year, text: year}).appendTo("#year");
+
+}
+
+$('#year').change(function() {
+ var e = document.getElementById("year");
+var sel_year = e.options[e.selectedIndex].value;
+
+});
+
+select.appendTo('year');
+
+
     });
+
+
 </script>
 
 <div style="margin:10px 50px 10px 50px;">
@@ -54,20 +55,23 @@ if (empty($all['month'])) {
     foreach ($users as $user) {
         $all_user[$user['User']['id']] = $user['User']['employee_name'];
     }
-
     if (empty($all['year'])) {
-        $month = date('d-m-Y');
-//			$value = date('F Y');
-        $value = '';
+
+     $month = date('d-m-Y');
+     // $value = date('Y');
+     $value = '';
     } else {
         $month = '01-01-' . $all['year'];
         $value = date('Y', strtotime($month));
     }
+
+    $year_range = range(2013, date('Y'));
+    $year_list = array_combine($year_range, $year_range);
     ?>
     <b><?php echo " Employee : " ?></b>
     <?php echo $this->Form->input('user_id', array('label' => false, 'div' => false, 'class' => 'form-control', 'options' => array('all' => 'All', '' => $all_user), 'selected' => $all['user_id'], 'style' => 'width:200px; margin-top:6px;')); ?>&nbsp;&nbsp;&nbsp;
     <b><?php echo " Year : " ?></b>
-    <?php echo $this->Form->input('year', array('label' => false, 'div' => false, 'class' => 'form-control', 'value' => $value, 'style' => 'width:200px; margin-top:6px;')); ?>
+    <?php echo $this->Form->input('year', array('label' => false, 'div' => false, 'class' => 'form-control', 'options' => array_merge(['' => 'Select', $year_list]), 'selected' => $all['user_id'], 'selected' => $all['year'], 'style' => 'width:200px; margin-top:6px;')); ?>&nbsp;&nbsp;&nbsp;
     <?php echo $this->Form->button('Search', array('class' => 'btn btn-default')); ?></td>
 <?php echo $this->Html->link('Reset', array('controller' => 'leave', 'action' => 'reset_yearly_leave_report', 'admin' => true), array('class' => 'btn btn-danger')); ?>
 <?php echo $this->Form->end(); ?>
@@ -77,8 +81,6 @@ if (empty($all['month'])) {
 <?php
 $current_year = date('Y');
 $find_year = date('Y', strtotime($month));
-$find_month = date('m', strtotime($month));
-
 if ($all['user_id'] == 'all') {
     ?>
     <style type="text/css">
@@ -107,7 +109,7 @@ if ($all['user_id'] == 'all') {
                 <thead style=" width:70; color: white;font-size:16px;  background-color:#486B91;">
                 <th width="20%">Employee Name</th>
                 <th width="70%">Details</th>
-<!--                <th width="10%">Action</th>-->
+                <th width="10%">Action</th>
                 </thead>
                 <tbody>
                     <?php foreach ($all_user as $key => $all_use) { ?>
@@ -118,7 +120,7 @@ if ($all['user_id'] == 'all') {
                                 $casual_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $key . '/0/' . $find_year . '/' . 'C');
                                 $paid_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $key . '/0/' . $find_year . '/' . 'P');
 
-                                $leave_count = $this->requestAction('leave/get_all_leave_count/' . $key);
+                                $leave_count = $this->requestAction('leave/get_all_leave_count/' . $key. '/' . $year);
 
                                 $casual_leave_per_year = $this->requestAction('leave/user_get_all_leave_count_by_user_id_and_status/' . $key . '/C/' . $year);
                                 $sel_user = $this->requestAction('users/get_user/' . $key);
@@ -177,10 +179,10 @@ if ($all['user_id'] == 'all') {
                                         </div>
                                     </div>
                             </td>
-                            <td align="center" style="display: none;">
+                            <td align="center">
                                 <?php echo $this->Form->create('Leave'); ?>
                                 <?php echo $this->Form->hidden('user_id', array('value' => $key)); ?>
-                                <?php echo $this->Form->hidden('month', array('value' => $value)); ?>
+                                <?php echo $this->Form->hidden('year', array('value' => $value)); ?>
                                 <?php echo $this->Form->button('View', array('class' => 'btn btn-default')); ?></td>
                             <?php echo $this->Form->end(); ?>
                             </td>
@@ -196,12 +198,12 @@ if ($all['user_id'] == 'all') {
 } else {
     ?>
     <?php
-    if (!empty($all['month'])) {
-        $casual_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $all['user_id'] . '/' . $find_month . '/' . $find_year . '/' . 'C');
+    if (!empty($all['year'])) {
+        $casual_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $all['user_id'] . '/0/' . $find_year . '/' . 'C');
 
-        $paid_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $all['user_id'] . '/' . $find_month . '/' . $find_year . '/' . 'P');
+        $paid_leave_per_month = $this->requestAction('leave/get_all_leave_count_per_month_per_status/' . $all['user_id'] . '/0/' . $find_year . '/' . 'P');
 
-        $leave_count = $this->requestAction('leave/get_all_leave_count/' . $all['user_id']);
+        $leave_count = $this->requestAction('leave/get_all_leave_count/' . $all['user_id']. '/' . $year);
 
         $casual_leave_per_year = $this->requestAction('leave/user_get_all_leave_count_by_user_id_and_status/' . $all['user_id'] . '/C/' . $year);
 
@@ -222,14 +224,14 @@ if ($all['user_id'] == 'all') {
             <div class="row-fluid">
                 <div class="wBlock auto">
                     <div class="dSpace">
-                        <h3>Casual Leave Days <br /><?php echo date('F', strtotime($month)) ?></h3>
+                        <h3>Casual Leave Days <br /><?php echo $find_year ?></h3>
                         <span class="number"><?php echo $casual_leave_per_month; ?></span>                                                
                     </div>
                 </div>
 
                 <div class="wBlock red auto">
                     <div class="dSpace">
-                        <h3>Loss of Pay(LOP) Leave Days <br /><?php echo date('F', strtotime($month)) ?></h3>
+                        <h3>Loss of Pay(LOP) Leave Days <br /><?php echo $find_year ?></h3>
                         <span class="number"><?php echo $paid_leave_per_month ?></span>                                                  
                     </div>
                 </div>                    
@@ -267,7 +269,7 @@ if ($all['user_id'] == 'all') {
                 <div class="span12">
                     <div class="head">
                         <div class="isw-calendar"></div>
-                        <h1>Monthly Leave Report</h1>
+                        <h1>Yearly Leave Report</h1>
                         <div class="clear"></div>
                     </div>
                     <div class="block-fluid table-sorting">
@@ -278,6 +280,7 @@ if ($all['user_id'] == 'all') {
                                     <th width="20%">Requisition</th>
                                     <th width="10%">Date</th>
                                     <th width="10%">Days</th>
+                                    <th width="10%">Compensation Days</th>
                                     <th width="15%">Reason</th>
                                     <th width="5%">Status</th>
                                     <th width="15%">Remarks</th>
@@ -310,7 +313,23 @@ if ($all['user_id'] == 'all') {
                                         <td><?php echo h($leave_date) ?></td>
                                         <td>
                                             <?php
-                                            switch ($leave['Leave']['days']) {
+                                            $comp_leave = $leave['Leave']['compensation_id'];
+                                            $string = unserialize($comp_leave);
+                                            $tdays = "";
+                                            $days = $leave['Leave']['days'];
+                                            if (is_array($string) || is_object($string)) {
+                                                foreach ($string as $key => $value) {
+                                                    $tdays = 0;
+                                                    $blogs = $this->requestAction('Compensations/get_id', array('pass' => array('Compensation.id' => $value)));
+                                                    $cdays = $blogs['Compensation']['days'];
+                                                    $tdays = $days + $cdays;
+                                                    $days = $tdays;
+                                                }
+                                            }
+                                            switch ($days) {
+                                                case 0:
+                                                    echo '_';
+                                                    break;
                                                 case 0.5:
                                                     echo 'Half a day';
                                                     break;
@@ -331,6 +350,22 @@ if ($all['user_id'] == 'all') {
                                                     break;
                                             }
                                             ?></td>
+                                        <?php
+                                        $records = array();
+                                        $days = 0;
+                                        if (is_array($string) || is_object($string)) {
+                                            foreach ($string as $key => $value) {
+                                                $tdays = 0;
+                                                $blogs = $this->requestAction('Compensations/get_id', array('pass' => array('Compensation.id' => $value)));
+                                                $cdays = $blogs['Compensation']['days'];
+                                                $records[] = date('d-m-Y', strtotime($blogs['Compensation']['date']));
+                                                $tdays = $days + $cdays;
+                                                $days = $tdays;
+                                            }
+                                        }
+                                        $imp_rec = implode(" & ", (array) $records);
+                                        ?>
+                                        <td><?php echo h($imp_rec) ?> <?php echo h(($tdays > 0) ? '(' . $tdays . ' days)' : "-") ?></td>
                                         <td><?php echo h($leave['Leave']['reason']) ?></td>
                                         <td><p>
                                                 <?php if ($leave['Leave']['approved'] == 0) { ?>
