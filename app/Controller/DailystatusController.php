@@ -373,8 +373,8 @@ class DailystatusController extends AppController {
             $this->send_mom();
             $this->timer_auto_off();
             $this->Session->write('report_send', 1);
-            $this->Session->setFlash('Your report has been sent suceesfully', 'flash_success');
-            return $this->redirect('/dailystatus');
+            $this->Session->setFlash('Your report has been sent suceesfully.', 'flash_success');
+            return $this->redirect('/users/dashboard');
         } else {
             $this->Session->setFlash('No records to send - Please add reports', 'flash_error');
             return $this->redirect('/dailystatus');
