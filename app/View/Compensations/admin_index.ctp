@@ -77,10 +77,10 @@
                     <thead>
                         <tr>
                             <th width="6%">No</th>
-                            <th width="15%">Name</th>
-                            <th width="15%">Date</th>
-                            <th width="10%">Days</th>
-                            <th width="10%">Comments</th>
+                            <th width="10%">Name</th>
+                            <th width="10%">Date</th>
+                            <th width="5%">Days</th>
+                            <th width="30%">Comments</th>
                             <th width="10%">Status</th>
                             <th width="10%">Type</th>
 
@@ -97,7 +97,7 @@
                         <tr>
                             <td><?php echo h($i); ?></td>
                             <td><?php echo h($user['User']['employee_name']); ?></td>
-                            <td><?php echo h($compensation['Compensation']['date']); ?></td>
+                            <td><?php echo h(date('Y-m-d', strtotime($compensation['Compensation']['date']))); ?></td>
                             <td><?php echo h($compensation['Compensation']['days']); ?></td>
                             <td><?php echo h($compensation['Compensation']['comments']); ?></td>
                             <td>
@@ -107,7 +107,7 @@
                                    
                                     if ($status == 0) {
                                       ?>  
-                                <span class="label label-success"<?php echo $compensation['Compensation']['id'] ?>><?php echo 'Not Used' ?></span>
+                                <span class="label label-warning"<?php echo $compensation['Compensation']['id'] ?>><?php echo 'Not Used' ?></span>
                               <?php
                                 }
                                 else{ ?>
@@ -126,7 +126,7 @@
                                    
                                     if ($type == 'L') {
                                        ?>
-                                 <span class="label label-success" <?php echo $compensation['Compensation']['id'] ?>><?php echo 'Leave'; ?></span>
+                                 <span class="" <?php echo $compensation['Compensation']['id'] ?>><?php echo 'Leave'; ?></span>
                                         
                                   <?php  
                                   
@@ -134,7 +134,7 @@
                                     elseif ($type == 'P'){ ?>
                                         
                                     
-                                 <span class="label label-success"  <?php echo $compensation['Compensation']['id'] ?>><?php echo 'Permission'; ?></span>
+                                 <span class=""  <?php echo $compensation['Compensation']['id'] ?>><?php echo 'Permission'; ?></span>
                                     <?php } ?>
                             </td>
 

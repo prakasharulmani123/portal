@@ -15,6 +15,8 @@
             "bInfo": true,
             "bPaginate": true
         });
+    });
+</script>
 
 <?php
 if (empty($all['year'])) {
@@ -23,29 +25,6 @@ if (empty($all['year'])) {
     $year = $all['year'];
 }
 ?>
-
-var min = 2012, max = new Date().getFullYear() + 10; 
-var select = $('<select>');
-
-for (var i = min; i <= max; i++) {
-    var year = i;
-   var ans = $('<option>', {value: year, text: year}).appendTo("#year");
-
-}
-
-$('#year').change(function() {
- var e = document.getElementById("year");
-var sel_year = e.options[e.selectedIndex].value;
-
-});
-
-select.appendTo('year');
-
-
-    });
-
-
-</script>
 
 <div style="margin:10px 50px 10px 50px;">
     <?php echo $this->Form->create('Leave'); ?>
@@ -56,22 +35,20 @@ select.appendTo('year');
         $all_user[$user['User']['id']] = $user['User']['employee_name'];
     }
     if (empty($all['year'])) {
-
-     $month = date('d-m-Y');
-     // $value = date('Y');
-     $value = '';
+         $month = date('d-m-Y');
+         $value = '';
     } else {
         $month = '01-01-' . $all['year'];
         $value = date('Y', strtotime($month));
     }
 
-    $year_range = range(2013, date('Y'));
+    $year_range = range(date('Y'), 2013);
     $year_list = array_combine($year_range, $year_range);
     ?>
     <b><?php echo " Employee : " ?></b>
     <?php echo $this->Form->input('user_id', array('label' => false, 'div' => false, 'class' => 'form-control', 'options' => array('all' => 'All', '' => $all_user), 'selected' => $all['user_id'], 'style' => 'width:200px; margin-top:6px;')); ?>&nbsp;&nbsp;&nbsp;
     <b><?php echo " Year : " ?></b>
-    <?php echo $this->Form->input('year', array('label' => false, 'div' => false, 'class' => 'form-control', 'options' => array_merge(['' => 'Select', $year_list]), 'selected' => $all['user_id'], 'selected' => $all['year'], 'style' => 'width:200px; margin-top:6px;')); ?>&nbsp;&nbsp;&nbsp;
+    <?php echo $this->Form->input('year', array('label' => false, 'div' => false, 'class' => 'form-control', 'options' => array_merge(['' => 'Select', $year_list]), 'selected' => $year, 'selected' => $all['year'], 'style' => 'width:200px; margin-top:6px;')); ?>&nbsp;&nbsp;&nbsp;
     <?php echo $this->Form->button('Search', array('class' => 'btn btn-default')); ?></td>
 <?php echo $this->Html->link('Reset', array('controller' => 'leave', 'action' => 'reset_yearly_leave_report', 'admin' => true), array('class' => 'btn btn-danger')); ?>
 <?php echo $this->Form->end(); ?>
