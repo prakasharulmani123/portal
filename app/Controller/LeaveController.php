@@ -42,10 +42,9 @@ class LeaveController extends AppController {
         }
         if ($this->Session->check('LeaveForm')) {
             $all = $this->Session->read('LeaveForm');
-// $this->set(compact('comday'));
             if ($all['from_date'] != '') {
                 if ($all['approved'] == '') {
-                    $leaves = $this->Leave->find('all', array('conditions' => array('Leaveid' => $this->Session->read('User.id'), 'Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Leave.created DESC')));
+                    $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $this->Session->read('User.id'), 'Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Leave.created DESC')));
                 } else {
                     $leaves = $this->Leave->find('all', array('conditions' => array('Leave.user_id' => $this->Session->read('User.id'), 'Leave.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date']))), 'Leave.approved' => $all['approved']), 'order' => array('Leave.created DESC')));
                 }
