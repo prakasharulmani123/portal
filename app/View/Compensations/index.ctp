@@ -69,10 +69,10 @@
                     <thead>
                         <tr>
                             <th width="6%">No</th>
-                            <th width="15%">Compensation Date</th>
-                            <th width="10%">Days</th>
-                            <th width="10%">Leave Days</th>
-                            <th width="10%">Comments</th>
+                            <th width="10%">Compensation Date</th>
+                            <th width="5%">Days</th>
+                            <th width="25%">Comments</th>
+                            <th width="10%">Leave Date</th>
                             <th width="10%">Status</th>
                             <th width="10%">Type</th>
 
@@ -96,8 +96,8 @@
                             }
                             $imp_rec = implode(" & ", $leave);         
                             ?>
-                            <td><?php echo h($imp_rec)?> </td>
                             <td><?php echo h($compensation['Compensation']['comments']); ?></td>
+                            <td><?php echo h($imp_rec)?> </td>
                             <td>
                             <?php
                             $status = $compensation['Compensation']['status'];

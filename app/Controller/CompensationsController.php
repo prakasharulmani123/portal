@@ -1,16 +1,19 @@
 <?php
 
-class CompensationsController extends AppController {
+class CompensationsController extends AppController
+{
 
     public $name = 'Compensations';
     public $helpers = array('Html', 'Form', 'Js', 'Paginator');
     public $components = array('Session', 'Cookie', 'Email', 'RequestHandler');
 
-    public function beforeFilter() {
+    public function beforeFilter()
+    {
         parent::beforeFilter();
     }
 
-    public function admin_index($id = NULL) {
+    public function admin_index($id = NULL)
+    {
         $this->layout = "admin-inner";
         $this->set('cpage', 'compensation');
 
@@ -74,17 +77,19 @@ class CompensationsController extends AppController {
         $this->set('users', $this->requestAction('users/get_all_users'));
         $this->set(compact('compensations'));
     }
- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
-    
-      public function index() {
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function index()
+    {
         $this->layout = "user-inner";
         $this->set('cpage', 'compensation');
-         if ($this->request->is('post') || $this->request->is('put')) {
+        if ($this->request->is('post') || $this->request->is('put')) {
             $this->Session->write('Compensations.from_date', '');
             $this->Session->write('Compensations.to_date', '');
             $this->Session->write('Compensations.approved', '');
 
-         
+
             if (!empty($this->request->data['Compensations']['from_date']) && !empty($this->request->data['Compensations']['to_date'])) {
                 $this->Session->write('Compensations.from_date', date('Y-m-d', strtotime($this->request->data['Compensations']['from_date'])));
                 $this->Session->write('Compensations.to_date', date('Y-m-d', strtotime($this->request->data['Compensations']['to_date'])));
@@ -103,15 +108,14 @@ class CompensationsController extends AppController {
         if ($this->Session->check('Compensations')) {
             $all = $this->Session->read('Compensations');
 
-           if ($all['from_date'] != '') {
+            if ($all['from_date'] != '') {
 
                 if ($all['approved'] == '') {
-                    $compensations = $this->Compensation->find('all', array('conditions' => array('Compensation.user_id' => $this->Session->read('User.id'),'Compensation.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Compensation.created DESC')));
+                    $compensations = $this->Compensation->find('all', array('conditions' => array('Compensation.user_id' => $this->Session->read('User.id'), 'Compensation.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date'])))), 'order' => array('Compensation.created DESC')));
                 } else {
-                    $compensations = $this->Compensation->find('all', array('conditions' => array('Compensation.user_id' => $this->Session->read('User.id'),'Compensation.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date']))), 'Compensations.approved' => $all['approved']), 'order' => array('Compensation.created DESC')));
+                    $compensations = $this->Compensation->find('all', array('conditions' => array('Compensation.user_id' => $this->Session->read('User.id'), 'Compensation.date between ? and ?' => array(date('Y-m-d', strtotime($all['from_date'])), date('Y-m-d', strtotime($all['to_date']))), 'Compensations.approved' => $all['approved']), 'order' => array('Compensation.created DESC')));
                 }
-            }
-            else {
+            } else {
                 if ($all['approved'] == '') {
                     $compensations = $this->Compensation->find('all', array('conditions' => array('Compensation.user_id' => $this->Session->read('User.id')), 'order' => array('Compensation.created DESC')));
                 } else {
@@ -121,41 +125,49 @@ class CompensationsController extends AppController {
         } else {
 
             $all = array('from_date' => '', 'to_date' => '', 'approved' => '');
-            $compensations = $this->Compensation->find('all',array('conditions' => array('Compensation.user_id' => $this->Session->read('User.id')), 'order' => array('Compensation.created DESC'))); 
+            $compensations = $this->Compensation->find('all', array('conditions' => array('Compensation.user_id' => $this->Session->read('User.id')), 'order' => array('Compensation.created DESC')));
         }
-        
-        $this->set(compact('compensations','all'));
+
+        $this->set(compact('compensations', 'all'));
     }
-    
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function reset() {
+    public function reset()
+    {
         $this->Session->delete('Compensations');
         return $this->redirect(array('action' => 'index'));
-    }   
-  ////////////////////////////////////////////////////////////////////////////////////////  
-     public function admin_reset() {
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    public function admin_reset()
+    {
         $this->Session->delete('Compensations');
         return $this->redirect(array('action' => 'admin_index'));
     }
-    
-    public function get_leave_dates($compensation_id = NULL) {
+
+    public function get_leave_dates($compensation_id = NULL)
+    {
         $this->loadModel('Leave');
         return $this->Leave->find('list', array('fields' => array('Leave.date'),
-                    'conditions' => array(
-                    'Leave.compensation_id LIKE' => '%"'.$compensation_id.'"%',
-        )));
+            'conditions' => array(
+                'Leave.approved' => '1',
+                'Leave.compensation_id LIKE' => '%"' . $compensation_id . '"%',
+            )));
     }
 
-    public function get_id($compensation_id = NULL) {
+    public function get_id($compensation_id = NULL)
+    {
         return $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id' => $compensation_id)));
     }
 
-    public function add_current_month_permission_new() {
+    public function add_current_month_permission_new()
+    {
         return $this->Compensation->find('count', array('conditions' => array('AND' => array('Compensation.user_id=' . $this->Session->read('User.id')), array('Compensation.status' => 0), array('Compensation.type' => 'P'))));
 //pr($return);exit;
     }
 
-    public function get_permission_id($compensation_id = NULL) {
+    public function get_permission_id($compensation_id = NULL)
+    {
         return $this->Compensation->find('first', array('recursive' => -1, 'conditions' => array('Compensation.id' => $compensation_id)));
     }
 
