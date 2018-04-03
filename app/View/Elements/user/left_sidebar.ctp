@@ -4,7 +4,7 @@
 }
 </style>
 <?php */?><?php 
-$marray= array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);//define number of main menus
+$marray= array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17);//define number of main menus
 $open = '';
 
 if($cpage=='dailystatus')
@@ -43,6 +43,8 @@ if($cpage=='import_attendance')
 $marray[15]='active';
 if($cpage=='my_attendance')
 $marray[16]='active';
+if($cpage=='compensation')
+$marray[17]='active';
 ?>
 <div class="breadLine">
   <div class="arrow"></div>
@@ -109,6 +111,7 @@ $marray[16]='active';
     <?php } ?>
     
     <li class="<?php echo $marray[2];?>"> <a href="<?php  echo  $this->base?>/leave"> <span class="isw-target"></span><span class="text">Leave Request</span> </a> </li>
+     <li class="<?php echo $marray[17];?>"> <a href="<?php  echo  $this->base?>/compensations"> <span class="isw-target"></span><span class="text">Compensation Leave</span> </a> </li>
     <li class="<?php echo $marray[5];?>"> <a href="<?php  echo  $this->base?>/permission"> <span class="isw-list"></span><span class="text">Permission Request</span> </a> 
 </li>
     <?php } ?>

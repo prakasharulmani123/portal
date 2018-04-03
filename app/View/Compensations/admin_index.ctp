@@ -78,9 +78,10 @@
                         <tr>
                             <th width="6%">No</th>
                             <th width="10%">Name</th>
-                            <th width="10%">Date</th>
+                            <th width="10%">Compensation Date</th>
                             <th width="5%">Days</th>
                             <th width="30%">Comments</th>
+                            <th width="30%">Leave Date</th>
                             <th width="10%">Status</th>
                             <th width="10%">Type</th>
 
@@ -100,11 +101,18 @@
                             <td><?php echo h(date('Y-m-d', strtotime($compensation['Compensation']['date']))); ?></td>
                             <td><?php echo h($compensation['Compensation']['days']); ?></td>
                             <td><?php echo h($compensation['Compensation']['comments']); ?></td>
+                            <?php
+                            $com_id = $compensation['Compensation']['id'];
+                            $date="";
+                            if ($com_id) {
+                            $leave = $this->requestAction('Compensations/get_leave_dates', array('pass' => array('id' => $com_id)));
+                            }
+                            $imp_rec = implode(" & ", $leave);         
+                            ?>
+                            <td><?php echo h($imp_rec)?> </td>
                             <td>
                                     <?php
                                     $status = $compensation['Compensation']['status'];
-                                   
-                                   
                                     if ($status == 0) {
                                       ?>  
                                 <span class="label label-warning"<?php echo $compensation['Compensation']['id'] ?>><?php echo 'Not Used' ?></span>

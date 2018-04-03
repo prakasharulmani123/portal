@@ -132,7 +132,7 @@ $mer = array('am'=>'am','pm'=>'pm');
 	    ?>
             <?php
                             if (($pending_report['PendingReport']['date'] == date('Y-m-d')) || ($pending_report['PendingReport']['end_time'] == '')) {
-                                $end_time = '00:00:00';
+                                $end_time = '-';
                             } else {
                                 $end_time = date('g:i A', strtotime($pending_report['PendingReport']['end_time']));
                             }

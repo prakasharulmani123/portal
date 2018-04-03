@@ -5,12 +5,12 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#entryreport-index").dataTable({
-		"iDisplayLength": 10, 
+		"iDisplayLength": 100, 
 		"sPaginationType": "full_numbers",
-		"bLengthChange": true,
+		"bLengthChange": false,
 		"bFilter": true,
-		"bInfo": true,
-		"bPaginate": true});
+		"bInfo": false,
+		"bPaginate": false});
 });
 </script>
     <div class="workplace">
@@ -18,7 +18,7 @@ $(document).ready(function(){
             <div class="span12">
                 <div class="head">
                     <div class="isw-time"></div>
-                    <h1>Employees Entry / Exit Timings</h1>
+                    <h1>Employees Entry / Exit Timings (<?php echo date('d-m-Y'); ?>)</h1>
                     <div class="clear"></div>
                 </div>
             <?php } ?>
@@ -139,7 +139,7 @@ $(document).ready(function(){
                             echo $end_time;
                             
                             }else {
-                                   echo  '00:00:00';
+                                   echo  '-';
                                } ?>
                                </td>
                             </tr>
