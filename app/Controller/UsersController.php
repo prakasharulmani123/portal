@@ -99,7 +99,7 @@ class UsersController extends AppController {
     public function dashboard() {
         $this->layout = "user-inner";
         $this->set('cpage', 'dashboard');
-         $this->set('permissioncount', $this->requestAction('leave/user_get_compensation_permission_counts'));
+        $this->set('permissioncount', $this->requestAction('leave/user_get_compensation_permission_counts'));
         $this->set('leavecount', $this->requestAction('leave/user_get_compensation_counts'));
         $this->set('entries', $this->requestAction('entries/get_latest_user_time_in_out'));
         $this->set('reports', $this->requestAction('dailystatus/user_get_recent_reports'));
@@ -133,6 +133,51 @@ class UsersController extends AppController {
         $this->set('admins', $admins);
         $this->set('status', $status);
         $this->set('cpage', 'employee');
+    }
+
+    public function employeelogin($user_id, $role = NULL) {
+        $role = $this->Session->read('User.role');
+        $this->Session->destroy();
+        if ($role == 'admin') {
+            $users = $this->User->find('first', array('conditions' => array('User.role' => 'user', 'id' => $user_id,'User.employee_type' == 'P')));
+            $ses_id = $this->Session->write('User.id', $users['User']['id']);
+            $ses_id1 = $this->Session->read('User.id');
+            $ses_email = $this->Session->write('User.email', $users['User']['email']);
+            $ses_email1 = $this->Session->read('User.email');
+            $ses_type = $this->Session->write('User.employee_type', $users['User']['employee_type']);
+            $ses_type1 = $this->Session->read('User.employee_type');
+            $ses_name = $this->Session->write('User.name', $users['User']['employee_name']);
+            $ses_name1 = $this->Session->read('User.name');
+            $ses_photo= $this->Session->write('User.photo', $users['User']['photo']);
+            $ses_photo1 = $this->Session->read('User.photo');
+            $this->Session->write('role',$role);
+            $this->redirect('/users/dashboard');
+
+        } else {
+            return $this->redirect('/');
+        }
+    }
+
+    public function adminback() {
+        $this->Session->destroy();
+        $user = $this->User->find('first', array('conditions' => array('User.role' => 'admin', 'User.active' => 1)));
+        $this->Session->write('User.id', $user['User']['id']);
+        $this->Session->write('User.name', $user['User']['employee_name']);
+        $this->Session->write('User.email', $user['User']['email']);
+        $this->Session->write('User.role', $user['User']['role']);
+        $this->Session->write('User.photo', $user['User']['photo']);
+        $admin_id = $this->Session->read('User.id');
+        $admin_name = $this->Session->read('User.name');
+        $admin_email = $this->Session->read('User.email');
+        $role = $this->Session->read('User.role');
+        $photo= $this->Session->read('User.photo');
+        $admin_email = $this->Session->read('User.email');
+        if ($role == 'admin') {
+            
+            $this->redirect(array('controller' => 'users', 'action' => 'employee/1', 'admin' => true));
+
+        } 
+
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -240,12 +285,12 @@ class UsersController extends AppController {
             $old_employee_type = $old_data['User']['employee_type'];
             $new_employee_type = $this->request->data['User']['employee_type'];
 
-            if($old_employee_type != $new_employee_type){
-                if($new_employee_type == 'T' && !$old_data['User']['trainee_id']){
+            if ($old_employee_type != $new_employee_type) {
+                if ($new_employee_type == 'T' && !$old_data['User']['trainee_id']) {
                     $user = $this->get_last_added_user('trainee_id');
                     $emp_id = $this->get_next_employee_id($user['User']['trainee_id']);
                     $this->request->data['User']['trainee_id'] = $emp_id;
-                }else if($new_employee_type == 'P' && !$old_data['User']['employee_id']){
+                } else if ($new_employee_type == 'P' && !$old_data['User']['employee_id']) {
                     $user = $this->get_last_added_user('employee_id');
                     $emp_id = $this->get_next_employee_id($user['User']['employee_id']);
                     $this->request->data['User']['employee_id'] = $emp_id;
