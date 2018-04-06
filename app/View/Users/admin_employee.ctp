@@ -35,6 +35,7 @@
                             <th width="7%">Active</th>
                             <th width="7%">Actions</th>
                             <th width="6%">Super User</th>
+                            <th width="6%">Employee's login</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,8 +65,16 @@
                                     <?php }?>
                                 </td>
                                 <td><span style="display:none"><?php echo $user['User']['super_user'] ?></span><?php echo $this->Html->link($this->Html->image('icon_' . $user['User']['super_user'] . '.png', array()), array('controller' => 'users', 'action' => 'switch', 'super_user', $user['User']['id']), array('class' => 'status', 'escape' => false, 'data-superuser' => true)); ?></td>
-                               
+                               <td align="center">
+                        <?php
+                        $user_id = $user['User']['id'];
+                        echo $this->Html->link('Login as User', '/users/employeelogin/'.$user_id); 
+                          ?>
+                         </td>
+ 
                             </tr>
+
+
     <?php $i++;
     endif;
 endforeach; ?>
@@ -100,6 +109,7 @@ endforeach; ?>
                         <th width="7%">Active</th>
                         <th width="7%">Actions</th>
                         <th width="6%">Super User</th>
+                        <th width="6%">Employee's login</th>   
                     </tr>
                     </thead>
                     <tbody>
@@ -129,7 +139,12 @@ endforeach; ?>
                                 <?php }?>
                             </td>
                             <td><span style="display:none"><?php echo $user['User']['super_user'] ?></span><?php echo $this->Html->link($this->Html->image('icon_' . $user['User']['super_user'] . '.png', array()), array('controller' => 'users', 'action' => 'switch', 'super_user', $user['User']['id']), array('class' => 'status', 'escape' => false, 'data-superuser' => true)); ?></td>
-
+                             <td align="center">
+                        <?php
+                        $user_id = $user['User']['id'];
+                        echo $this->Html->link('Login as User', '/users/employeelogin/'.$user_id); 
+                          ?>
+                         </td>
                         </tr>
                         <?php $i++;
                         endif;
