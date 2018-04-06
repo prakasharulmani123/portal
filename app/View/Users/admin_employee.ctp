@@ -28,14 +28,14 @@
                     <thead>
                         <tr>
                             <th width="5%">No</th>
-                            <th width="24%">Name</th>
-                            <th width="16%">ID No</th>
+                            <th width="19%">Name</th>
+                            <th width="9%">ID No</th>
                             <th width="21%">Designation</th>
                             <th width="14%">Join Date</th>
                             <th width="7%">Active</th>
                             <th width="7%">Actions</th>
                             <th width="6%">Super User</th>
-                            <th width="6%">Employee's login</th>
+                            <th width="26%">Employee's login</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -68,7 +68,7 @@
                                <td align="center">
                         <?php
                         $user_id = $user['User']['id'];
-                        echo $this->Html->link('Login as User', '/users/employeelogin/'.$user_id); 
+                        echo $this->Html->link('Login as User', '/users/employeelogin/'.$user_id, array('class' => 'btn btn-info btn-sm')); 
                           ?>
                          </td>
  
@@ -102,14 +102,14 @@ endforeach; ?>
                     <thead>
                     <tr>
                         <th width="5%">No</th>
-                        <th width="24%">Name</th>
-                        <th width="16%">ID No</th>
+                        <th width="19%">Name</th>
+                        <th width="9%">ID No</th>
                         <th width="21%">Designation</th>
                         <th width="14%">Join Date</th>
                         <th width="7%">Active</th>
                         <th width="7%">Actions</th>
                         <th width="6%">Super User</th>
-                        <th width="6%">Employee's login</th>   
+                        <th width="26%">Employee's login</th>   
                     </tr>
                     </thead>
                     <tbody>
@@ -142,8 +142,9 @@ endforeach; ?>
                              <td align="center">
                         <?php
                         $user_id = $user['User']['id'];
-                        echo $this->Html->link('Login as User', '/users/employeelogin/'.$user_id); 
-                          ?>
+                        echo $this->Html->link('Login as User', '/users/employeelogin/'.$user_id, array('class' => 'btn btn-info btn-sm')); 
+                         ?>
+
                          </td>
                         </tr>
                         <?php $i++;

@@ -97,7 +97,7 @@ $marray[17]='active';
    <?php 
       if($this->Session->read('role')){
    ?>
-    <li><span class="icon-share-alt"></span> <a href="<?php echo $this->base?>/users/adminback"> Back</a></li>
+    <li><span class="icon-share-alt"></span> <a href="<?php echo $this->base?>/users/adminback"> Back to Admin</a></li>
     <?php }else{
      ?>
     <li><span class="icon-share-alt"></span> <a href="<?php echo $this->base?>/users/logout"> Logout</a></li>

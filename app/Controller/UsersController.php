@@ -160,8 +160,8 @@ class UsersController extends AppController {
 
     public function adminback() {
         $this->Session->destroy();
-        $user = $this->User->find('first', array('conditions' => array('User.role' => 'admin', 'User.active' => 1)));
-        $this->Session->write('User.id', $user['User']['id']);
+        $user = $this->User->find('first', array('conditions' => array(' OR ' => array('User.role' => 'admin','User.super_user' => 1))));
+        $this->Session->write('User.id',$user['User']['id']);
         $this->Session->write('User.name', $user['User']['employee_name']);
         $this->Session->write('User.email', $user['User']['email']);
         $this->Session->write('User.role', $user['User']['role']);
