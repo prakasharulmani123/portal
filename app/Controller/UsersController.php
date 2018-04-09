@@ -150,6 +150,7 @@ class UsersController extends AppController {
             $this->Session->write('role', $role);
             $this->Session->write('super_user', $super_user);
             $this->Session->write('nid', $id);
+            $this->Session->setFlash("Logged in as {$users['User']['employee_name']}", "flash_success");
             $this->redirect('/users/dashboard');
         } else {
             return $this->redirect('/');
@@ -169,6 +170,7 @@ class UsersController extends AppController {
                 $this->Session->write('User.super_user', $user['User']['super_user']);
                 $this->Session->write('User.photo', $user['User']['photo']);
                 $this->Session->write('User.access', $user['User']['access']);
+                $this->Session->setFlash("Welcome back", "flash_success");
                 $this->redirect(array('controller' => 'users', 'action' => 'employee/1', 'admin' => true));
             } else {
                 $this->Session->setFlash("Dear User , Please Log in Here", "flash_success");
