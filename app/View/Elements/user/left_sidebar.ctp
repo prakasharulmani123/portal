@@ -95,7 +95,7 @@ $marray[17]='active';
     <li><span class="icon-cog"></span><a href="<?php echo $this->base?>/users/profile"> Profile</a></li>
     <li><span class="icon-lock"></span><a href="<?php echo $this->base?>/users/password"> Change Password</a></li>
    <?php 
-      if($this->Session->read('role')){
+      if($this->Session->read('role') || $this->Session->read('super_user') ){
    ?>
     <li><span class="icon-share-alt"></span> <a href="<?php echo $this->base?>/users/adminback"> Back to Admin</a></li>
     <?php }else{

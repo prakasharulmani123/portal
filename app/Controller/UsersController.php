@@ -137,47 +137,46 @@ class UsersController extends AppController {
 
     public function employeelogin($user_id, $role = NULL) {
         $role = $this->Session->read('User.role');
+        $id = $this->Session->read('User.id');
+        $super_user = $this->Session->read('User.super_user');
         $this->Session->destroy();
-        if ($role == 'admin') {
-            $users = $this->User->find('first', array('conditions' => array('User.role' => 'user', 'id' => $user_id,'User.employee_type' == 'P')));
-            $ses_id = $this->Session->write('User.id', $users['User']['id']);
-            $ses_id1 = $this->Session->read('User.id');
-            $ses_email = $this->Session->write('User.email', $users['User']['email']);
-            $ses_email1 = $this->Session->read('User.email');
-            $ses_type = $this->Session->write('User.employee_type', $users['User']['employee_type']);
-            $ses_type1 = $this->Session->read('User.employee_type');
-            $ses_name = $this->Session->write('User.name', $users['User']['employee_name']);
-            $ses_name1 = $this->Session->read('User.name');
-            $ses_photo= $this->Session->write('User.photo', $users['User']['photo']);
-            $ses_photo1 = $this->Session->read('User.photo');
-            $this->Session->write('role',$role);
+        if ($role == 'admin' || $super_user == 1) {
+            $users = $this->User->find('first', array('conditions' => array('User.role' => 'user', 'id' => $user_id, 'User.employee_type' == 'P')));
+            $this->Session->write('User.id', $users['User']['id']);
+            $this->Session->write('User.email', $users['User']['email']);
+            $this->Session->write('User.employee_type', $users['User']['employee_type']);
+            $this->Session->write('User.name', $users['User']['employee_name']);
+            $this->Session->write('User.photo', $users['User']['photo']);
+            $this->Session->write('role', $role);
+            $this->Session->write('super_user', $super_user);
+            $this->Session->write('nid', $id);
             $this->redirect('/users/dashboard');
-
         } else {
             return $this->redirect('/');
         }
     }
 
-    public function adminback() {
+    public function adminback($nid = NULL) {
+        $nid = $this->Session->read('nid');
         $this->Session->destroy();
-        $user = $this->User->find('first', array('conditions' => array(' OR ' => array('User.role' => 'admin','User.super_user' => 1))));
-        $this->Session->write('User.id',$user['User']['id']);
-        $this->Session->write('User.name', $user['User']['employee_name']);
-        $this->Session->write('User.email', $user['User']['email']);
-        $this->Session->write('User.role', $user['User']['role']);
-        $this->Session->write('User.photo', $user['User']['photo']);
-        $admin_id = $this->Session->read('User.id');
-        $admin_name = $this->Session->read('User.name');
-        $admin_email = $this->Session->read('User.email');
-        $role = $this->Session->read('User.role');
-        $photo= $this->Session->read('User.photo');
-        $admin_email = $this->Session->read('User.email');
-        if ($role == 'admin') {
-            
-            $this->redirect(array('controller' => 'users', 'action' => 'employee/1', 'admin' => true));
-
-        } 
-
+        $user = $this->User->find('first', array('conditions' => array('User.id' => $nid, 'User.employee_type' => 'P')));
+        if (!empty($user)) {
+            if ($user['User']['role'] == 'admin' || ($user['User']['role'] == 'user' && $user['User']['super_user'] == 1)) {
+                $this->Session->write('User.id', $user['User']['id']);
+                $this->Session->write('User.name', $user['User']['employee_name']);
+                $this->Session->write('User.email', $user['User']['email']);
+                $this->Session->write('User.role', $user['User']['role']);
+                $this->Session->write('User.super_user', $user['User']['super_user']);
+                $this->Session->write('User.photo', $user['User']['photo']);
+                $this->Session->write('User.access', $user['User']['access']);
+                $this->redirect(array('controller' => 'users', 'action' => 'employee/1', 'admin' => true));
+            } else {
+                $this->Session->setFlash("Dear User , Please Log in Here", "flash_success");
+                return $this->redirect('/');
+            }
+        } else {
+            $this->Session->setFlash("This User doesn't exists", "flash_error");
+        }
     }
 
 ///////////////////////////////////////////////////////////////////////////////
