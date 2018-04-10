@@ -6,8 +6,10 @@
             "bLengthChange": true,
             "bFilter": true,
             "bInfo": false,
-            "bPaginate": true});
+            "bPaginate": true,
+            "bStateSave" :true});
     });
+
 </script>
 
 <div class="workplace">
@@ -51,7 +53,7 @@
                                 <td><?php echo h(date("d-m-Y", strtotime($user['User']['joined_on']))); ?></td>
                                 <td><span style="display:none"><?php echo $user['User']['active'] ?></span><?php echo $this->Html->link($this->Html->image('icon_' . $user['User']['active'] . '.png'), array('controller' => 'users', 'action' => 'switch', 'active', $user['User']['id']), array('class' => 'status', 'escape' => false)); ?></td>
                                 <td>
-                                    <a class="check-access" href="<?php echo $this->base ?>/admin/users/edit/<?php echo $user['User']['id']; ?>" title="Edit Employee"><span class="icon-pencil"></span></a> 
+                                    <a class="check-access" href="<?php echo $this->base ?>/admin/users/edit/<?php echo $user['User']['id'] ?>" title="Edit Employee"><span class="icon-pencil"></span></a> 
                                     <a class="check-access" href="<?php echo $this->base ?>/admin/users/view/<?php echo $user['User']['id'] ?>" title="View Employee"><span class="isb-text_document"></span></a> 
                                     <?php
                                     $hide_module = 'hidden';
