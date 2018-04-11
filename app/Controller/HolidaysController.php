@@ -28,10 +28,7 @@ class HolidaysController extends AppController {
             $this->request->data['Holiday']['date'] = date('Y-m-d', strtotime($this->data['Holiday']['date']));
             if ($this->Holiday->save($this->request->data)) {
                 $this->loadModel('PendingReport');
-                $pending_reports = $this->PendingReport->find('all', array('conditions' => array('PendingReport.date' => '2018-04-07')));
-                foreach ($pending_reports as $pending_report) {
-                  $this->PendingReport->delete($pending_report['PendingReport']['id']);
-                }
+                $this->PendingReport->deleteAll(array('PendingReport.date' => $this->request->data['Holiday']['date']), false);
                 echo $this->Session->setFlash('Holiday Added', 'flash_success');
             } else {
                 echo $this->Session->setFlash('Failed to Add Holiday', 'flash_error');
@@ -47,6 +44,8 @@ class HolidaysController extends AppController {
             $this->Holiday->id = $id;
             $this->request->data['Holiday']['date'] = date('Y-m-d', strtotime($this->data['Holiday']['date']));
             if ($this->Holiday->save($this->request->data)) {
+                $this->loadModel('PendingReport');
+                $this->PendingReport->deleteAll(array('PendingReport.date' => $this->request->data['Holiday']['date']), false);
                 echo $this->Session->setFlash('Holiday Updated', 'flash_success');
             } else {
                 echo $this->Session->setFlash('Failed to Holiday', 'flash_error');
