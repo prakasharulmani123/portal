@@ -116,7 +116,7 @@
                                     $type = $compensation['Compensation']['type'];
                                     if ($type == 'L') {
                                        ?>
-                                 <span class="label label-success" <?php echo $compensation['Compensation']['id'] ?>><?php echo 'Leave'; ?></span>
+                                 <span class="" <?php echo $compensation['Compensation']['id'] ?>><?php echo 'Leave'; ?></span>
                                         
                                   <?php  
                                   
@@ -124,7 +124,7 @@
                                     elseif ($type == 'P'){ ?>
                                         
                                     
-                                 <span class="label label-success"  <?php echo $compensation['Compensation']['id'] ?>><?php echo 'Permission'; ?></span>
+                                 <span class=""  <?php echo $compensation['Compensation']['id'] ?>><?php echo 'Permission'; ?></span>
                                     <?php } ?>
                             </td>
 
