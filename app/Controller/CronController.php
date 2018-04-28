@@ -259,11 +259,14 @@ class CronController extends AppController {
                 if (empty($check_report_exists)):
 
                     $check_leave_exists = array();
-                    $check_sub_leave_exists = $this->SubLeave->find('first', array('conditions' => array('SubLeave.date' => $check_day)));
+                    $check_all_sub_leave_exists = $this->SubLeave->find('all', array('conditions' => array('SubLeave.date' => $check_day)));
 
-                    if (!empty($check_sub_leave_exists)) {
-                        if ($check_sub_leave_exists['Leave']['approved'] != 2 && $check_sub_leave_exists['Leave']['user_id'] == $user['User']['id']) {
-                            $check_leave_exists = $check_sub_leave_exists['Leave'];
+                    if (!empty($check_all_sub_leave_exists)) {
+                        foreach ($check_all_sub_leave_exists as $check_sub_leave_exists) {
+                            if ($check_sub_leave_exists['Leave']['approved'] != 2 && $check_sub_leave_exists['Leave']['user_id'] == $user['User']['id']) {
+                                $check_leave_exists = $check_sub_leave_exists['Leave'];
+                                break;
+                            }
                         }
                     }
 
