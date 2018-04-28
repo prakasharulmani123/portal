@@ -236,7 +236,7 @@ class CronController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function add_pending_report_automatically() {
-        $check_day =date('Y-m-d', strtotime('-1 days'));
+        $check_day = date('Y-m-d', strtotime('-1 days'));
 
         if (date('D', strtotime($check_day)) != 'Sun') {
             $this->loadModel('User');
@@ -260,19 +260,18 @@ class CronController extends AppController {
 
                     $check_leave_exists = array();
                     $check_sub_leave_exists = $this->SubLeave->find('first', array('conditions' => array('SubLeave.date' => $check_day)));
-                   
+
                     if (!empty($check_sub_leave_exists)) {
                         if ($check_sub_leave_exists['Leave']['approved'] != 2 && $check_sub_leave_exists['Leave']['user_id'] == $user['User']['id']) {
                             $check_leave_exists = $check_sub_leave_exists['Leave'];
                         }
                     }
-                   
 
                     /* $check_permission_exists = $this->Permission->find('first', array('conditions'=>array('Permission.user_id'=>$user['User']['id'],'Permission.date'=>$check_day, 'Permission.approved !='=>2))); */
                     $check_holiday_exists = $this->Holiday->find('first', array('conditions' => array('Holiday.date' => $check_day)));
                     $check_pending_report_exists = $this->PendingReport->find('first', array('conditions' => array('PendingReport.user_id' => $user['User']['id'], 'PendingReport.date' => $check_day, 'PendingReport.status !=' => 2)));
-                    $entry_exists = $this->Entry->find('first', array('conditions' => array('Entry.user_id' => $user['User']['id'], 'Entry.date' => $check_day,'Entry.time_out' => '0000-00-00 00:00:00')));
-                    if (empty($check_leave_exists) && /* empty($check_permission_exists) && */empty($check_holiday_exists) && empty($check_pending_report_exists) && !empty($entry_exists)):
+
+                    if (empty($check_leave_exists) && /* empty($check_permission_exists) && */empty($check_holiday_exists) && empty($check_pending_report_exists)):
                         $add_pending_report = array();
 
                         $add_pending_report['PendingReport']['user_id'] = $user['User']['id'];
@@ -280,9 +279,9 @@ class CronController extends AppController {
                         $add_pending_report['PendingReport']['status'] = 0;
 
 
-                       
+                        $entry_exists = $this->Entry->find('first', array('conditions' => array('Entry.user_id' => $user['User']['id'], 'Entry.date' => $check_day)));
 
-//                        if (!empty($entry_exists)) {
+                        if (!empty($entry_exists)) {
 
                             $org_time_in_hour = date('H', strtotime($entry_exists['Entry']['time_in']));
                             $time_in_hour = date('H', strtotime($entry_exists['Entry']['time_in']));
@@ -328,11 +327,11 @@ class CronController extends AppController {
 
                             $time_in_minute = $minute_part_one . $minute_part_two;
 
-                           
+                            $start_time = date('Y-m-d H:i:s', strtotime($check_day . ' ' . $time_in_hour . ':' . $time_in_minute));
 //							$start_time = date('Y-m-d H:i:s', strtotime($check_day.' '.$org_time_in_hour.':'.$time_in_minute));
                             $add_pending_report['PendingReport']['start_time'] = $start_time;
                             $add_pending_report['PendingReport']['reason'] = 'Entry created on ' . $start_time . '. But Daily Status Report not sent.';
-//                        }
+                        }
 
                         $this->PendingReport->saveAll($add_pending_report);
                     endif;
