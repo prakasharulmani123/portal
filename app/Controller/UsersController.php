@@ -231,26 +231,29 @@ class UsersController extends AppController {
 
             //casual leave set
             date('d', strtotime($this->data['User']['joined_on'])) > 15 ? $casual_leave = 12 - date('m', strtotime($this->data['User']['joined_on'])) : $casual_leave = 12 - (date('m', strtotime($this->data['User']['joined_on'])) - 1);
+           if($employee_type == 'T'):
+                 $casual_leave= '0';
+             endif;
             $this->request->data['User']['casual_leave'] = $casual_leave;
 
             //check and upload images
-            $this->Img = $this->Components->load('Img');
-            if ($this->request->data['User']['upload']['name']) {
-                $image_information = pathinfo(str_replace(' ', '_', $this->request->data['User']['upload']['name']));
-                $newName = $image_information['filename'] . '_' . time();
-                $ext = $this->Img->ext($this->request->data['User']['upload']['name']);
-                $origFile = $newName . '.' . $ext;
-                $targetdir = WWW_ROOT . 'img/users/original';
-                $upload = $this->Img->upload($this->request->data['User']['upload']['tmp_name'], $targetdir, $origFile);
-                if ($upload == 'Success') {
-                    $this->Img->resampleGD($targetdir . DS . $origFile, WWW_ROOT . 'img/users/large/', $origFile, 800, 800, 1, 0);
-                    $this->Img->resampleGD($targetdir . DS . $origFile, WWW_ROOT . 'img/users/medium/', $origFile, 288, 155, 1, 0);
-                    $this->Img->resampleGD($targetdir . DS . $origFile, WWW_ROOT . 'img/users/small/', $origFile, 180, 180, 1, 0);
-                    $this->request->data['User']['photo'] = $origFile;
-                } else {
-                    $this->request->data['User']['photo'] = '';
-                }
-            }
+//            $this->Img = $this->Components->load('Img');
+//            if ($this->request->data['User']['upload']['name']) {
+//                $image_information = pathinfo(str_replace(' ', '_', $this->request->data['User']['upload']['name']));
+//                $newName = $image_information['filename'] . '_' . time();
+//                $ext = $this->Img->ext($this->request->data['User']['upload']['name']);
+//                $origFile = $newName . '.' . $ext;
+//                $targetdir = WWW_ROOT . 'img/users/original';
+//                $upload = $this->Img->upload($this->request->data['User']['upload']['tmp_name'], $targetdir, $origFile);
+//                if ($upload == 'Success') {
+//                    $this->Img->resampleGD($targetdir . DS . $origFile, WWW_ROOT . 'img/users/large/', $origFile, 800, 800, 1, 0);
+//                    $this->Img->resampleGD($targetdir . DS . $origFile, WWW_ROOT . 'img/users/medium/', $origFile, 288, 155, 1, 0);
+//                    $this->Img->resampleGD($targetdir . DS . $origFile, WWW_ROOT . 'img/users/small/', $origFile, 180, 180, 1, 0);
+//                    $this->request->data['User']['photo'] = $origFile;
+//                } else {
+//                    $this->request->data['User']['photo'] = '';
+//                }
+//            }
             //end
 
             $password = $this->randomPassword();
@@ -259,7 +262,7 @@ class UsersController extends AppController {
             $this->request->data['User']['joined_on'] = date('Y-m-d', strtotime($this->data['User']['joined_on']));
             $this->request->data['User']['timings'] = '{"office_hours":"08:10:00","total_hours_in_office":"09:40:00","office_start_time":"09:30:00","office_end_time":"19:10:00","excuse_time":"10:05:00","permission_start_time":"10:30:00","permission_max_time":"11:30:00","half_day_excuse_time":"11:45:00","half_day_grace_time":"00:15:00","late_entry_end_time":"19:40:00","permission_hours":"02:00:00","report_send_grace_time":"00:10:00","permission_back_time":"06:10:00"}';
             if ($this->User->save($this->request->data)) {
-                $this->user_account_activation_mail($this->User->getLastInsertId(), $password);
+//                $this->user_account_activation_mail($this->User->getLastInsertId(), $password);
                 $this->Session->setFlash('Employee Added Sucessfully', 'flash_success');
                 return $this->redirect('/admin/users/add');
             } else {

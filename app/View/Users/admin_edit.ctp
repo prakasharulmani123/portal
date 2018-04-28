@@ -1,4 +1,22 @@
 <script>
+
+
+$(document).ready(function(){
+$('#UserEmployeeType').on("change",function() {
+var id = $(this).val();
+if(id=='P'){
+var joindate = $("#UserJoinedOn").val();
+  var from = joindate.split("-");
+var casual = (from[0] > 15) ? 12 - from[1]  : 12 - (from[1] - 1);
+var casualleave = $("#UserCasualLeave").val(casual);
+}else{
+var casualleave = $("#UserCasualLeave").val(0);
+}
+	
+	});
+});
+
+
 $(function() {
 	$("#UserJoinedOn").datepicker({
 		dateFormat: 'dd-mm-yy',
