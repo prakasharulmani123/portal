@@ -155,7 +155,14 @@ if ($all['user_id'] == 'all') {
                                         <div class="wBlock blue auto space">
                                             <div class="dSpace">
                                                 <h3>Remaining <br />Casual Days</h3>
-                                                <span class="number"><?php echo ($user_casual_leave - $casual_leave_per_year) <= 0 ? 0 : $user_casual_leave - $casual_leave_per_year; ?></span>                                                  
+                                                <span class="number"><?php
+                    if( $sel_user['User']['employee_type']=='T'){
+                                  echo '0';
+                                  }else{
+                   echo ($user_casual_leave - $casual_leave_per_year) <= 0 ? 0 : $user_casual_leave - $casual_leave_per_year;
+                  }
+                   ?>
+                  </span>                                                  
                                             </div>
 
                                         </div>

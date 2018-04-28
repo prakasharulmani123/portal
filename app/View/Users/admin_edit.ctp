@@ -3,11 +3,11 @@
 
 $(document).ready(function(){
 $('#UserEmployeeType').on("change",function() {
-var id = $(this).val();
-if(id=='P'){
+var type = $(this).val();
+if(type=='P'){
 var joindate = $("#UserJoinedOn").val();
-  var from = joindate.split("-");
-var casual = (from[0] > 15) ? 12 - from[1]  : 12 - (from[1] - 1);
+  var splitdate = joindate.split("-");
+var casual = (splitdate[0] > 15) ? 12 - splitdate[1]  : 12 - (splitdate[1] - 1);
 var casualleave = $("#UserCasualLeave").val(casual);
 }else{
 var casualleave = $("#UserCasualLeave").val(0);
@@ -19,10 +19,26 @@ var casualleave = $("#UserCasualLeave").val(0);
 
 $(function() {
 	$("#UserJoinedOn").datepicker({
+
 		dateFormat: 'dd-mm-yy',
 		altFormat: 'yy-mm-dd',
 		changeMonth: true,
-		changeYear: true
+		changeYear: true,
+ onSelect: function() {
+var type = $("#UserEmployeeType").val();
+    var date =$('#UserJoinedOn').datepicker( "getDate" );
+var dateno = date.getDate();
+var monthno = date.getMonth();
+var month= monthno + 1;
+if(type=='P'){
+var casual = (dateno > 15) ? 12 - month  : 12 - (month - 1);
+var casualleave = $("#UserCasualLeave").val(casual);
+}else{
+var casualleave = $("#UserCasualLeave").val(0);
+}
+
+  }
+
 		});
 	$("#UserDateOfBirth").datepicker({
 		dateFormat: 'dd-mm-yy',
