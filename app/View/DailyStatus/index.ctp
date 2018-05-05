@@ -115,7 +115,23 @@ background-image: none;
 
 			
 			$( "#DailyStatusProjectname" ).autocomplete({
-				source: projectlist
+				source: projectlist,
+                select: function (event, ui) {
+                    var value = ui.item.value;
+
+                    $.ajax({
+                        url: BaseURL + "/dailystatus/get_category",
+                        type: 'POST',
+                        data: {
+                            'value': value
+                        },
+                        success: function (val) {
+                            if(val){
+                                $('#DailyStatusCategoryId').val(val).trigger('change');
+                            }
+                        }
+                    });
+                }
 			});
 		}
 	});
@@ -305,10 +321,7 @@ background-image: none;
             comments.setAttribute("class", "none");
 
             document.getElementById('display-lunch').style.display = 'block';
-            document.getElementById('display-comment').style.display = 'none';
-
-            document.getElementById('display-upper-block').style.display = 'none';
-            document.getElementById('display-lower-block').style.display = 'none';
+            $('.except-rows').addClass('hide');
 
             if (id == 24) {
                 $.ajax({
@@ -355,10 +368,7 @@ background-image: none;
             comments.setAttribute("class", "validate[required]");
 
             document.getElementById('display-lunch').style.display = 'none';
-            document.getElementById('display-comment').style.display = 'block';
-
-            document.getElementById('display-upper-block').style.display = 'block';
-            document.getElementById('display-lower-block').style.display = 'block';
+            $('.except-rows').removeClass('hide');
         }
     }
 
@@ -742,6 +752,14 @@ $mer = array('am' => 'am', 'pm' => 'pm');
                     $all_category[$category['Category']['id']] = $category['Category']['category'];
                 }
                 ?>
+
+                <div class="row-form except-rows">
+                    <div class="span3">Project Name*:</div>
+                    <div class="span6">
+                        <?php echo $this->Form->input('projectname', array('class' => 'validate[required]', 'label' => false)); ?>
+                    </div>
+                    <div class="clear"></div>
+                </div>
                 <div class="row-form">
                     <div class="span3">Category*:</div>
                     <div class="span4">
@@ -753,22 +771,12 @@ $mer = array('am' => 'am', 'pm' => 'pm');
                     <?php echo $this->Html->image('loaders/s_loader.gif', array('id' => 'permission_loader', 'style' => 'display: none;margin: 6px 4px 7px;padding-left: 6px;')); ?>
                     <div class="clear"></div>
                 </div>
-
-                <div id="display-upper-block" style="display:block; border-bottom: 1px solid #DDDDDD;">
-                    <div class="row-form">
-                        <div class="span3">Project Name*:</div>
-                        <div class="span6">
-                            <?php echo $this->Form->input('projectname', array('class' => 'validate[required]', 'label' => false)); ?>
-                        </div>
-                        <div class="clear"></div>
+                <div class="row-form except-rows">
+                    <div class="span3">Kind of works*:</div>
+                    <div class="span6">
+                        <?php echo $this->Form->input('work_id', array('type' => 'text', 'class' => 'validate[required]', 'label' => false)); ?>
                     </div>
-                    <div class="row-form">
-                        <div class="span3">Kind of works*:</div>
-                        <div class="span6">
-                            <?php echo $this->Form->input('work_id', array('type' => 'text', 'class' => 'validate[required]', 'label' => false)); ?>
-                        </div>
-                        <div class="clear"></div>
-                    </div>
+                    <div class="clear"></div>
                 </div>
 
                 <?php
@@ -922,7 +930,7 @@ $mer = array('am' => 'am', 'pm' => 'pm');
                 </div>
 
                 <div id="display-lower-block" style="display:block;">
-                    <div class="row-form">
+                    <div class="row-form except-rows">
                         <div class="span3">Status*:</div>
                         <?php $status = array('1' => 'progress', '2' => 'completed', '3' => 'in-completed', '4' => 'cancelled'); ?>
                         <div class="span3">
@@ -931,7 +939,7 @@ $mer = array('am' => 'am', 'pm' => 'pm');
                         <div class="clear"></div>
                     </div>
 
-                    <div class="row-form">
+                    <div class="row-form except-rows">
                         <div class="span3">Comments*:</div>
                         <div class="span9">
                             <?php echo $this->Form->input('comments', array('class' => 'validate[required]', 'label' => false)); ?>

@@ -1141,6 +1141,29 @@ class DailystatusController extends AppController {
         exit;
     }
 
+    public function get_category()
+    {
+        $cat_id = '';
+
+        $this->loadModel('Project');
+        $project = $this->Project->find('first', array(
+            'conditions' => array(
+                'projectname' => $this->request->data['value'],
+            )));
+
+        if(isset($project['Project']['id'])){
+            $dailystatus = $this->DailyStatus->find('first', array(
+                'conditions' => array(
+                    'project_id' => $project['Project']['id']
+                )
+            ));
+
+            $cat_id = @$dailystatus['DailyStatus']['category_id'];
+        }
+
+        echo $cat_id;
+        exit;
+    }
 }
 
 ?>
