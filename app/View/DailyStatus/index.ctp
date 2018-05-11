@@ -1032,8 +1032,9 @@ $mer = array('am' => 'am', 'pm' => 'pm');
                             <th width="14%">Work</th>
                             <th width="10%">Start Time</th>
                             <th width="10%">End Time</th>
+                            <th width="7%">Elapsed</th>
                             <th width="5%">Status</th>
-                            <th width="22%">Comments</th>
+                            <th width="15%">Comments</th>
                             <th width="9%">Action</th>
                             </thead>
                             <tbody>
@@ -1073,6 +1074,15 @@ $mer = array('am' => 'am', 'pm' => 'pm');
                             <td id="td_work_id_<?php echo $report['TempReport']['id'] ?>"><?php echo htmlspecialchars_decode($report['TempReport']['work_id'])//echo $work['Work']['work']  ?></td>
                             <td><?php echo date('g:i A', strtotime(strval(str_replace('.', ':', $report['TempReport']['start_time'])))) ?></td>
                             <td><?php echo date('g:i A', strtotime(strval(str_replace('.', ':', $report['TempReport']['end_time'])))) ?></td>
+                            <td>
+                                <?php
+                                $datetime1 = new DateTime($report['TempReport']['start_time']);
+                                $datetime2 = new DateTime($report['TempReport']['end_time']);
+                                $interval = $datetime1->diff($datetime2);
+                                $hours = ($interval->format('%h')*60)+($interval->format('%i'));
+                                echo gmdate("H:i", ($hours* 60));
+                                ?>
+                            </td>
                             <td><?php echo $sts ?></td>
                             <td id="td_comments_<?php echo $report['TempReport']['id'] ?>"><?php echo htmlspecialchars_decode($report['TempReport']['comments']) ?></td>
                             <td>
