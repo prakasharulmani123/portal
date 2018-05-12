@@ -263,22 +263,20 @@ class EntriesController extends AppController {
     }
 
     public function check_permission_saturday() {
-        $active_saturday = '';
         $current_day = date('d');
         $current_month = date('F Y');
         $this->loadModel('Settings');
-        $offical_permission = date('d', strtotime("second sat of {$current_month}"));
-        if ($current_day == $offical_permission) {
-            $second_sat = '2nd SAT';
-            $active_saturday = $this->Settings->query("SELECT value from settings WHERE key_value ='$second_sat' AND value = 1");
-        } else {
-            $offical_permission = date('d', strtotime("fourth sat of {$current_month}"));
 
-            if ($current_day == $offical_permission) {
-                $fourth_sat = '4th SAT';
-                $active_saturday = $this->Settings->query("SELECT value from settings WHERE key_value ='$fourth_sat'AND value = 1");
-            }
-        }
+        $offical_permission_days = [
+            '1st SAT' => date('d', strtotime("first sat of {$current_month}")),
+            '2nd SAT' => date('d', strtotime("second sat of {$current_month}")),
+            '3rd SAT' => date('d', strtotime("third sat of {$current_month}")),
+            '4th SAT' => date('d', strtotime("fourth sat of {$current_month}")),
+        ];
+
+        $is_today = array_search($current_day, $offical_permission_days);
+        $active_saturday = $is_today ? $this->Settings->query("SELECT value from settings WHERE key_value ='$is_today' AND value = 1") : '';
+
         return $active_saturday;
     }
 

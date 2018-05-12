@@ -585,6 +585,9 @@ class CronController extends AppController {
             $this->Settings->updateAll(
                     array('Settings.value' => 1), array('Settings.key_value' => ['2nd SAT','4th SAT'])
             );
+            $this->Settings->updateAll(
+                    array('Settings.value' => 0), array('Settings.key_value' => ['1st SAT','3rd SAT'])
+            );
         }
     }
 

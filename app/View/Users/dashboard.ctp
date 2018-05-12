@@ -51,17 +51,9 @@
         <?php
         $is_permission_saturday = $this->requestAction('entries/check_permission_saturday');
         if($is_permission_saturday){
-            $current_day = date('d');
-            $current_month = date('F Y');
-            $offical_permissions[] = date('d', strtotime("second sat of {$current_month}"));
-            $offical_permissions[]= date('d', strtotime("fourth sat of {$current_month}"));
-
-            $key = array_search ($current_day, $offical_permissions);
-
-            $day = ($key == 0) ? 'second' : 'fourth';
             ?>
             <div class="center" style="text-align: center; color: red;">
-                <h4 class="blink_me">Hurrah! Today is <?= $day ?> Saturday !!!</h4>
+                <h4 class="blink_me">Hurrah! Today is Official Permission !!!</h4>
             </div>
         <?php } ?>
         <div class="span12">

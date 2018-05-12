@@ -23,7 +23,7 @@ $(document).ready(function(){
                     <thead>
                         <tr>
                             <th width="2%">No</th>
-                            <th width="40%">Key</th>
+                            <th width="40%">Name</th>
                             <th width="6%">Active</th>
                         </tr>
                     </thead>
@@ -31,7 +31,7 @@ $(document).ready(function(){
                          <?php $i=1; foreach ($settings as $setting): ?>
             <tr>
               <td><?php echo h($i); ?></td>
-              <td><?php echo h($setting['Setting']['key_value']); ?></td>
+              <td><?php echo h($setting['Setting']['description']); ?></td>
               <td><?php echo $this->Html->link($this->Html->image('icon_' . $setting['Setting']['value'] . '.png'), array('controller' => 'settings', 'action' => 'switch', 'value', $setting['Setting']['id']), array('class' => 'status', 'escape' => false)); ?></td>
             </tr>
             <?php $i++; endforeach; ?>
