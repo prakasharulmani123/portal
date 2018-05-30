@@ -110,6 +110,9 @@ function late_sent(sts, id){
       <div class="head">
         <div class="isw-archive"></div>
         <h1>Late Entries</h1>
+            <ul class="buttons">
+                <li><a class="check-access" href="<?php echo $this->base ?>/admin/late_entries/add" title="Add Late Entry Employees"><span class="isw-plus"></span></a></li>
+            </ul>
         <div class="clear"></div>
       </div>
       <div class="block-fluid table-sorting">
@@ -170,7 +173,7 @@ function late_sent(sts, id){
                     <li><a id="a-late-decline-<?php echo $late_entry['LateEntry']['id']?>" href="javascript:late_sent('decline', <?php echo $late_entry['LateEntry']['id']?>)" status="2">Declined</a></li>
                 </ul>
                 </div>
-				</tr>
+                </td></tr>
             <?php $i++; endforeach; ?>
           </tbody>
         </table>

@@ -358,6 +358,33 @@ class LateEntriesController extends AppController {
         $this->set('users', $this->requestAction('users/get_all_users'));
         $this->set(compact('late_entries'));
     }
+    
+////////////////////////////////////////////////////////////////////////////////
+
+    
+    public function admin_add() {
+        $this->layout = "admin-inner";
+        if ($this->request->is('put') || $this->request->is('post')) {
+           
+            if ($this->data['LateEntry']['start']['meridian'] == 'pm') {
+                if ($this->data['LateEntry']['start']['hours'] != '12') {
+                    $start_time = date('Y-m-d', strtotime($this->data['LateEntry']['date'])) . ' ' . ($this->data['LateEntry']['start']['hours'] + 12) . ':' . $this->data['LateEntry']['start']['minutes'] . ':' . '00';
+                } else {
+                    $start_time = date('Y-m-d', strtotime($this->data['LateEntry']['date'])) . ' ' . ($this->data['LateEntry']['start']['hours']) . ':' . $this->data['LateEntry']['start']['minutes'] . ':' . '00';
+                }
+            } else {
+                $start_time = date('Y-m-d', strtotime($this->data['LateEntry']['date'])) . ' ' . ($this->data['LateEntry']['start']['hours']) . ':' . $this->data['LateEntry']['start']['minutes'] . ':' . '00';
+            }
+            foreach ($this->data['LateEntry']['user'] as $user_id) {
+                $insert_late_entries = array('LateEntry' => array('user_id' => $user_id,
+                        'date' => date('Y-m-d', strtotime($this->data['LateEntry']['date'])),
+                        'approved' => 1,
+                        'created' => $start_time));
+                $this->LateEntry->saveAll($insert_late_entries);
+            }
+            return $this->redirect('/admin/late_entries');
+        }
+    }
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -38,7 +38,7 @@ class PendingReportsController extends AppController {
         $this->layout = "admin-inner";
         $this->set('open2', 'active');
         if ($this->request->is('put') || $this->request->is('post')) {
-
+          
             if ($this->data['PendingReport']['start']['meridian'] == 'pm') {
                 if ($this->data['PendingReport']['start']['hours'] != '12') {
                     $this->request->data['PendingReport']['start_time'] = date('Y-m-d', strtotime($this->data['PendingReport']['date'])) . ' ' . ($this->data['PendingReport']['start']['hours'] + 12) . ':' . $this->data['PendingReport']['start']['minutes'] . ':' . '00';

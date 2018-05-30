@@ -124,8 +124,7 @@ class UsersController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_employee($status = NULL) {
-        $this->layout = "admin-inner";
-//       
+        $this->layout = "admin-inner";      
         $this->set('users', $this->User->find('all', array('conditions' => array('User.role' => 'user', 'User.active' => $status))));
         $admins = $this->User->find('first', array('conditions' => array('User.role' => 'admin', 'User.active' => $status)));
         $super_users = $this->User->find('list', array('conditions' => array('User.super_user' => 1, 'User.active' => $status)));
@@ -133,6 +132,14 @@ class UsersController extends AppController {
         $this->set('admins', $admins);
         $this->set('status', $status);
         $this->set('cpage', 'employee');
+        $this->admin_login_us_user();
+    }
+    public function admin_login_us_user()
+    {
+//    $this->Session->read('User.id', $user['User']['id']);
+//    $this->requestAction('/users/logout');
+   
+    
     }
 
     public function employeelogin($user_id, $role = NULL) {

@@ -47,10 +47,16 @@
                 <font style="font-family: Verdana, Geneva, sans-serif; color:#666766; font-size:13px; line-height:21px">
                 <span style="text-align:left">
                 <?php echo $quote?><br />
-                Wish u many many Happy returns of day, have a every enjoyfull moment in your life, have delightfull every second of every minutes, enjoy a day with
-				happiness best luck for your brightness future.<br />
+                
+                <b> Wish you a very Happy Birthday! </b>
+                
+                May this day and the year to come bring you good health, happiness and loads of success. <br />
+                We send across our best wishes on behalf of team Sumanas on this very special day. <br />
 
-				best wishes for your enjoyful birthday.....<br />
+                May all your dreams and wishes come true! <br />
+
+                Have a fabulous birthday! <br />
+                
 				</span>
                 <br /><br />
                 

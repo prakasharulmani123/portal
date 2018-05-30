@@ -51,19 +51,19 @@
 				$pos = strpos($birthday_user,",");
 				$age = substr($birthday_user,($pos+1),3);
 				
-				if($user['User']['sex'] == 'M'){
-					$ref = 'Mr.';
-				}
-				elseif($user['User']['sex'] == 'F'){
-					if($user['User']['spousename'] == ''){
-						$ref = 'Miss.';
-					}
-					else{
-						$ref = 'Mrs.';
-					}
-				}
+//				if($user['User']['sex'] == 'M'){
+//					$ref = 'Mr.';
+//				}
+//				elseif($user['User']['sex'] == 'F'){
+//					if($user['User']['spousename'] == ''){
+//						$ref = 'Miss.';
+//					}
+//					else{
+//						$ref = 'Mrs.';
+//					}
+//				}
 				?>
-                <span style="text-align:left"><?php echo $ref.$user['User']['employee_name']?> is <?php echo $age?> from tomorrow (<?php echo date('d-m-Y', strtotime('+1 days'))?>)<br />Let we ready to celebrate the birthday !!!!!</span>
+                <span style="text-align:left"><?php echo $user['User']['employee_name']?> is <?php echo $age?> from tomorrow (<?php echo date('d-m-Y', strtotime('+1 days'))?>)<br />Let we ready to celebrate the birthday !!!!!</span>
                 <br /><br />
                 
                 -- <br />
