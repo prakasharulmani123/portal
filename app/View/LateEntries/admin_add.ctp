@@ -72,17 +72,12 @@ $('#userlist').multiSelect({
              <?php /*?><?php echo $this->Form->input('category_id', array('empty' => true,'label'=>false)); ?><?php */?>
                  <div class="row-fluid">
                        <div class="span6">
-                         <table cellpadding="0" cellspacing="0" width="100%" class="table">
-                            <tbody>
-                            <tr>
-                            <td><select id='userlist' multiple='multiple' name="data[LateEntry][user][]">
-                            <?php $users = $this->requestAction('users/get_all_users'); $i = 0;?>
-                            <?php foreach($users as $user):?>
-                              <option value='<?php  echo $user['User']['id']?>' name='data[LateEntry][user][<?php echo $i?>]'><?php  echo $user['User']['employee_name']?></option>
-                            <?php $i++; endforeach;?>
-                            </select></td>
-                            </tr>
-                         </tbody></table>            
+                           <select id='userlist' multiple='multiple' name="data[LateEntry][user][]">
+                               <?php $users = $this->requestAction('users/get_all_users'); $i = 0;?>
+                               <?php foreach($users as $user):?>
+                                   <option value='<?php  echo $user['User']['id']?>' name='data[LateEntry][user][<?php echo $i?>]'><?php  echo $user['User']['employee_name']?></option>
+                                   <?php $i++; endforeach;?>
+                           </select>
            </div>
           </div>
 </div>
