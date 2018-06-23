@@ -1,9 +1,12 @@
 <?php
-class CronController extends AppController {
+
+class CronController extends AppController
+{
 
     public $components = array('Email');
 
-    public function beforeFilter() {
+    public function beforeFilter()
+    {
         parent::beforeFilter();
         $this->layout = null;
     }
@@ -31,7 +34,8 @@ class CronController extends AppController {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-    public function cron_test() {
+    public function cron_test()
+    {
         $this->Email->to = 'prakash.paramanandam@arkinfotec.com';
         $this->Email->subject = 'Portal : Cron test ';
         $this->Email->replyTo = 'admin@arkinfotec.com';
@@ -42,7 +46,8 @@ class CronController extends AppController {
     }
 
     //runs daily 
-    public function birthday_email() {
+    public function birthday_email()
+    {
 //        $this->Email->to = 'prakash.paramanandam@arkinfotec.com';
 //        $this->Email->subject = 'Portal : Cron test ';
 //        $this->Email->replyTo = 'admin@arkinfotec.com';
@@ -72,20 +77,20 @@ class CronController extends AppController {
 
         //email notification before the birthday
         if ($birthday_users) {
-            foreach ($birthday_users as $key => $birthday_user) {               
+            foreach ($birthday_users as $key => $birthday_user) {
                 $user = $this->User->find('first', array('conditions' => array('User.id' => $key)));
                 $birthday_mail_notification = $this->notification_content();
 
                 if (isset($_GET['debug'])) {
                     $email = new CakeEmail('gmail');
                     $email
-                            ->to('shamini@arkinfotec.com')
-                            ->subject('Birthday Reminder : ' . $user['User']['employee_name'])                            ->template('birthday_notification')
-                            ->emailFormat('html')
-                            ->viewVars(['birthday_user' => $birthday_user])
-                            ->viewVars(['user' => $user])
-                            ->viewVars(['mail_con_notification' => $birthday_mail_notification])
-                            ->send();
+                        ->to('shamini@arkinfotec.com')
+                        ->subject('Birthday Reminder : ' . $user['User']['employee_name'])->template('birthday_notification')
+                        ->emailFormat('html')
+                        ->viewVars(['birthday_user' => $birthday_user])
+                        ->viewVars(['user' => $user])
+                        ->viewVars(['mail_con_notification' => $birthday_mail_notification])
+                        ->send();
                 } else {
 //				$this->Email->to = array('prakash.paramanandam@arkinfotec.com');
                     $this->Email->to = $email_users;
@@ -131,7 +136,7 @@ class CronController extends AppController {
                     $birthday_mail_con = $this->mail_content();
                     if (isset($_GET['debug'])) {
                         $email = new CakeEmail('gmail');
-                    $email
+                        $email
                             ->to('shamini@arkinfotec.com')
                             ->subject('Happy Birthday : ' . $user['User']['employee_name'])
                             ->template('birthday_mail')
@@ -183,7 +188,8 @@ class CronController extends AppController {
         }
     }
 
-    public function update_user_casual_leave() {
+    public function update_user_casual_leave()
+    {
         $this->loadModel('User');
         $users = $this->User->find('all', array('conditions' => array('User.active' => 1, 'User.role' => 'user')));
 
@@ -207,7 +213,8 @@ class CronController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 //not using - to be confirm
 
-    public function check_belated_pending_reports() {
+    public function check_belated_pending_reports()
+    {
         $this->loadModel('PendingReport');
         $this->loadModel('DailyStatus');
         $this->loadModel('Leave');
@@ -230,12 +237,12 @@ class CronController extends AppController {
                 if (empty($check_report)) {
 
                     $insert_leave = array('Leave' => array('user_id' => $user['User']['id'],
-                            'request' => 'past',
-                            'date' => $check_date,
-                            'days' => 1,
-                            'reason' => 'Pending Report Delayed',
-                            'approved' => 1,
-                            'remarks' => 'Pending Report Delayed'));
+                        'request' => 'past',
+                        'date' => $check_date,
+                        'days' => 1,
+                        'reason' => 'Pending Report Delayed',
+                        'approved' => 1,
+                        'remarks' => 'Pending Report Delayed'));
 
                     $this->Leave->save($insert_leave);
                     $leave_id = $this->Leave->getLastInsertId();
@@ -262,7 +269,8 @@ class CronController extends AppController {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-    public function add_pending_report_automatically() {
+    public function add_pending_report_automatically()
+    {
         $check_day = date('Y-m-d', strtotime('-1 days'));
 
         if (date('D', strtotime($check_day)) != 'Sun') {
@@ -301,7 +309,8 @@ class CronController extends AppController {
                     $check_holiday_exists = $this->Holiday->find('first', array('conditions' => array('Holiday.date' => $check_day)));
                     $check_pending_report_exists = $this->PendingReport->find('first', array('conditions' => array('PendingReport.user_id' => $user['User']['id'], 'PendingReport.date' => $check_day, 'PendingReport.status !=' => 2)));
 
-                    if (empty($check_leave_exists) && /* empty($check_permission_exists) && */empty($check_holiday_exists) && empty($check_pending_report_exists)):
+                    if (empty($check_leave_exists) && /* empty($check_permission_exists) && */
+                        empty($check_holiday_exists) && empty($check_pending_report_exists)):
                         $add_pending_report = array();
 
                         $add_pending_report['PendingReport']['user_id'] = $user['User']['id'];
@@ -373,7 +382,8 @@ class CronController extends AppController {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-    public function birth_day_quote() {
+    public function birth_day_quote()
+    {
         $quote = array();
 
         $quote[0] = "And in the end, it's not the years in your life that count. It's the life in your years.";
@@ -400,10 +410,12 @@ class CronController extends AppController {
 
 ///////////////////////////////////////////////////////////////////////////////
     //runs every week
-    public function db_backup() {
+    public function db_backup()
+    {
         $db = $this->requestAction('users/database_mysql_dump');
 
-        $fileName = $db['database'] . '-backup-' . /* date('Y-m-d') . */'.sql';
+        $fileName = $db['database'] . '-backup-' . /* date('Y-m-d') . */
+            '.sql';
         $fp = fopen(WWW_ROOT . "files/db_backup/" . $fileName, "wb");
         fwrite($fp, $db['content']);
         fclose($fp);
@@ -456,7 +468,8 @@ class CronController extends AppController {
             $this->Email->attachments = array(WWW_ROOT . 'files/db_backup/' . $fileName);
 
             $message = '<b>Portal</b><br><br>';
-            $message .= '<b>DB Backup : </b>' . $db['database'] . '-backup-' . /* date('Y-m-d') . */ '.sql' . ' <br><br>';
+            $message .= '<b>DB Backup : </b>' . $db['database'] . '-backup-' . /* date('Y-m-d') . */
+                '.sql' . ' <br><br>';
             $message .= '<b>Created : </b>' . date('Y-m-d h:i:a') . ' <br>';
 
             $this->Email->send($message);
@@ -468,7 +481,8 @@ class CronController extends AppController {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-    public function pending_reports_summary() {
+    public function pending_reports_summary()
+    {
         $this->loadModel('Leave');
         $this->loadModel('Permission');
         $this->loadModel('PendingReport');
@@ -532,7 +546,8 @@ class CronController extends AppController {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-    public function ip_checking() {
+    public function ip_checking()
+    {
         $this->loadModel('Entry');
         $entries = $this->Entry->find('all', array('conditions' => array('Entry.date' => date('Y-m-d', strtotime('-1 days')))));
         $wrong_ip_entries = array();
@@ -605,27 +620,30 @@ class CronController extends AppController {
         }
     }
 
-    public function settings_update() {
+    public function settings_update()
+    {
         $firstDay = date('d');
         if ($firstDay == '01') {
             $this->loadModel('Settings');
             $this->Settings->updateAll(
-                    array('Settings.value' => 1), array('Settings.key_value' => ['2nd SAT', '4th SAT'])
+                array('Settings.value' => 1), array('Settings.key_value' => ['2nd SAT', '4th SAT'])
             );
             $this->Settings->updateAll(
-                    array('Settings.value' => 0), array('Settings.key_value' => ['1st SAT', '3rd SAT'])
+                array('Settings.value' => 0), array('Settings.key_value' => ['1st SAT', '3rd SAT'])
             );
         }
     }
 
-    public function mail_content() {
+    public function mail_content()
+    {
         $this->loadModel('Settings');
         $val = $this->Settings->find('first', array('conditions' => array('Settings.key_value' => 'birthday_mail')));
         $birthday_mail_con = $val['Settings']['value'];
         return $birthday_mail_con;
     }
 
-    public function notification_content() {
+    public function notification_content()
+    {
         $this->loadModel('Settings');
         $val = $this->Settings->find('first', array('conditions' => array('Settings.key_value' => 'birthday_mail_notification')));
         $birthday_mail_notification = $val['Settings']['value'];
