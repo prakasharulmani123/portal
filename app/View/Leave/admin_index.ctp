@@ -3,7 +3,7 @@
         $("#LeaveFromDate").datepicker({
             dateFormat: 'dd-mm-yy',
             changeMonth: true,
-            changeYear: true
+            changeYear: true   
         });
         $("#LeaveToDate").datepicker({
             dateFormat: 'dd-mm-yy',
@@ -130,9 +130,9 @@
     <b><?php echo " Employee : " ?></b>
     <?php echo $this->Form->input('user_id', array('label' => false, 'div' => false, 'class' => 'form-control', 'empty' => 'All', 'options' => array($all_user), 'selected' => $name, 'style' => 'width:140px; margin-top:6px;')); ?>
     <b><?php echo " From : " ?></b>
-    <?php echo $this->Form->input('from_date', array('label' => false, 'div' => false, 'class' => 'form-control', 'value' => $from_date, 'style' => 'width:100px; margin-top:6px;')); ?>
+    <?php echo $this->Form->input('from_date', array('label' => false, 'autocomplete' => 'off','div' => false, 'class' => 'form-control', 'value' => $from_date, 'style' => 'width:100px; margin-top:6px;')); ?>
     <b><?php echo " To : " ?></b>
-    <?php echo $this->Form->input('to_date', array('label' => false, 'type' => 'text', 'div' => false, 'class' => 'form-control', 'value' => $to_date, 'style' => 'width:100px; margin-top:6px;')); ?>
+    <?php echo $this->Form->input('to_date', array('label' => false, 'autocomplete' => 'off','type' => 'text', 'div' => false, 'class' => 'form-control', 'value' => $to_date, 'style' => 'width:100px; margin-top:6px;')); ?>
     <b><?php echo " Status : " ?></b>
     <?php echo $this->Form->input('approved', array('label' => false, 'div' => false, 'class' => 'form-control', 'empty' => 'All', 'options' => array('0' => 'Pending', '1' => 'Approved', '2' => 'Declined'), 'selected' => $all['approved'], 'style' => 'width:100px; margin-top:6px;')); ?>
     <?php echo $this->Form->button('Search', array('class' => 'btn btn-default')); ?>

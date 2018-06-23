@@ -46,16 +46,9 @@
                 <td width="80%" align="left" valign="top"><font style="font-family: Georgia, 'Times New Roman', Times, serif; color:#010101; font-size:24px"><strong><em>Happy Birthday</em></strong></font><br /><br />
                 <font style="font-family: Verdana, Geneva, sans-serif; color:#666766; font-size:13px; line-height:21px">
                 <span style="text-align:left">
-                <?php echo $quote?><br />
+                <?php echo $quote ;?><br /> <br />
                 
-                <b> Wish you a very Happy Birthday! </b>
-                
-                May this day and the year to come bring you good health, happiness and loads of success. <br />
-                We send across our best wishes on behalf of team Sumanas on this very special day. <br />
-
-                May all your dreams and wishes come true! <br />
-
-                Have a fabulous birthday! <br />
+                <?php echo $mail_content ;?>
                 
 				</span>
                 <br /><br />

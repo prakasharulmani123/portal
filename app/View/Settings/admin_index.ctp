@@ -23,7 +23,8 @@ $(document).ready(function(){
                     <thead>
                         <tr>
                             <th width="2%">No</th>
-                            <th width="40%">Name</th>
+                            <th width="20%">Name</th>
+                            <th width="20%">Mail Content</th>
                             <th width="6%">Active</th>
                         </tr>
                     </thead>
@@ -31,9 +32,23 @@ $(document).ready(function(){
                          <?php $i=1; foreach ($settings as $setting): ?>
             <tr>
               <td><?php echo h($i); ?></td>
-              <td><?php echo h($setting['Setting']['description']); ?></td>
-              <td><?php echo $this->Html->link($this->Html->image('icon_' . $setting['Setting']['value'] . '.png'), array('controller' => 'settings', 'action' => 'switch', 'value', $setting['Setting']['id']), array('class' => 'status', 'escape' => false)); ?></td>
-            </tr>
+              <td id = "desc_data_<?php echo $setting['Setting']['id']?>"><?php echo h($setting['Setting']['description']); ?></td>
+              <td> <?php echo h($setting['Setting']['value']); ?> </td>
+              <td><?php
+                    if(($setting['Setting']['key_value'] == 'birthday_mail') || ($setting['Setting']['key_value'] == 'birthday_mail_notification'))
+                    {
+                     
+                    ?>
+                    <button class="btn btn-info btn-sm" onclick="location.href='/admin/settings/edit/<?php echo $setting['Setting']['key_value'] ?>'">
+                      Edit
+                    </button>
+                    <?php    
+                    }
+                    else{
+                        echo $this->Html->link($this->Html->image('icon_' . $setting['Setting']['value'] . '.png'), array('controller' => 'settings', 'action' => 'switch', 'value', $setting['Setting']['id']), array('class' => 'status', 'escape' => false));
+                        }
+        ?></td>            
+        </tr>
             <?php $i++; endforeach; ?>
                     </tbody>
                 </table>

@@ -1,5 +1,4 @@
 <?php
-
 class CronController extends AppController {
 
     public $components = array('Email');
@@ -44,7 +43,6 @@ class CronController extends AppController {
 
     //runs daily 
     public function birthday_email() {
-
 //        $this->Email->to = 'prakash.paramanandam@arkinfotec.com';
 //        $this->Email->subject = 'Portal : Cron test ';
 //        $this->Email->replyTo = 'admin@arkinfotec.com';
@@ -74,19 +72,33 @@ class CronController extends AppController {
 
         //email notification before the birthday
         if ($birthday_users) {
-            foreach ($birthday_users as $key => $birthday_user) {
+            foreach ($birthday_users as $key => $birthday_user) {               
                 $user = $this->User->find('first', array('conditions' => array('User.id' => $key)));
+                $birthday_mail_notification = $this->notification_content();
 
+                if (isset($_GET['debug'])) {
+                    $email = new CakeEmail('gmail');
+                    $email
+                            ->to('shamini@arkinfotec.com')
+                            ->subject('Birthday Reminder : ' . $user['User']['employee_name'])                            ->template('birthday_notification')
+                            ->emailFormat('html')
+                            ->viewVars(['birthday_user' => $birthday_user])
+                            ->viewVars(['user' => $user])
+                            ->viewVars(['mail_con_notification' => $birthday_mail_notification])
+                            ->send();
+                } else {
 //				$this->Email->to = array('prakash.paramanandam@arkinfotec.com');
-                $this->Email->to = $email_users;
-                $this->Email->subject = 'Birthday Reminder : ' . $user['User']['employee_name'];
-                $this->Email->replyTo = 'admin@arkinfotec.com';
-                $this->Email->from = 'admin@arkinfotec.com';
-                $this->Email->template = 'birthday_notification';
-                $this->Email->sendAs = 'html';
-                $this->set('birthday_user', $birthday_user);
-                $this->set('user', $user);
-                $this->Email->send();
+                    $this->Email->to = $email_users;
+                    $this->Email->subject = 'Birthday Reminder : ' . $user['User']['employee_name'];
+                    $this->Email->replyTo = 'admin@arkinfotec.com';
+                    $this->Email->from = 'admin@arkinfotec.com';
+                    $this->Email->template = 'birthday_notification';
+                    $this->Email->sendAs = 'html';
+                    $this->set('birthday_user', $birthday_user);
+                    $this->set('user', $user);
+                    $this->set('mail_con_notification', $birthday_mail_notification);
+                    $this->Email->send();
+                }
 
 //				echo 'before Birthday - '.$birthday_user.'-'.date('Y-m-d H-:i:s').'<br>';
             }
@@ -116,17 +128,33 @@ class CronController extends AppController {
 
                 if ($age > 17) {
                     $quote = $this->birth_day_quote();
+                    $birthday_mail_con = $this->mail_content();
+                    if (isset($_GET['debug'])) {
+                        $email = new CakeEmail('gmail');
+                    $email
+                            ->to('shamini@arkinfotec.com')
+                            ->subject('Happy Birthday : ' . $user['User']['employee_name'])
+                            ->template('birthday_mail')
+                            ->emailFormat('html')
+                            ->viewVars(['birthday_user' => $birthday_user])
+                            ->viewVars(['user' => $user])
+                            ->viewVars(['quote' => $quote])
+                            ->viewVars(['mail_content' => $birthday_mail_con])
+                            ->send();
+                    } else {
 //				    $this->Email->to = array('prakash.paramanandam@arkinfotec.com');
-                    $this->Email->to = $user['User']['email'];
-                    $this->Email->subject = 'Happy Birthday : ' . $user['User']['employee_name'];
-                    $this->Email->replyTo = 'admin@arkinfotec.com';
-                    $this->Email->from = 'admin@arkinfotec.com';
-                    $this->Email->template = 'birthday_mail';
-                    $this->Email->sendAs = 'html';
-                    $this->set('birthday_user', $birthday_user);
-                    $this->set('user', $user);
-                    $this->set('quote', $quote);
-                    $this->Email->send();
+                        $this->Email->to = $user['User']['email'];
+                        $this->Email->subject = 'Happy Birthday : ' . $user['User']['employee_name'];
+                        $this->Email->replyTo = 'admin@arkinfotec.com';
+                        $this->Email->from = 'admin@arkinfotec.com';
+                        $this->Email->template = 'birthday_mail';
+                        $this->Email->sendAs = 'html';
+                        $this->set('birthday_user', $birthday_user);
+                        $this->set('user', $user);
+                        $this->set('quote', $quote);
+                        $this->set('mail_content', $birthday_mail_con);
+                        $this->Email->send();
+                    }
 
 //				    echo 'Happy Birthday - '.$birthday_user.'-'.date('Y-m-d H-:i:s').'<br>';
                 }
@@ -155,8 +183,7 @@ class CronController extends AppController {
         }
     }
 
-    public function update_user_casual_leave()
-    {
+    public function update_user_casual_leave() {
         $this->loadModel('User');
         $users = $this->User->find('all', array('conditions' => array('User.active' => 1, 'User.role' => 'user')));
 
@@ -165,9 +192,9 @@ class CronController extends AppController {
         echo '<pre>';
         foreach ($users as $user) {
             $old_casual = json_decode($user['User']['old_casual_leave'], true) ?: [];
-            if(date('Y', strtotime($user['User']['joined_on'])) == $prev_year){
+            if (date('Y', strtotime($user['User']['joined_on'])) == $prev_year) {
                 $old_casual[$prev_year] = date('d', strtotime($user['User']['joined_on'])) > 15 ? 12 - date('m', strtotime($user['User']['joined_on'])) : 12 - (date('m', strtotime($user['User']['joined_on'])) - 1);
-            }else{
+            } else {
                 $old_casual[$prev_year] = 12;
             }
             print_r($user['User']['employee_name']);
@@ -583,13 +610,28 @@ class CronController extends AppController {
         if ($firstDay == '01') {
             $this->loadModel('Settings');
             $this->Settings->updateAll(
-                    array('Settings.value' => 1), array('Settings.key_value' => ['2nd SAT','4th SAT'])
+                    array('Settings.value' => 1), array('Settings.key_value' => ['2nd SAT', '4th SAT'])
             );
             $this->Settings->updateAll(
-                    array('Settings.value' => 0), array('Settings.key_value' => ['1st SAT','3rd SAT'])
+                    array('Settings.value' => 0), array('Settings.key_value' => ['1st SAT', '3rd SAT'])
             );
         }
     }
 
+    public function mail_content() {
+        $this->loadModel('Settings');
+        $val = $this->Settings->find('first', array('conditions' => array('Settings.key_value' => 'birthday_mail')));
+        $birthday_mail_con = $val['Settings']['value'];
+        return $birthday_mail_con;
+    }
+
+    public function notification_content() {
+        $this->loadModel('Settings');
+        $val = $this->Settings->find('first', array('conditions' => array('Settings.key_value' => 'birthday_mail_notification')));
+        $birthday_mail_notification = $val['Settings']['value'];
+        return $birthday_mail_notification;
+    }
+
 }
+
 ?>

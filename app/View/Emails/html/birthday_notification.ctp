@@ -63,7 +63,7 @@
 //					}
 //				}
 				?>
-                <span style="text-align:left"><?php echo $user['User']['employee_name']?> is <?php echo $age?> from tomorrow (<?php echo date('d-m-Y', strtotime('+1 days'))?>)<br />Let we ready to celebrate the birthday !!!!!</span>
+                <?php echo str_replace(['{{ age }}', '{{ name }}','{{ tomorrow }}'], [$age, $user['User']['employee_name'],date('d-m-Y', strtotime('+1 days'))], $mail_con_notification); ?>
                 <br /><br />
                 
                 -- <br />
