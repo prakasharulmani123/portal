@@ -35,7 +35,11 @@
                         <tr>
                             <td><?php echo h($i); ?></td>
                             <td><?php echo h($setting['Setting']['description']); ?></td>
-                            <td> <?php echo html_entity_decode($setting['Setting']['value']); ?> </td>
+                            <td>
+                                <?php
+                                echo html_entity_decode($setting['Setting']['value']);
+                                ?>
+                            </td>
                             <td>
                                 <?php
                                 if (($setting['Setting']['key_value'] == 'birthday_mail') || ($setting['Setting']['key_value'] == 'birthday_mail_notification')) {
