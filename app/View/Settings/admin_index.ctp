@@ -32,7 +32,7 @@ $(document).ready(function(){
                          <?php $i=1; foreach ($settings as $setting): ?>
             <tr>
               <td><?php echo h($i); ?></td>
-              <td id = "desc_data_<?php echo $setting['Setting']['id']?>"><?php echo h($setting['Setting']['description']); ?></td>
+              <td><?php echo h($setting['Setting']['description']); ?></td>
               <td> <?php echo h($setting['Setting']['value']); ?> </td>
               <td><?php
                     if(($setting['Setting']['key_value'] == 'birthday_mail') || ($setting['Setting']['key_value'] == 'birthday_mail_notification'))

@@ -16,25 +16,8 @@ class SettingsController extends AppController {
         $this->__validateLoginStatus();
     }
 
-    public function admin_index($id = null) {
+    public function admin_index() {
         $this->layout = 'admin-inner';
-
-        if ($this->request->is('ajax')) {
-            $insert_birthaday_mail = array(
-                'Setting' => array(
-                    'id' => $this->data['id'],
-                    'key_value' => $this->data['key_value'],
-                    'value' => $this->data['description'],
-                    'description' => $this->data['description'],
-                )
-            );
-            if ($this->Setting->saveAll($insert_birthaday_mail)) {
-                $return['description'] = $this->data['description'];
-                echo json_encode($return);
-            }
-            exit;
-        }
-
         $settings = $this->Setting->find('all');
         $this->set(compact('settings'));
     }
