@@ -36,7 +36,7 @@ function validateForm()
             </div>
             <?php
             if($setting['Setting']['key_value'] == 'birthday_mail_notification'){ ?>
-                 <div class="text-block">You can use these variables: <code>{{ age }}</code> <code>{{ name }}</code> <code>{{ tomorrow }}</code></div>
+                 <div class="text-block">You can use these variables: <code>{{name}}</code> <code>{{age}}</code> <code>{{tomorrow}}</code></div>
             <?php }
             ?>
             

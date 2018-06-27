@@ -63,7 +63,7 @@
 //					}
 //				}
 				?>
-                <?php echo str_replace(['{{ age }}', '{{ name }}','{{ tomorrow }}'], [$age, $user['User']['employee_name'],date('d-m-Y', strtotime('+1 days'))], $mail_con_notification); ?>
+                <?php echo str_replace(['{{name}}', '{{age}}','{{tomorrow}}'], [$age, $user['User']['employee_name'],date('d-m-Y', strtotime('+1 days'))], $mail_con_notification); ?>
                 <br /><br />
                 
                 -- <br />
