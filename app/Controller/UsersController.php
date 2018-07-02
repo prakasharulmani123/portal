@@ -155,6 +155,7 @@ class UsersController extends AppController {
             $this->Session->write('role', $role);
             $this->Session->write('super_user', $super_user);
             $this->Session->write('nid', $id);
+            $this->Session->write('User.casual_leave', $users['User']['casual_leave']);
             $this->Session->setFlash("Logged in as {$users['User']['employee_name']}", "flash_success");
             $this->redirect('/users/dashboard');
         } else {
