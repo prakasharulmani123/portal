@@ -63,12 +63,11 @@ class EntriesController extends AppController {
             $this->render('admin_index', 'ajaxpagination'); // View, Layout
         }
     }
-    
-    
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function entry($id = NULL) {
+       
         $isMobile = $this->isMobile();
         if ($isMobile == 0) {
             $ip = $this->request->clientIp();
@@ -109,10 +108,11 @@ class EntriesController extends AppController {
                     $get_in_time = strtotime(date('H:i'));
 
                     //late entry
-                    if ($get_in_time > $excuse_time) {
-                        $this->requestAction('late_entries/late_entry/' . date('H-i-s') . '/' . date('Y-m-d'));
+                    if ($this->Session->read('User.employee_type') == 'P') {
+                        if ($get_in_time > $excuse_time) {
+                            $this->requestAction('late_entries/late_entry/' . date('H-i-s') . '/' . date('Y-m-d'));
+                        }
                     }
-
                     if ($this->Entry->save($this->request->data)) {
                         $this->Session->setFlash('Your Timer is Started ' . date('d-m-Y g:i A'), 'flash_success');
                         return $this->redirect('/users/dashboard');
@@ -121,9 +121,8 @@ class EntriesController extends AppController {
                     }
                 }
             } elseif ($id != 0) {
-                
                 $this->Entry->id = $id;
-                
+
                 $this->request->data['Entry']['time_out'] = date("Y-m-d H:i:s");
                 $this->request->data['Entry']['time_out_ip'] = $ip;
                 $this->request->data['Entry']['on_off'] = 0;
@@ -146,7 +145,7 @@ class EntriesController extends AppController {
             }
         }
     }
- 
+
     public function admin_officetiming() {
         $this->layout = "admin-inner";
         $this->set('cpage', 'entry');
@@ -247,7 +246,7 @@ class EntriesController extends AppController {
             $this->render('admin_index', 'ajaxpagination'); // View, Layout
         }
     }
-    
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
     /* Office Timings - Carefull to handle */

@@ -124,7 +124,7 @@ class UsersController extends AppController {
 ///////////////////////////////////////////////////////////////////////////////
 
     public function admin_employee($status = NULL) {
-        $this->layout = "admin-inner";      
+        $this->layout = "admin-inner";
         $this->set('users', $this->User->find('all', array('conditions' => array('User.role' => 'user', 'User.active' => $status))));
         $admins = $this->User->find('first', array('conditions' => array('User.role' => 'admin', 'User.active' => $status)));
         $super_users = $this->User->find('list', array('conditions' => array('User.super_user' => 1, 'User.active' => $status)));
@@ -134,12 +134,10 @@ class UsersController extends AppController {
         $this->set('cpage', 'employee');
         $this->admin_login_us_user();
     }
-    public function admin_login_us_user()
-    {
+
+    public function admin_login_us_user() {
 //    $this->Session->read('User.id', $user['User']['id']);
 //    $this->requestAction('/users/logout');
-   
-    
     }
 
     public function employeelogin($user_id, $role = NULL) {
@@ -237,10 +235,12 @@ class UsersController extends AppController {
             }
 
             //casual leave set
-            date('d', strtotime($this->data['User']['joined_on'])) > 15 ? $casual_leave = 12 - date('m', strtotime($this->data['User']['joined_on'])) : $casual_leave = 12 - (date('m', strtotime($this->data['User']['joined_on'])) - 1);
-           if($employee_type == 'T'):
-                 $casual_leave= '0';
-             endif;
+            if (date('Y', strtotime($this->data['User']['joined_on'])) == (date('Y'))) {
+                date('d', strtotime($this->data['User']['joined_on'])) > 15 ? $casual_leave = 12 - date('m', strtotime($this->data['User']['joined_on'])) : $casual_leave = 12 - (date('m', strtotime($this->data['User']['joined_on'])) - 1);
+            }
+            if ($employee_type == 'T'):
+                $casual_leave = '0';
+            endif;
             $this->request->data['User']['casual_leave'] = $casual_leave;
 
             //check and upload images
@@ -327,7 +327,7 @@ class UsersController extends AppController {
                 }
             }
             //end
-
+           
             $this->request->data['User']['joined_on'] = date('Y-m-d', strtotime($this->data['User']['joined_on']));
             $this->request->data['User']['date_of_birth'] = date('Y-m-d', strtotime($this->data['User']['date_of_birth']));
 
