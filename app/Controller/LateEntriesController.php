@@ -190,7 +190,7 @@ class LateEntriesController extends AppController {
                 'approved' => 1));
 
         $leave_count = $this->requestAction('leave/user_get_all_leave_count_per_year/' . $this->Session->read('User.id') . '/' . date('Y', strtotime($date)));
-        $user_casual_leave = $this->Session->read('User.casual_leave');
+        $user_casual_leave = $this->requestAction('users/casual_leave');
 
         $leave_count >= $user_casual_leave ? $status = 'P' : $status = 'C';
 
