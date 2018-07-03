@@ -155,7 +155,8 @@ class UsersController extends AppController {
             $this->Session->write('role', $role);
             $this->Session->write('super_user', $super_user);
             $this->Session->write('nid', $id);
-            $this->Session->write('User.casual_leave', $users['User']['casual_leave']);
+            //$this->Session->write('User.casual_leave', $users['User']['casual_leave']);
+            $casualleave = $this->casual_leave();
             $this->Session->setFlash("Logged in as {$users['User']['employee_name']}", "flash_success");
             $this->redirect('/users/dashboard');
         } else {
@@ -328,7 +329,7 @@ class UsersController extends AppController {
                 }
             }
             //end
-           
+
             $this->request->data['User']['joined_on'] = date('Y-m-d', strtotime($this->data['User']['joined_on']));
             $this->request->data['User']['date_of_birth'] = date('Y-m-d', strtotime($this->data['User']['date_of_birth']));
 
@@ -695,6 +696,14 @@ class UsersController extends AppController {
 
     public function app_test() {
         
+    }
+
+    public function casual_leave() {
+
+        $id = $id = $this->Session->read('User.id');
+        $user = $this->User->find('first', array('conditions' => array('User.id' => $id, 'User.active' => 1)));
+        $casleave = $user['User']['casual_leave'];
+        return $casleave;
     }
 
 }
