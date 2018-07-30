@@ -158,7 +158,9 @@ class PermissionController extends AppController {
         if ($this->request->is('post') || $this->request->is('put')) {
             $check_permission = $this->Permission->findByUserIdAndDate($this->Session->read('User.id'), date('Y-m-d', strtotime($this->data['Permission']['date'])));
 
-            if (empty($check_permission)) {
+            $can_apply = empty($check_permission) || (@$check_permission['Permission']['approved'] == 2);
+
+            if ($can_apply) {
                 $this->request->data['Permission']['date'] = date('Y-m-d', strtotime($this->data['Permission']['date']));
                 $this->request->data['Permission']['user_id'] = $this->Session->read('User.id');
 
